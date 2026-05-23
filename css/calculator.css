@@ -1,0 +1,2113 @@
+/* NSR calculator widget styles (cloned from MRM) — only loaded on resources/storage-calculator.html */
+/* NSR brand override for MRM-built calculator widget */
+:root {
+  --np-primary: #11365a; --np-primary-light: #1d4e80; --np-accent: #ef6c1d;
+  --np-bg-soft: #faf7f2; --np-text: #131722; --np-muted: #5b6470; --np-border: #ece8df;
+  --brand-navy: #11365a; --brand-navy-dark: #0a223e; --brand-navy-mid: #1d4e80;
+  --brand-bronze: #ef6c1d; --brand-bronze-light: #f7944b; --brand-beige: #fde5d2;
+  --brand-sage: #ef6c1d; --brand-off-white: #faf7f2; --brand-ink: #131722; --brand-mute: #5b6470;
+}
+
+/* === Constrain calculator widget to the standard NSR 1280px container ===== */
+/* MRM ships .np-section as full-bleed; on NSR we want it card-shaped and
+   centred inside the same container width every other section uses. */
+.np-section.calc-section {
+  max-width: 1280px;
+  margin: 1.5rem auto;
+  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 3.5vw, 2rem);
+  border-radius: 18px;
+  box-shadow: 0 12px 32px rgba(17, 54, 90, 0.14);
+  overflow: hidden;
+}
+.np-section.calc-section .np-inner {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+/* Other .np-section blocks on the page should match container width too. */
+.np-section:not(.calc-section) {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1rem, 3.5vw, 2rem);
+  padding-right: clamp(1rem, 3.5vw, 2rem);
+}
+
+/* === Calculator widget CSS extracted from new-pages.css (lines 443-2495) === */
+.calc-totals {
+  position: sticky;
+  top: 96px;
+  z-index: 5;
+  background: var(--brand-navy, #11365a);
+  color: #fff;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 0.75rem;
+  margin: 0 0 1.5rem;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+}
+.calc-totals > div { text-align: center; }
+.calc-totals strong {
+  display: block;
+  font-size: 1.85rem;
+  line-height: 1.1;
+  color: var(--brand-bronze-light, #f7944b);
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+}
+.calc-totals span {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.78);
+  margin-top: 0.25rem;
+}
+@media (max-width: 640px) {
+  .calc-totals { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .calc-totals strong { font-size: 1.45rem; }
+}
+
+/* Horizontal tab bar */
+.storage-calc .calc-tabs-wrap {
+  position: relative;
+  margin: 0 -0.25rem 1rem;
+}
+.storage-calc .calc-tabs {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding: 0.25rem 0.25rem 0.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--brand-bronze, #ef6c1d) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+/* "more →" affordance overlaid on the right edge of the tab strip;
+   appears only when there are tabs scrolled offscreen to the right.
+   Clicking scrolls the strip further right. */
+.storage-calc .calc-tabs-more {
+  position: absolute;
+  right: 0;
+  top: 0.25rem;
+  bottom: 0.75rem;
+  width: 96px;
+  padding: 0 0.7rem 0 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  background: linear-gradient(to right, rgba(248, 240, 222, 0) 0%, var(--brand-bronze-light, #f7944b) 45%);
+  color: var(--brand-navy, #11365a);
+  border: 0;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  z-index: 3;
+  transition: filter .15s;
+}
+.storage-calc .calc-tabs-more[hidden] { display: none; }
+.storage-calc .calc-tabs-more:hover,
+.storage-calc .calc-tabs-more:focus-visible {
+  filter: brightness(1.05);
+  outline: none;
+}
+.storage-calc .calc-tabs-more-arrow {
+  font-size: 1rem;
+  line-height: 1;
+  transition: transform .15s;
+}
+.storage-calc .calc-tabs-more:hover .calc-tabs-more-arrow {
+  transform: translateX(3px);
+}
+.storage-calc .calc-tabs::-webkit-scrollbar { height: 6px; }
+.storage-calc .calc-tabs::-webkit-scrollbar-thumb {
+  background: var(--brand-bronze, #ef6c1d);
+  border-radius: 3px;
+}
+.storage-calc .calc-tab {
+  position: relative;
+  flex: 0 0 auto;
+  width: 96px;
+  padding: 0.85rem 0.4rem 0.65rem;
+  background: var(--brand-navy, #11365a);
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.15;
+  transition: background .15s, transform .15s;
+}
+.storage-calc .calc-tab-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--brand-bronze, #ef6c1d);
+  color: var(--brand-navy, #11365a);
+  font-family: "Inter", sans-serif;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  border: 2px solid #fff;
+  z-index: 2;
+}
+.storage-calc .calc-tab-count[hidden] { display: none; }
+.storage-calc .calc-tab.active .calc-tab-count {
+  background: var(--brand-navy, #11365a);
+  color: var(--brand-bronze, #ef6c1d);
+}
+.storage-calc .calc-tab:hover { background: #1d4e80; transform: translateY(-1px); }
+.storage-calc .calc-tab.active {
+  background: var(--brand-bronze, #ef6c1d);
+  color: var(--brand-navy, #11365a);
+  box-shadow: 0 4px 10px rgba(200,168,118,0.4);
+}
+.storage-calc .calc-tab.active:hover { background: #cf5710; }
+.storage-calc .calc-tab-icon {
+  display: block;
+  width: 36px;
+  height: 36px;
+}
+.storage-calc .calc-tab-icon svg { width: 100%; height: 100%; display: block; }
+.storage-calc .calc-tab-label {
+  display: block;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Search bar */
+.storage-calc .calc-search {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #fff;
+  border: 1px solid var(--np-border, #e5e7eb);
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  margin: 0 0 0.75rem;
+}
+.storage-calc .calc-search:focus-within {
+  border-color: var(--brand-bronze, #ef6c1d);
+  box-shadow: 0 0 0 3px rgba(200,168,118,0.18);
+}
+.storage-calc .calc-search-icon { color: var(--np-muted, #6b7280); width: 20px; height: 20px; display: inline-flex; flex: 0 0 auto; }
+.storage-calc .calc-search-icon svg { width: 100%; height: 100%; }
+.storage-calc .calc-search input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  color: var(--brand-navy, #11365a);
+}
+
+/* Category panels — only the active one is shown */
+.storage-calc .calc-panels { background: #fff; border: 1px solid var(--np-border, #e5e7eb); border-radius: 8px; overflow: hidden; }
+.storage-calc .calc-cat-panel { display: none; }
+.storage-calc .calc-cat-panel.active { display: block; }
+
+/* Item rows */
+.storage-calc .calc-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  gap: 1rem;
+  border-bottom: 1px solid #f1f1f1;
+}
+.storage-calc .calc-cat-panel .calc-item:last-child { border-bottom: 0; }
+.storage-calc .calc-item-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.storage-calc .calc-item-name {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  color: var(--brand-navy, #11365a);
+  font-size: 0.97rem;
+}
+.storage-calc .calc-item-vol {
+  color: var(--np-muted, #6b7280);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  margin-top: 0.15rem;
+}
+
+/* − / + stepper */
+.storage-calc .qty-stepper {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--brand-navy, #11365a);
+  border-radius: 6px;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+.storage-calc .qty-btn {
+  width: 36px;
+  background: var(--brand-navy, #11365a);
+  color: #fff;
+  border: 0;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  transition: background .15s;
+}
+.storage-calc .qty-btn:hover { background: #1d4e80; }
+.storage-calc .qty-btn:focus-visible { outline: 2px solid var(--brand-bronze, #ef6c1d); outline-offset: -2px; }
+.storage-calc .qty-stepper input {
+  width: 50px;
+  border: 0;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  background: #fff;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.storage-calc .qty-stepper input::-webkit-outer-spin-button,
+.storage-calc .qty-stepper input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.storage-calc .qty-stepper input:focus { outline: 2px solid var(--brand-bronze, #ef6c1d); outline-offset: -1px; }
+
+.storage-calc .calc-actions { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+/* Cost estimator (mileage + £/cu ft → live total) */
+/* Always-visible volume inputs (home size + cu ft override).
+ * Sits between the totals bar and the mode-specific blocks below.
+ * Visible in every calculator mode because every mode needs a cu ft figure. */
+.volume-inputs {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  background: #fff;
+  border: 1px solid var(--np-border, #e5e7eb);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin: 1rem 0 1rem;
+}
+@media (max-width: 760px) {
+  .volume-inputs { grid-template-columns: 1fr; gap: 1rem; padding: 1rem; }
+}
+
+.cost-estimator {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 2fr;
+  gap: 1.5rem;
+  align-items: start;
+  background: #fff;
+  border: 1px solid var(--np-border, #e5e7eb);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin: 1rem 0 0.75rem;
+}
+.cost-inputs { display: flex; flex-direction: column; gap: 1.1rem; }
+.cost-input { display: flex; flex-direction: column; gap: 0.4rem; }
+.cost-size-input {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.cost-size-input legend {
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  color: var(--brand-navy, #11365a);
+  font-size: 0.95rem;
+}
+.cost-size-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--np-border, #e5e7eb);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+  font-family: "Inter", sans-serif;
+  font-size: 0.94rem;
+  color: var(--brand-navy, #11365a);
+}
+.cost-size-option:hover { background: rgba(200,168,118,0.08); border-color: var(--brand-bronze, #ef6c1d); }
+.cost-size-option input[type="radio"] {
+  margin: 0.25rem 0 0;
+  accent-color: var(--brand-bronze, #ef6c1d);
+  cursor: pointer;
+}
+.cost-size-option strong { display: block; }
+.cost-size-option small {
+  display: block;
+  color: var(--np-muted, #6b7280);
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin-top: 0.1rem;
+}
+.cost-size-option:has(input:checked) {
+  background: rgba(200,168,118,0.15);
+  border-color: var(--brand-bronze, #ef6c1d);
+}
+
+/* Manual cu ft input — used when no inventory items are ticked. */
+.cost-manual-cuft { display: flex; flex-direction: column; gap: 0.35rem; }
+.cost-manual-cuft input {
+  font-family: "Inter", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--brand-navy, #11365a);
+  border: 1px solid var(--np-border, #e5e7eb);
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+  background: #fff;
+}
+.cost-manual-cuft input:focus {
+  outline: 2px solid var(--brand-bronze, #ef6c1d);
+  outline-offset: -1px;
+  border-color: var(--brand-bronze, #ef6c1d);
+}
+.cost-manual-cuft input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: #f5f5f5;
+}
+.cost-input-label {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  color: var(--brand-navy, #11365a);
+  font-size: 0.95rem;
+}
+.cost-input input {
+  font-family: "Inter", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--brand-navy, #11365a);
+  border: 1px solid var(--np-border, #e5e7eb);
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+.cost-input input:focus {
+  outline: 2px solid var(--brand-bronze, #ef6c1d);
+  outline-offset: -1px;
+  border-color: var(--brand-bronze, #ef6c1d);
+}
+.cost-input-help {
+  font-size: 0.82rem;
+  color: var(--np-muted, #6b7280);
+  line-height: 1.45;
+}
+.cost-output { display: flex; flex-direction: column; gap: 0.65rem; }
+
+/* Headline card — big number, navy→bronze gradient */
+.cost-headline {
+  background: linear-gradient(135deg, var(--brand-navy, #11365a) 0%, #1d4e80 100%);
+  color: #fff;
+  padding: 1.5rem 1.6rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(77,46,143,0.18);
+}
+.cost-headline-amount {
+  font-family: "Inter", sans-serif;
+  font-size: 2.85rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--brand-bronze-light, #f7944b);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.cost-headline-label {
+  margin-top: 0.55rem;
+  font-family: "Inter", sans-serif;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.85);
+}
+.cost-headline-storage {
+  background: linear-gradient(135deg, #1d4e80 0%, #1d4e80 100%);
+}
+
+/* Breakdown list (definition list under the headline) */
+.cost-breakdown {
+  display: grid;
+  gap: 0.55rem;
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 0.9rem 1.2rem;
+  margin: 0;
+}
+.cost-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  border-bottom: 1px dashed rgba(0,0,0,0.08);
+  padding-bottom: 0.45rem;
+  margin: 0;
+}
+.cost-line:last-child { border-bottom: 0; padding-bottom: 0; }
+.cost-line dt, .cost-line span {
+  color: var(--np-muted, #6b7280);
+  font-size: 0.9rem;
+  font-family: "Inter", sans-serif;
+  margin: 0;
+}
+.cost-line dd { margin: 0; }
+.cost-line strong {
+  color: var(--brand-navy, #11365a);
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 0.98rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+/* Storage block — optional add-on inside the cost estimator */
+.storage-block {
+  margin-top: 1.25rem;
+  background: #fff;
+  border: 1px solid var(--np-border, #e5e7eb);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+}
+.storage-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 0.97rem;
+  color: var(--brand-navy, #11365a);
+}
+.storage-toggle input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--brand-bronze, #ef6c1d);
+  cursor: pointer;
+}
+.storage-details {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 2fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+.storage-details[hidden] { display: none; }
+.storage-weeks-field { display: flex; flex-direction: column; gap: 0.4rem; }
+.storage-label {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  color: var(--brand-navy, #11365a);
+  font-size: 0.88rem;
+}
+.storage-weeks-field input {
+  font-family: "Inter", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--brand-navy, #11365a);
+  border: 1px solid var(--np-border, #e5e7eb);
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+.storage-weeks-field input:focus {
+  outline: 2px solid var(--brand-bronze, #ef6c1d);
+  outline-offset: -1px;
+  border-color: var(--brand-bronze, #ef6c1d);
+}
+.storage-help {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--np-muted, #6b7280);
+  line-height: 1.45;
+}
+.storage-output {
+  display: grid;
+  gap: 0.55rem;
+  background: #fafafa;
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+}
+.storage-alt {
+  margin: 0.4rem 0 0;
+  padding: 0.6rem 0.85rem;
+  background: rgba(200,168,118,0.12);
+  border-left: 3px solid var(--brand-bronze, #ef6c1d);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.85rem;
+  color: var(--brand-navy, #11365a);
+  line-height: 1.45;
+}
+
+/* Grand total — appears when both removals and storage are selected */
+.cost-grand-total {
+  background: linear-gradient(135deg, #0a223e 0%, var(--brand-navy, #11365a) 60%, var(--brand-bronze, #ef6c1d) 100%);
+  color: #fff;
+  border-radius: 12px;
+  padding: 1.75rem 2rem;
+  margin: 1.25rem 0;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(77,46,143,0.22);
+}
+.cost-grand-total[hidden] { display: none; }
+.cost-grand-amount {
+  font-family: "Inter", sans-serif;
+  font-weight: 800;
+  font-size: 3.4rem;
+  line-height: 1;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.025em;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+}
+.cost-grand-label {
+  margin-top: 0.6rem;
+  font-family: "Inter", sans-serif;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.92);
+}
+
+@media (max-width: 760px) {
+  .storage-details { grid-template-columns: 1fr; }
+  .cost-headline-amount { font-size: 2.25rem; }
+  .cost-grand-amount   { font-size: 2.4rem; }
+  .cost-grand-total    { padding: 1.25rem 1.25rem; }
+}
+
+.cost-disclaimer {
+  background: rgba(200,168,118,0.12);
+  border-left: 3px solid var(--brand-bronze, #ef6c1d);
+  padding: 0.85rem 1.1rem;
+  border-radius: 0 6px 6px 0;
+  color: var(--brand-navy, #11365a);
+  font-size: 0.95rem;
+  margin-top: 1rem;
+}
+
+/* Quote request form (mailto:-based) */
+.quote-form {
+  background: #fff;
+  border: 1px solid var(--np-border, #e5e7eb);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-top: 0.75rem;
+}
+.quote-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.25rem;
+}
+.quote-form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.quote-form-label {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  color: var(--brand-navy, #11365a);
+  font-size: 0.88rem;
+}
+.quote-form-grid input,
+.quote-form-grid select,
+.quote-form-grid textarea {
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  color: var(--brand-navy, #11365a);
+  border: 1px solid var(--np-border, #e5e7eb);
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+  background: #fff;
+  width: 100%;
+}
+.quote-form-grid select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='%234d2e8f'><path d='M6 8 0 0h12z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 10px 7px;
+  padding-right: 1.8rem;
+}
+.quote-form-grid input:focus,
+.quote-form-grid select:focus,
+.quote-form-grid textarea:focus {
+  outline: 2px solid var(--brand-bronze, #ef6c1d);
+  outline-offset: -1px;
+  border-color: var(--brand-bronze, #ef6c1d);
+}
+.quote-form-grid textarea { resize: vertical; min-height: 4em; font-family: inherit; }
+.quote-form-full { grid-column: 1 / -1; }
+
+/* Small helper text shown below an input — used for the date picker
+   to explain that an approximate date is acceptable. The form sits on
+   a white card, so the hint reads in a muted navy-grey to match the
+   navy labels above. */
+.quote-form-hint {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  color: #1d4e80;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+/* Title + first name + last name share a single row across the full
+   width of the quote-form-grid. Title is narrower since the dropdown
+   only needs to show short honorifics. */
+.quote-form-name-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(90px, 0.55fr) 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 640px) {
+  .quote-form-name-row {
+    grid-template-columns: minmax(80px, 0.7fr) 1fr 1fr;
+    gap: 0.6rem;
+  }
+}
+.quote-form-actions {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+}
+.quote-form-help {
+  flex: 1 1 220px;
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--np-muted, #6b7280);
+  line-height: 1.45;
+}
+.quote-form-help a { color: var(--brand-navy, #11365a); }
+.quote-form-status {
+  margin-top: 0.85rem;
+  color: var(--brand-navy, #11365a);
+  font-size: 0.9rem;
+}
+.quote-form-status:empty { display: none; }
+
+/* In-card quote-request dropdown — toggled by the Send-figures CTA.
+   Light inset panel inside the dark quote card, so the embedded form
+   fields keep their normal white-on-purple-ink styling. */
+.quote-card .qc-quote-dropdown {
+  margin: 1rem 0 0;
+  padding: 1.25rem 1.25rem 1.1rem;
+  background: #fff;
+  border-radius: 12px;
+  color: var(--brand-navy, #11365a);
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+}
+.quote-card .qc-quote-dropdown[hidden] { display: none; }
+.quote-card .qc-quote-dropdown-header {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--np-border, #e5e7eb);
+}
+.quote-card .qc-quote-dropdown-header strong {
+  display: block;
+  font-family: "Inter", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--brand-navy, #11365a);
+}
+.quote-card .qc-quote-dropdown-header p {
+  margin: 0.35rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--np-muted, #6b7280);
+}
+.quote-card .qc-quote-dropdown-header a {
+  color: var(--brand-navy, #11365a);
+}
+.quote-card .qc-quote-dropdown .quote-form {
+  background: transparent;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+}
+
+/* Two-step flow inside the quote dropdown */
+.qc-quote-step[hidden] { display: none; }
+.qc-quote-step:not([hidden]) {
+  animation: qcQuoteStepIn 0.28s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+@keyframes qcQuoteStepIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.qc-quote-step-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.85rem;
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--np-border, #e5e7eb);
+}
+.qc-quote-step-num {
+  display: inline-flex;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: var(--brand-bronze, #ef6c1d);
+  color: var(--brand-navy, #11365a);
+  padding: 0.25rem 0.55rem;
+  border-radius: 4px;
+}
+.qc-quote-step-title {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--brand-navy, #11365a);
+}
+.qc-quote-back {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--brand-navy, #11365a);
+  margin-right: auto;
+}
+.qc-quote-back:hover, .qc-quote-back:focus-visible {
+  text-decoration: underline;
+  outline: none;
+}
+/* When the dropdown is open the CTA is redundant — hide it. The dropdown
+   itself sits where the CTA was, so the customer's focus stays in place. */
+.quote-card-cta[aria-expanded="true"] {
+  display: none !important;
+}
+
+/* Live quote preview — shows exactly what the email will contain. */
+.quote-preview {
+  margin: 1.5rem 0 1.25rem;
+  padding: 1.25rem 1.4rem;
+  background: #fff;
+  border: 1px solid var(--np-border, #e5e7eb);
+  border-radius: 12px;
+  color: var(--brand-navy, #11365a);
+}
+.quote-preview-header {
+  padding-bottom: 0.85rem;
+  margin-bottom: 1.1rem;
+  border-bottom: 1px solid var(--np-border, #e5e7eb);
+}
+.quote-preview-header strong {
+  display: block;
+  font-family: "Inter", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--brand-navy, #11365a);
+}
+.quote-preview-header span {
+  display: block;
+  font-size: 0.84rem;
+  color: var(--np-muted, #6b7280);
+  margin-top: 0.2rem;
+}
+.quote-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.1rem;
+  margin-bottom: 1.25rem;
+}
+.quote-preview-block {
+  background: rgba(77,46,143,0.04);
+  border: 1px solid rgba(77,46,143,0.1);
+  border-radius: 9px;
+  padding: 0.85rem 1rem;
+}
+.qp-block-title {
+  display: block;
+  font-family: "Inter", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-bronze, #ef6c1d);
+  margin-bottom: 0.55rem;
+}
+.quote-preview-block dl {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.quote-preview-block dl > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.86rem;
+}
+.quote-preview-block dl dt {
+  color: var(--np-muted, #6b7280);
+  font-weight: 500;
+}
+.quote-preview-block dl dd {
+  margin: 0;
+  color: var(--brand-navy, #11365a);
+  font-weight: 600;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.quote-preview-block dl .qp-grand {
+  margin-top: 0.4rem;
+  padding-top: 0.45rem;
+  border-top: 1px dashed rgba(77,46,143,0.18);
+}
+.quote-preview-block dl .qp-grand dt { color: var(--brand-navy, #11365a); font-weight: 700; }
+.quote-preview-block dl .qp-grand dd { color: var(--brand-bronze, #ef6c1d); font-weight: 800; font-size: 1rem; }
+
+/* Mode-aware visibility for quote-preview rows */
+body[data-calc-mode="removals"] .quote-preview-block dl > div[data-show-modes]:not([data-show-modes~="removals"]),
+body[data-calc-mode="storage"]  .quote-preview-block dl > div[data-show-modes]:not([data-show-modes~="storage"]),
+body[data-calc-mode="both"]     .quote-preview-block dl > div[data-show-modes]:not([data-show-modes~="both"]) {
+  display: none !important;
+}
+
+/* Inventory list inside the preview — grouped by room. */
+.quote-preview-inventory {
+  border-top: 1px solid var(--np-border, #e5e7eb);
+  padding-top: 1.05rem;
+}
+.qp-inventory-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+}
+.qp-inventory-header strong {
+  font-family: "Inter", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--brand-navy, #11365a);
+}
+.qp-inventory-header span {
+  font-size: 0.84rem;
+  color: var(--brand-bronze, #ef6c1d);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.qp-inventory-rooms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.85rem;
+}
+.qp-inventory-rooms:empty + .qp-no-inventory { display: block; }
+.qp-inventory-rooms:not(:empty) ~ .qp-no-inventory { display: none; }
+.qp-no-inventory {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--np-muted, #6b7280);
+  font-style: italic;
+}
+.qp-inv-room {
+  background: rgba(200,168,118,0.06);
+  border: 1px solid rgba(200,168,118,0.25);
+  border-radius: 8px;
+  padding: 0.7rem 0.85rem;
+}
+.qp-inv-room-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand-navy, #11365a);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.45rem;
+  border-bottom: 1px dashed rgba(200,168,118,0.4);
+}
+.qp-inv-room-head span:last-child {
+  color: var(--brand-bronze, #ef6c1d);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+.qp-inv-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.83rem;
+  padding: 0.14rem 0;
+  color: var(--brand-navy, #11365a);
+}
+.qp-inv-row .qp-inv-name { flex: 1; }
+.qp-inv-row .qp-inv-cuft {
+  flex: 0 0 auto;
+  color: var(--np-muted, #6b7280);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 640px) {
+  .quote-form { padding: 1.1rem; }
+  .quote-form-grid { grid-template-columns: 1fr; }
+  .quote-preview { padding: 1rem; }
+}
+
+@media (max-width: 760px) {
+  .cost-estimator { grid-template-columns: 1fr; gap: 1rem; padding: 1rem; }
+  .cost-line strong { font-size: 0.92rem; }
+  .cost-line.cost-total strong { font-size: 1.2rem; }
+}
+
+/* Rate table */
+.rate-table-wrap { overflow-x: auto; }
+.rate-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid var(--np-border, #e5e7eb);
+  font-family: "Inter", sans-serif;
+}
+.rate-table th, .rate-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: 0.92rem;
+  vertical-align: middle;
+}
+.rate-table th {
+  background: var(--brand-navy, #11365a);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.rate-table tbody tr:nth-child(even) td { background: #fafafa; }
+.rate-table strong { color: var(--brand-navy, #11365a); }
+.rate-table-sub { display: block; color: var(--np-muted, #6b7280); font-size: 0.78rem; font-weight: 400; margin-top: 0.1rem; }
+@media (max-width: 760px) {
+  .rate-table th, .rate-table td { padding: 0.6rem 0.7rem; font-size: 0.85rem; }
+}
+
+@media (max-width: 640px) {
+  .storage-calc .calc-tab { width: 80px; font-size: 0.62rem; }
+  .storage-calc .calc-tab-icon { width: 28px; height: 28px; }
+  .storage-calc .calc-item { padding: 0.6rem 0.75rem; gap: 0.5rem; }
+  .storage-calc .calc-item-vol { display: none; }
+  .storage-calc .qty-btn { width: 32px; }
+  .storage-calc .qty-stepper input { width: 44px; font-size: 0.95rem; }
+}
+
+.np-blog-archive-link { margin-top: 1.75rem; }
+.np-blog-archive-link .np-btn { display: inline-flex; align-items: center; gap: 0.4rem; }
+.np-sidebar-list-count { color: var(--np-muted); font-weight: 500; margin-left: 0.25rem; font-size: 0.85em; }
+.np-sidebar-categories .np-sidebar-list a { display: flex; justify-content: space-between; align-items: center; }
+
+@media (max-width: 991px) {
+  .np-blog-layout { grid-template-columns: 1fr; gap: 2rem; }
+  .np-blog-sidebar { position: static; top: auto; }
+  .np-blog-list { grid-template-columns: 1fr; }
+}
+
+/* =========================================================
+   Storage / Removals calculator — two-column shell redesign
+   Left column: inputs (mode, bedrooms, numbers).
+   Right column: sticky live quote card.
+   ========================================================= */
+.calc-section .calc-lead {
+  font-size: 1.04rem;
+  color: var(--np-muted, #6b7280);
+  margin: 0.4rem 0 1.5rem;
+  max-width: 820px;
+  line-height: 1.55;
+}
+.calc-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.9fr);
+  gap: 2rem;
+  align-items: start;
+}
+@media (max-width: 960px) {
+  .calc-shell { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+.calc-shell-inputs { display: flex; flex-direction: column; gap: 1.25rem; }
+.calc-shell-output {
+  position: sticky;
+  top: 96px;
+}
+@media (max-width: 960px) {
+  .calc-shell-output { position: relative; top: auto; order: -1; }
+}
+
+/* Step labels inside fieldsets — "1 What are you calculating?" etc. */
+.calc-step-label {
+  padding: 0;
+  margin: 0 0 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 1.08rem;
+  color: var(--brand-navy, #11365a);
+  letter-spacing: -0.005em;
+}
+.calc-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--brand-bronze, #ef6c1d);
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 700;
+  flex: 0 0 auto;
+}
+
+/* Upgraded mode-selector — icons + larger cards */
+.calc-shell .mode-selector {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 0.65rem;
+}
+@media (max-width: 640px) {
+  .calc-shell .mode-selector { grid-template-columns: 1fr; }
+}
+.calc-shell .mode-option {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.9rem 0.95rem;
+  background: #fff;
+  border: 1.5px solid var(--np-border, #e5e7eb);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  color: var(--brand-navy, #11365a);
+  transition: background .15s, border-color .15s, transform .15s;
+}
+.calc-shell .mode-option:hover {
+  border-color: var(--brand-bronze, #ef6c1d);
+  background: rgba(200,168,118,0.06);
+}
+.calc-shell .mode-option input[type="radio"] {
+  position: absolute; opacity: 0; pointer-events: none;
+}
+.calc-shell .mode-icon {
+  width: 38px; height: 38px;
+  flex: 0 0 auto;
+  color: var(--brand-bronze, #ef6c1d);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.calc-shell .mode-icon svg { width: 100%; height: 100%; }
+.calc-shell .mode-text strong {
+  display: block;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.calc-shell .mode-text small {
+  display: block;
+  color: var(--np-muted, #6b7280);
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin-top: 0.18rem;
+  line-height: 1.35;
+}
+.calc-shell .mode-option:has(input:checked) {
+  background: rgba(200,168,118,0.12);
+  border-color: var(--brand-bronze, #ef6c1d);
+  box-shadow: 0 2px 0 var(--brand-bronze, #ef6c1d) inset;
+}
+.calc-shell .mode-option:focus-within {
+  outline: 2px solid var(--brand-bronze, #ef6c1d);
+  outline-offset: 2px;
+}
+
+/* Bedroom selector — 5 cards in a responsive grid */
+.bedroom-selector {
+  border: 0; padding: 0; margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.6rem;
+}
+.bedroom-card {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.75rem 0.85rem;
+  background: #fff;
+  border: 1.5px solid var(--np-border, #e5e7eb);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  color: var(--brand-navy, #11365a);
+  transition: background .15s, border-color .15s;
+}
+.bedroom-card:hover {
+  border-color: var(--brand-bronze, #ef6c1d);
+  background: rgba(200,168,118,0.06);
+}
+.bedroom-card input[type="radio"] {
+  position: absolute; opacity: 0; pointer-events: none;
+}
+.bedroom-icon {
+  width: 34px; height: 34px;
+  flex: 0 0 auto;
+  color: var(--brand-bronze, #ef6c1d);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.bedroom-icon svg { width: 100%; height: 100%; }
+.bedroom-text strong {
+  display: block;
+  font-size: 0.94rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.bedroom-text small {
+  display: block;
+  color: var(--np-muted, #6b7280);
+  font-size: 0.78rem;
+  margin-top: 0.15rem;
+  line-height: 1.35;
+}
+.bedroom-card:has(input:checked) {
+  background: rgba(200,168,118,0.12);
+  border-color: var(--brand-bronze, #ef6c1d);
+  box-shadow: 0 2px 0 var(--brand-bronze, #ef6c1d) inset;
+}
+.bedroom-card:focus-within {
+  outline: 2px solid var(--brand-bronze, #ef6c1d);
+  outline-offset: 2px;
+}
+
+/* Number fields (cu ft / miles / days) — laid out together */
+.calc-numfields {
+  border: 0; padding: 0; margin: 0;
+}
+.calc-numfields-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+/* Both-mode shows three fields (cu ft + miles + days) — give them one
+   even row of three matched cards instead of a 2 + 1 wrap. */
+body[data-calc-mode="both"] .calc-numfields-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+/* Mobile: shrink padding + text so three cards fit comfortably on a
+   narrow viewport without wrapping onto a 2 + 1 layout. */
+@media (max-width: 640px) {
+  body[data-calc-mode="both"] .calc-numfields-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.4rem;
+  }
+  body[data-calc-mode="both"] .calc-numfield {
+    padding: 0.55rem 0.55rem;
+  }
+  body[data-calc-mode="both"] .calc-numfield-label {
+    font-size: 0.7rem;
+    line-height: 1.2;
+  }
+  body[data-calc-mode="both"] .calc-numfield input {
+    font-size: 1.2rem;
+  }
+  body[data-calc-mode="both"] .calc-numfield-help {
+    font-size: 0.66rem;
+    line-height: 1.3;
+  }
+}
+.calc-numfield {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: #fff;
+  border: 1.5px solid var(--np-border, #e5e7eb);
+  border-radius: 10px;
+  padding: 0.75rem 0.9rem;
+  transition: border-color .15s;
+}
+.calc-numfield:focus-within { border-color: var(--brand-bronze, #ef6c1d); }
+.calc-numfield-label {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  color: var(--brand-navy, #11365a);
+  font-size: 0.85rem;
+}
+.calc-numfield input {
+  font-family: "Inter", sans-serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--brand-navy, #11365a);
+  border: 0;
+  padding: 0;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+  background: transparent;
+  outline: none;
+}
+.calc-numfield input:disabled { opacity: 0.55; cursor: not-allowed; }
+.calc-numfield-help {
+  font-size: 0.78rem;
+  color: var(--np-muted, #6b7280);
+  line-height: 1.4;
+}
+
+/* Live quote card — sticky right column */
+.quote-card {
+  background: linear-gradient(160deg, var(--brand-navy, #11365a) 0%, #1d4e80 60%, #1d4e80 100%);
+  color: #fff;
+  border-radius: 14px;
+  padding: 1.65rem 1.6rem 1.4rem;
+  box-shadow: 0 10px 30px rgba(77,46,143,0.25);
+}
+.quote-card-eyebrow {
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.88);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.quote-card-amount {
+  font-family: "Inter", sans-serif;
+  font-size: 6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--brand-bronze-light, #f7944b);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+/* Status label hidden from customer — the headline £ already communicates the price. */
+.quote-card-label {
+  display: none;
+}
+@media (max-width: 640px) {
+  .quote-card-eyebrow { font-size: 0.8rem; letter-spacing: 0.14em; }
+  .quote-card-amount  { font-size: 3.6rem; }
+}
+/* Meta strip — populated in DOM (so the office email body can pull
+   cu ft / cu m / kg / load size) but hidden from the customer. */
+.quote-card-meta {
+  display: none;
+}
+.quote-card-meta-item { text-align: center; }
+.quote-card-meta-item strong {
+  display: block;
+  font-family: "Inter", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.quote-card-meta-item span {
+  display: block;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.7);
+  margin-top: 0.15rem;
+}
+/* Internal breakdown — values populate the DOM (so the office email
+   body can pull them) but it's hidden from the customer; the inc-VAT
+   headline £ is the only figure they need to see. */
+.quote-card-breakdown {
+  display: none;
+}
+.quote-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.85rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px dashed rgba(255,255,255,0.18);
+  margin: 0;
+}
+.quote-line:last-child { border-bottom: 0; padding-bottom: 0; }
+.quote-line dt {
+  color: rgba(255,255,255,0.78);
+  font-size: 0.85rem;
+  font-family: "Inter", sans-serif;
+  margin: 0;
+}
+.quote-line dd { margin: 0; }
+.quote-line strong {
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.quote-line.quote-line-subtotal {
+  background: rgba(255,255,255,0.06);
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+  border-bottom: 0;
+}
+.quote-line.quote-line-subtotal dt { color: #fff; font-weight: 600; }
+.quote-line.quote-line-subtotal strong { color: var(--brand-bronze-light, #f7944b); }
+/* Both-mode split panel — Removals + Storage + Total each get their
+   own prominent row. Total is the visual focal point. */
+.quote-card .quote-card-split {
+  margin: 0.6rem auto 1.4rem;
+  max-width: 620px;
+  padding: 1.4rem 1.6rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.quote-card .qc-split-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  font-family: "Inter", sans-serif;
+}
+.quote-card .qc-split-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.78);
+  font-weight: 600;
+}
+.quote-card .qc-split-value {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--brand-bronze-light, #f7944b);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.quote-card .qc-split-row-total {
+  border-top: 1px solid rgba(255,255,255,0.22);
+  padding-top: 0.95rem;
+  margin-top: 0.3rem;
+}
+.quote-card .qc-split-row-total .qc-split-label {
+  color: #fff;
+  font-size: 0.86rem;
+  letter-spacing: 0.16em;
+}
+.quote-card .qc-split-row-total .qc-split-value {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--brand-bronze-light, #f7944b);
+}
+/* In Both mode, hide the main single £ figure — the split panel
+   replaces it. In other modes hide the split panel. */
+body[data-calc-mode="both"] .quote-card-amount { display: none; }
+body[data-calc-mode="removals"] .quote-card-split,
+body[data-calc-mode="storage"] .quote-card-split { display: none !important; }
+@media (max-width: 640px) {
+  .quote-card .quote-card-split { padding: 1.1rem 1rem; }
+  .quote-card .qc-split-value { font-size: 1.45rem; }
+  .quote-card .qc-split-row-total .qc-split-value { font-size: 2.2rem; }
+}
+
+/* Storage-mode summary — visible only in storage / both modes, shows the
+   recommended room size in sqft + cu ft + cu m. */
+.quote-card .quote-card-storage {
+  margin: 0 0 0.85rem;
+  padding: 0.85rem 1rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 9px;
+  text-align: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.quote-card .quote-card-storage-label {
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.7);
+}
+.quote-card .quote-card-storage-figures {
+  font-family: "Inter", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--brand-bronze-light, #f7944b);
+  font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  align-items: baseline;
+}
+.quote-card .quote-card-storage-figures .qc-sep {
+  color: rgba(255,255,255,0.4);
+  font-weight: 400;
+}
+.quote-card-storage[hidden] { display: none; }
+body[data-calc-mode="removals"] .quote-card-storage { display: none !important; }
+
+.quote-card .quote-card-alt {
+  margin: 0 0 0.85rem;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.78);
+  background: rgba(255,255,255,0.06);
+  padding: 0.55rem 0.75rem;
+  border-radius: 6px;
+  border-left: 3px solid var(--brand-bronze, #ef6c1d);
+  line-height: 1.4;
+}
+.quote-card .quote-card-alt strong { color: #fff; }
+.quote-card-cta {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: var(--brand-bronze, #ef6c1d);
+  color: var(--brand-navy, #11365a);
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  letter-spacing: 0.005em;
+  transition: background .15s, transform .15s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.quote-card-cta:hover { background: #f7944b; transform: translateY(-1px); }
+.quote-card .quote-card-disclaimer {
+  margin: 0.9rem 0 0;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.5;
+}
+.quote-card .quote-card-disclaimer a { color: var(--brand-bronze-light, #f7944b); text-decoration: underline; }
+
+/* Mobile: shrink the quote card slightly */
+@media (max-width: 640px) {
+  .quote-card { padding: 1.25rem 1.2rem 1.1rem; }
+  .quote-card-amount { font-size: 2.6rem; }
+  .quote-card-meta { grid-template-columns: repeat(4, 1fr); gap: 0.3rem; }
+  .quote-card-meta-item strong { font-size: 0.9rem; }
+  .quote-card-meta-item span { font-size: 0.6rem; }
+}
+
+/* Hide elements where data-show-modes doesn't include the current mode */
+body[data-calc-mode="removals"] .quote-line[data-show-modes]:not([data-show-modes~="removals"]),
+body[data-calc-mode="storage"]  .quote-line[data-show-modes]:not([data-show-modes~="storage"]),
+body[data-calc-mode="both"]     .quote-line[data-show-modes]:not([data-show-modes~="both"]) {
+  display: none !important;
+}
+body[data-calc-mode="removals"] .calc-numfield[data-show-modes]:not([data-show-modes~="removals"]),
+body[data-calc-mode="storage"]  .calc-numfield[data-show-modes]:not([data-show-modes~="storage"]),
+body[data-calc-mode="both"]     .calc-numfield[data-show-modes]:not([data-show-modes~="both"]) {
+  display: none !important;
+}
+body[data-calc-mode="storage"]  .quote-card-alt[data-show-modes]:not([data-show-modes~="storage"]),
+body[data-calc-mode="removals"] .quote-card-alt[data-show-modes]:not([data-show-modes~="removals"]),
+body[data-calc-mode="both"]     .quote-card-alt[data-show-modes]:not([data-show-modes~="both"]) {
+  display: none !important;
+}
+body[data-calc-mode="removals"] .qc-num[data-show-modes]:not([data-show-modes~="removals"]),
+body[data-calc-mode="storage"]  .qc-num[data-show-modes]:not([data-show-modes~="storage"]),
+body[data-calc-mode="both"]     .qc-num[data-show-modes]:not([data-show-modes~="both"]) {
+  display: none !important;
+}
+
+/* =========================================================
+   Full-panel quote card — calculator-in-card variant.
+   Mode + bedroom + numbers all live inside the purple card.
+   ========================================================= */
+.calc-panel-wrap {
+  /* full-width like the inventory section below */
+}
+.quote-card.quote-card-full {
+  padding: 2rem 2rem 1.6rem;
+}
+@media (max-width: 640px) {
+  .quote-card.quote-card-full { padding: 1.25rem 1.1rem 1.1rem; }
+}
+
+/* Step section (mode / bedroom / numbers) */
+.qc-step {
+  border: 0;
+  padding: 0;
+  margin: 0 0 1.25rem;
+}
+.qc-step-label {
+  padding: 0;
+  margin: 0 0 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: #fff;
+  letter-spacing: -0.005em;
+}
+.qc-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--brand-bronze, #ef6c1d);
+  color: var(--brand-navy, #11365a);
+  font-size: 0.88rem;
+  font-weight: 800;
+  flex: 0 0 auto;
+}
+
+/* Mode row — 3 cards on dark background */
+.qc-mode-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+@media (max-width: 640px) {
+  .qc-mode-row { grid-template-columns: 1fr; }
+}
+.qc-mode-card {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.75rem;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.18);
+  border-radius: 9px;
+  cursor: pointer;
+  color: #fff;
+  transition: background .15s, border-color .15s;
+}
+.qc-mode-card:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: var(--brand-bronze, #ef6c1d);
+}
+.qc-mode-card input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+.qc-mode-icon {
+  width: 30px; height: 30px;
+  color: var(--brand-bronze-light, #f7944b);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: 0 0 auto;
+}
+.qc-mode-icon svg { width: 100%; height: 100%; }
+.qc-mode-text strong {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.qc-mode-text small {
+  display: block;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.72rem;
+  font-weight: 400;
+  margin-top: 0.15rem;
+  line-height: 1.3;
+}
+.qc-mode-card:has(input:checked) {
+  background: rgba(200,168,118,0.22);
+  border-color: var(--brand-bronze, #ef6c1d);
+  box-shadow: inset 0 2px 0 var(--brand-bronze, #ef6c1d);
+}
+.qc-mode-card:focus-within {
+  outline: 2px solid var(--brand-bronze, #ef6c1d);
+  outline-offset: 2px;
+}
+
+/* Bedroom row — 6 cards (Tiny + 1/2/3/4/5+ bed) always on one line on desktop */
+.qc-bed-row {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+.qc-bed-card { min-width: 0; }
+@media (max-width: 760px) {
+  /* 3 per row on mobile — keeps Tiny/1/2-bed and 3/4/5+ on two clean rows */
+  .qc-bed-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.qc-bed-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.65rem 0.4rem;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.18);
+  border-radius: 9px;
+  cursor: pointer;
+  color: #fff;
+  text-align: center;
+  transition: background .15s, border-color .15s;
+}
+.qc-bed-card:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: var(--brand-bronze, #ef6c1d);
+}
+.qc-bed-card input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+.qc-bed-icon {
+  width: 30px; height: 30px;
+  color: var(--brand-bronze-light, #f7944b);
+  flex: 0 0 auto;
+}
+.qc-bed-icon svg { width: 100%; height: 100%; }
+.qc-bed-text strong {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.qc-bed-text small {
+  display: none;
+}
+.qc-bed-card:has(input:checked) {
+  background: rgba(200,168,118,0.22);
+  border-color: var(--brand-bronze, #ef6c1d);
+  box-shadow: inset 0 2px 0 var(--brand-bronze, #ef6c1d);
+}
+.qc-bed-card:focus-within {
+  outline: 2px solid var(--brand-bronze, #ef6c1d);
+  outline-offset: 2px;
+}
+
+/* Number fields row */
+.qc-num-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.6rem;
+}
+.qc-num {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.7rem 0.8rem;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.18);
+  border-radius: 9px;
+  transition: border-color .15s;
+}
+.qc-num:focus-within {
+  border-color: var(--brand-bronze, #ef6c1d);
+  background: rgba(255,255,255,0.1);
+}
+.qc-num-label {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  color: rgba(255,255,255,0.92);
+  font-size: 0.78rem;
+}
+.qc-num input {
+  font-family: "Inter", sans-serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #fff;
+  border: 0;
+  padding: 0;
+  width: 100%;
+  background: transparent;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+}
+.qc-num input:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* Slow, gentle pulse on the cu ft + miles cards so customers spot the
+   editable controls. Pulse stops on focus (they're already engaged) and
+   is fully disabled for users with prefers-reduced-motion. */
+@keyframes qcNumAttention {
+  0%, 100% {
+    border-color: rgba(255,255,255,0.18);
+    box-shadow: 0 0 0 0 rgba(200,168,118,0);
+  }
+  50% {
+    border-color: var(--brand-bronze, #ef6c1d);
+    box-shadow: 0 0 0 4px rgba(200,168,118,0.22);
+  }
+}
+.qc-num-attention {
+  animation: qcNumAttention 2.4s ease-in-out infinite;
+}
+.qc-num-attention:focus-within,
+.qc-num-attention:hover {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .qc-num-attention { animation: none; }
+}
+.qc-num-help {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.62);
+  line-height: 1.35;
+}
+
+/* Inventory toggle prompt — slide switch + bedroom-aware label */
+.qc-inv-prompt {
+  display: flex;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  background: rgba(200,168,118,0.18);
+  border: 1px solid rgba(200,168,118,0.5);
+  border-radius: 10px;
+  color: #fff;
+}
+.qc-inv-prompt[hidden] { display: none; }
+.qc-inv-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  cursor: pointer;
+  flex: 1 1 260px;
+}
+.qc-inv-toggle-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.qc-inv-toggle-switch {
+  position: relative;
+  width: 50px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.22);
+  transition: background .2s;
+  flex: 0 0 auto;
+}
+.qc-inv-toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform .2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+}
+.qc-inv-toggle-input:checked + .qc-inv-toggle-switch {
+  background: var(--brand-bronze, #ef6c1d);
+}
+.qc-inv-toggle-input:checked + .qc-inv-toggle-switch::after {
+  transform: translateX(22px);
+}
+.qc-inv-toggle-input:focus-visible + .qc-inv-toggle-switch {
+  outline: 2px solid var(--brand-bronze, #ef6c1d);
+  outline-offset: 3px;
+}
+.qc-inv-toggle-text {
+  font-family: "Inter", sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  color: #fff;
+}
+.qc-inv-toggle-text strong {
+  display: block;
+  color: var(--brand-bronze-light, #f7944b);
+  font-weight: 700;
+  margin-bottom: 0.1rem;
+}
+.qc-inv-toggle-text small {
+  display: block;
+  color: rgba(255,255,255,0.78);
+  font-size: 0.78rem;
+}
+.qc-inv-manual-link {
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.82rem;
+  border-radius: 7px;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+  background: transparent;
+  color: rgba(255,255,255,0.92);
+  border: 1px solid rgba(255,255,255,0.3);
+  transition: background .15s, border-color .15s;
+}
+.qc-inv-manual-link:hover, .qc-inv-manual-link:focus-visible {
+  background: rgba(255,255,255,0.12);
+  border-color: var(--brand-bronze, #ef6c1d);
+  outline: none;
+}
+
+/* In-card inventory summary — shows what's been ticked, grouped by room.
+   Only visible (hidden attribute removed by JS) when any item qty > 0. */
+.quote-card .qc-inventory-summary {
+  margin: 0 0 1.25rem;
+  padding: 1.1rem 1.25rem;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  color: #fff;
+}
+.quote-card .qc-inventory-summary[hidden] { display: none; }
+/* Hide the in-card inventory disclosure — the same list appears in the
+   step-2 review panel of the Send-for-a-quote dropdown, so showing it
+   here too is redundant noise before the CTA. */
+.quote-card .qc-inventory-summary { display: none !important; }
+
+/* Storage-calculator hero on mobile — completely removed from layout
+   so the page drops the customer straight into the calculator. The
+   base .np-hero has min-height: 78vh + padding + display:flex which
+   produced an empty purple band even with partial overrides; nuking
+   with display:none is cleaner. H1 stays in the DOM (with the
+   visually-hidden idiom on the element itself) so audit rule 18
+   (H1 first heading) and rule 26 (one H1) both still pass. */
+@media (max-width: 760px) {
+  .np-hero-calc { display: none !important; }
+  .np-hero-calc h1 {
+    /* applied via inline-block class on the H1 inside .np-hero-calc;
+       kept as a backup so even if display:none above is overridden
+       somehow, the H1 stays accessible-but-not-visible.            */
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+  /* Breadcrumb on the calculator page — hidden on mobile (the page
+     goes straight from the navbar into the calculator card). */
+  .np-breadcrumb-calc { display: none !important; }
+}
+.quote-card .qc-inventory-summary > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.1rem 0;
+  user-select: none;
+}
+.quote-card .qc-inventory-summary > summary::-webkit-details-marker { display: none; }
+.quote-card .qc-inventory-summary > summary::marker { content: ''; }
+.quote-card .qc-isum-head-label {
+  font-family: "Inter", sans-serif;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #fff;
+  font-weight: 700;
+  flex: 1 1 auto;
+}
+.quote-card .qc-inventory-summary > summary #inventory-summary-total-line {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--brand-bronze-light, #f7944b);
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+.quote-card .qc-isum-chevron {
+  flex: 0 0 auto;
+  font-size: 0.9rem;
+  color: var(--brand-bronze-light, #f7944b);
+  transition: transform .2s ease;
+  display: inline-block;
+}
+.quote-card .qc-inventory-summary[open] .qc-isum-chevron {
+  transform: rotate(180deg);
+}
+.quote-card .qc-inventory-summary[open] > summary {
+  padding-bottom: 0.6rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.18);
+}
+.quote-card .qc-inventory-summary > summary:focus-visible {
+  outline: 2px solid var(--brand-bronze, #ef6c1d);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.quote-card .qc-inventory-summary-room {
+  margin-bottom: 0.85rem;
+}
+.quote-card .qc-inventory-summary-room:last-child { margin-bottom: 0; }
+.quote-card .qc-inventory-summary-room-name {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: "Inter", sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-bronze-light, #f7944b);
+  margin-bottom: 0.3rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px dashed rgba(255,255,255,0.14);
+}
+.quote-card .qc-inventory-summary-room-name .qc-isum-room-cuft {
+  color: rgba(255,255,255,0.62);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+.quote-card .qc-inventory-summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.86rem;
+  padding: 0.18rem 0;
+  color: rgba(255,255,255,0.95);
+  font-family: "Inter", sans-serif;
+}
+.quote-card .qc-inventory-summary-item .qc-isum-name {
+  flex: 1;
+  min-width: 0;
+}
+.quote-card .qc-inventory-summary-item .qc-isum-cuft {
+  color: rgba(255,255,255,0.7);
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+  font-size: 0.78rem;
+  min-width: 4.2rem;
+  text-align: right;
+}
+.quote-card .qc-isum-stepper {
+  display: inline-flex;
+  gap: 0.25rem;
+  flex: 0 0 auto;
+}
+.quote-card .qc-isum-btn {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.28);
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .12s, border-color .12s;
+}
+.quote-card .qc-isum-btn:hover,
+.quote-card .qc-isum-btn:focus-visible {
+  background: rgba(255,255,255,0.28);
+  border-color: var(--brand-bronze, #ef6c1d);
+  outline: none;
+}
+.quote-card .qc-isum-btn:active { transform: translateY(1px); }
+
+/* In-card inventory editor — light inset panel sitting on the dark card.
+   Revealed by the Load button. The .storage-calc inside keeps its
+   existing purple-on-white tab/panel styling. */
+.quote-card .qc-inventory {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.1rem 1.1rem 0.9rem;
+  margin: 0 0 1.25rem;
+  color: var(--brand-navy, #11365a);
+}
+.quote-card .qc-inventory[hidden] { display: none; }
+.quote-card .qc-inventory-header {
+  margin: 0 0 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.quote-card .qc-inventory-header strong {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--brand-navy, #11365a);
+}
+.quote-card .qc-inventory-header span {
+  font-size: 0.82rem;
+  color: var(--np-muted, #6b7280);
+  line-height: 1.4;
+}
+
+/* Divider between inputs and estimate */
+.qc-divider {
+
+/* === Mode show/hide rules from critical.css === */
+body[data-calc-mode="both"] .quote-card-amount { display: none; }
+body[data-calc-mode="removals"] .quote-card-split,
+body[data-calc-mode="storage"] .quote-card-split { display: none !important; }
+body[data-calc-mode="removals"] .quote-card-storage { display: none !important; }
+body[data-calc-mode="removals"] .quote-line[data-show-modes]:not([data-show-modes~="removals"]),
+body[data-calc-mode="storage"] .quote-line[data-show-modes]:not([data-show-modes~="storage"]),
+body[data-calc-mode="both"] .quote-line[data-show-modes]:not([data-show-modes~="both"]) {
+display: none !important;
+}
+body[data-calc-mode="removals"] .calc-numfield[data-show-modes]:not([data-show-modes~="removals"]),
+body[data-calc-mode="storage"] .calc-numfield[data-show-modes]:not([data-show-modes~="storage"]),
+body[data-calc-mode="both"] .calc-numfield[data-show-modes]:not([data-show-modes~="both"]) {
+display: none !important;
+}
+body[data-calc-mode="storage"] .quote-card-alt[data-show-modes]:not([data-show-modes~="storage"]),
+body[data-calc-mode="removals"] .quote-card-alt[data-show-modes]:not([data-show-modes~="removals"]),
+body[data-calc-mode="both"] .quote-card-alt[data-show-modes]:not([data-show-modes~="both"]) {
+display: none !important;
+}
+body[data-calc-mode="removals"] .qc-num[data-show-modes]:not([data-show-modes~="removals"]),
+body[data-calc-mode="storage"] .qc-num[data-show-modes]:not([data-show-modes~="storage"]),
+body[data-calc-mode="both"] .qc-num[data-show-modes]:not([data-show-modes~="both"]) {

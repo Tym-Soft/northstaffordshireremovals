@@ -1,0 +1,5 @@
+# Legacy / variant URL redirects — extend as the site grows.
+/home               /                       301
+/index              /                       301
+/contact            /#contact               301
+/get-a-quote        /quote/                 301

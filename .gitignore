@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Calculator extracts — derivative of markratcliffemoving.co.uk source,
+# kept locally for re-render but not committed publicly.
+tools/calc-extracts/*.bak
+tools/calc-extracts/storage-calculator.html.mrm.bak
+
+# Editor swap / temp files
+*.swp
+*~
+.idea/
+.vscode/

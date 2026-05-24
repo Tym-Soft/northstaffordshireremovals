@@ -217,6 +217,14 @@ BLOG_META = {
         'href': 'blog/antiques-moving-staffordshire-specialist-guide.html',
         'cta': 'Read the antiques guide',
     },
+    'international-removals-from-the-uk-2026-guide': {
+        'title': 'International removals from the UK — 2026 guide',
+        'card_desc': "Container vs groupage, Transfer of Residence paperwork, marine cover, realistic timelines and 2026 costs for moves out of Staffordshire to anywhere.",
+        'img': 'packing-electronics-safely-removal.jpg',
+        'alt': 'Removal crew member carefully packing electronics for international shipping',
+        'href': 'blog/international-removals-from-the-uk-2026-guide.html',
+        'cta': 'See the int\'l guide',
+    },
 }
 
 # Shorthand aliases for the universal blog slugs (used heavily below).
@@ -237,6 +245,7 @@ _OFFC = 'office-relocation-planning-timeline'
 _INSU = 'moving-insurance-explained'
 _PIAN = 'moving-a-piano-staffordshire-guide-2026'
 _ANTI = 'antiques-moving-staffordshire-specialist-guide'
+_INTL = 'international-removals-from-the-uk-2026-guide'
 
 # Per-page mapping. Key is the auto-derived page key (see
 # _auto_related_key below). Pages absent from this dict render no
@@ -254,7 +263,7 @@ RELATED_FOR = {
     'services-piano-removals':           [_PIAN, _INSU, _FRAG],
     'services-man-and-van':              [_DIY,  _COST, _HIDD],
     'services-european-removals':        [_INSU, _RELI, _HIDD],
-    'services-international-removals':   [_INSU, _RELI, _HIDD],
+    'services-international-removals':   [_INTL, _INSU, _RELI],
     'services-house-clearance':          [_DECL, _DOWN, _HIDD],
     'services-student-removals':         [_COST, _DIY,  _BTY],
     'services-antiques-moving':          [_ANTI, _INSU, _FRAG],
@@ -313,6 +322,7 @@ RELATED_FOR = {
     'blog-moving-insurance-explained':                   [_RELI, _HIDD, _FRAG],
     'blog-moving-a-piano-staffordshire-guide-2026':      [_INSU, _FRAG, _RELI],
     'blog-antiques-moving-staffordshire-specialist-guide': [_INSU, _PIAN, _RELI],
+    'blog-international-removals-from-the-uk-2026-guide': [_INSU, _HIDD, _RELI],
 
     # ── INTENTIONALLY UNMAPPED (no related section) ──────
     # 404.html, privacy-policy.html, terms.html, careers.html, blog/index.html

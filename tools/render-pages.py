@@ -10,7 +10,7 @@ import json, os, sys, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 BASE = 'https://www.northstaffordshireremovals.co.uk'
-CSS_V = '20260524i'
+CSS_V = '20260524j'
 
 # ─── Shared boilerplate ────────────────────────────────────────────────
 
@@ -195,6 +195,22 @@ def cta_strip(depth=0):
     </section>'''
 
 
+def fab_stack(depth=0):
+    """Bottom-right sticky FAB stack: orange Quote pill on top, navy
+    Phone pill below. Mobile collapses both to 56px circles."""
+    p = '../' * depth
+    return f'''  <div class="fab-stack" aria-label="Quick actions">
+    <a class="fab fab-quote" href="{p}quote.html" aria-label="Get a free removals quote">
+      <span class="fab-icon" aria-hidden="true">✓</span>
+      <span class="fab-text">Get a free quote</span>
+    </a>
+    <a class="fab fab-phone" href="tel:+441782939124" aria-label="Call North Staffordshire Removals on 01782 939124">
+      <span class="fab-icon" aria-hidden="true">📞</span>
+      <span class="fab-text">Call 01782 939124</span>
+    </a>
+  </div>'''
+
+# Back-compat constant; kept in case any older render still imports it.
 PHONE_FAB = '''  <a class="phone-fab" href="tel:+441782939124" aria-label="Call North Staffordshire Removals on 01782 939124">
     <span class="phone-fab-icon" aria-hidden="true">📞</span>
     <span class="phone-fab-text">Call 01782 939124</span>
@@ -265,7 +281,7 @@ def footer(depth=0):
       </div>
     </div>
   </footer>
-{PHONE_FAB}
+{fab_stack(depth)}
   <script defer src="{p}js/mobile-nav.js?v={CSS_V}"></script>
 </body>
 </html>'''

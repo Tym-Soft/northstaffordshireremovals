@@ -986,7 +986,82 @@ footer.site-footer .legal {
 footer.site-footer .legal a { color: #8da3bf; }
 footer.site-footer .legal a:hover { color: var(--orange-soft); }
 
-/* ─── Sticky phone FAB (bottom-right, every page) ─────── */
+/* ─── Sticky FAB stack (bottom-right, every page) ─────────
+   Two pills stacked vertically: Quote on top (orange), Phone on
+   bottom (navy). Mobile collapses both to 56px circles.            */
+.fab-stack {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .65rem;
+}
+.fab {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .9rem 1.2rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: .03em;
+  text-decoration: none;
+  border-radius: 999px;
+  box-shadow: 0 10px 28px rgba(17,54,90,.28), 0 3px 8px rgba(0,0,0,.18);
+  transition: background .2s ease, transform .2s ease, box-shadow .2s ease, color .2s ease;
+  white-space: nowrap;
+}
+.fab:hover, .fab:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(17,54,90,.32), 0 4px 10px rgba(0,0,0,.22);
+}
+.fab-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 22px; height: 22px;
+  font-size: 18px;
+  line-height: 1;
+}
+/* Quote variant — orange (primary CTA, on top) */
+.fab-quote {
+  background: var(--orange);
+  color: #fff;
+}
+.fab-quote:hover, .fab-quote:focus-visible {
+  background: var(--orange-dark);
+  color: #fff;
+}
+/* Phone variant — navy (secondary, on bottom for thumb reach) */
+.fab-phone {
+  background: var(--navy);
+  color: #fff;
+}
+.fab-phone:hover, .fab-phone:focus-visible {
+  background: var(--navy-dark);
+  color: #fff;
+}
+
+@media (max-width: 680px) {
+  .fab-stack {
+    right: 16px;
+    bottom: 16px;
+    gap: .55rem;
+  }
+  .fab {
+    padding: 0;
+    width: 56px;
+    height: 56px;
+    justify-content: center;
+    gap: 0;
+  }
+  .fab-text { display: none; }
+  .fab-icon { font-size: 22px; width: 24px; height: 24px; }
+}
+
+/* Back-compat aliases — old .phone-fab markup still works */
 .phone-fab {
   position: fixed;
   bottom: 24px;

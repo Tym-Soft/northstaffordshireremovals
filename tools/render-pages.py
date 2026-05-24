@@ -10,7 +10,7 @@ import json, os, sys, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 BASE = 'https://www.northstaffordshireremovals.co.uk'
-CSS_V = '20260524v'
+CSS_V = '20260524w'
 
 # ─── Shared boilerplate ────────────────────────────────────────────────
 
@@ -71,6 +71,87 @@ def topbar(depth=0):
     schema's openingHours. Kept as a no-op so existing callers don't
     break — delete the function only when no generator imports it."""
     return ''
+
+
+# ─── Related-reading blog cards ────────────────────────────────
+# Per-blog metadata used by the .related-section block on every
+# content page. Card descriptions are intentionally short and
+# punchy (~25-30 words), NOT the same as the blog's meta-description
+# — they need to tease the article in 2 lines max.
+
+BLOG_META = {
+    'cost-of-moving-house-stoke-on-trent-2026': {
+        'title': 'Cost of moving house in Stoke-on-Trent (2026)',
+        'card_desc': "Realistic 2026 pricing across Staffordshire — what a 2-bed flat, 3-bed semi and 4-bed family move actually cost, and what swings the figure.",
+        'img': 'family-moving-house-boxes-celebration.jpg',
+        'alt': 'Staffordshire family celebrating moving day surrounded by removal boxes',
+        'href': 'blog/cost-of-moving-house-stoke-on-trent-2026.html',
+    },
+    'choosing-a-reliable-removal-company-stoke': {
+        'title': 'Choosing a reliable removal company in Stoke',
+        'card_desc': "Five questions worth asking any remover before you book — insurance, sub-contracting, fixed-price quotes and the warning signs we'd avoid ourselves.",
+        'img': 'professional-removal-team-lorry.jpg',
+        'alt': 'Professional Stoke-on-Trent removal crew loading a branded Luton lorry',
+        'href': 'blog/choosing-a-reliable-removal-company-stoke.html',
+    },
+    'hidden-costs-of-moving-house': {
+        'title': 'Hidden costs of moving house',
+        'card_desc': "Stamp duty, surveys, the second skip you didn't budget for — the moving-day extras that catch buyers out and how to plan around them.",
+        'img': 'moving-day-packing-checklist.jpg',
+        'alt': 'Moving-day checklist on a clipboard surrounded by labelled removal boxes',
+        'href': 'blog/hidden-costs-of-moving-house.html',
+    },
+    # Phase 2 — remaining 12 entries land here as we roll out to
+    # service / area / blog / utility pages, plus any NEW blogs
+    # we write to fill topic gaps.
+}
+
+RELATED_FOR = {
+    'home': [
+        'cost-of-moving-house-stoke-on-trent-2026',
+        'choosing-a-reliable-removal-company-stoke',
+        'hidden-costs-of-moving-house',
+    ],
+    # Phase 2 — each page key maps to its 3 best-matched blogs.
+}
+
+
+def related_blogs(page_key='home', depth=0, heading=None, lead=None):
+    """Render the 3-card 'related reading' orange band that sits just
+    above the final .cta-strip. Identical visual treatment to the
+    services-section cards on the home page for design consistency."""
+    p = '../' * depth
+    slugs = RELATED_FOR.get(page_key, RELATED_FOR['home'])
+    h = heading or 'Plan your move with confidence'
+    l = lead or 'Three guides our customers find most useful — read first, decide with full information.'
+    cards = []
+    for slug in slugs:
+        meta = BLOG_META.get(slug)
+        if not meta:
+            continue
+        cards.append(f'''          <a class="related-card" href="{p}{meta['href']}">
+            <div class="related-img">
+              <img src="{p}images/{meta['img']}" alt="{meta['alt']}" width="1600" height="1066" loading="lazy">
+            </div>
+            <div class="related-body">
+              <h3>{meta['title']}</h3>
+              <p>{meta['card_desc']}</p>
+              <span class="related-arrow">Read article</span>
+            </div>
+          </a>''')
+    cards_html = '\n'.join(cards)
+    return f'''    <section class="related-section" aria-label="Related reading">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Related reading</span>
+          <h2>{h}</h2>
+          <p>{l}</p>
+        </div>
+        <div class="related-grid">
+{cards_html}
+        </div>
+      </div>
+    </section>'''
 
 
 SERVICES_DROPDOWN = [

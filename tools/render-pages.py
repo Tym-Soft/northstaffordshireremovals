@@ -10,7 +10,7 @@ import json, os, sys, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 BASE = 'https://www.northstaffordshireremovals.co.uk'
-CSS_V = '20260524a'
+CSS_V = '20260524c'
 
 # ─── Shared boilerplate ────────────────────────────────────────────────
 
@@ -76,22 +76,58 @@ def topbar(depth=0):
   </div>'''
 
 
+SERVICES_DROPDOWN = [
+    ('Residential removals', 'services/domestic-removals.html'),
+    ('Commercial removals',  'services/commercial-removals.html'),
+    ('Packing services',     'services/packing-services.html'),
+    ('Storage solutions',    'services/storage-services.html'),
+    ('Piano removals',       'services/piano-removals.html'),
+    ('Man &amp; van',        'services/man-and-van.html'),
+    ('European removals',    'services/european-removals.html'),
+    ('International',        'services/international-removals.html'),
+    ('House clearance',      'services/house-clearance.html'),
+    ('Student removals',     'services/student-removals.html'),
+    ('Antiques moving',      'services/antiques-moving.html'),
+    ('White-glove service',  'services/white-glove-service.html'),
+    ('Packing materials',    'services/packaging-shop.html'),
+]
+AREAS_DROPDOWN = [
+    ('Stoke-on-Trent',          'areas-covered/removals-stoke-on-trent.html'),
+    ('Hanley',                  'areas-covered/removals-hanley.html'),
+    ('Burslem',                 'areas-covered/removals-burslem.html'),
+    ('Tunstall',                'areas-covered/removals-tunstall.html'),
+    ('Longton',                 'areas-covered/removals-longton.html'),
+    ('Fenton',                  'areas-covered/removals-fenton.html'),
+    ('Newcastle-under-Lyme',    'areas-covered/removals-newcastle-under-lyme.html'),
+    ('Kidsgrove',               'areas-covered/removals-kidsgrove.html'),
+    ('Stafford',                'areas-covered/removals-stafford.html'),
+    ('Stone',                   'areas-covered/removals-stone.html'),
+    ('Leek',                    'areas-covered/removals-leek.html'),
+    ('Cheadle',                 'areas-covered/removals-cheadle.html'),
+    ('Biddulph',                'areas-covered/removals-biddulph.html'),
+    ('Eccleshall',              'areas-covered/removals-eccleshall.html'),
+    ('Burton-on-Trent',         'areas-covered/removals-burton-on-trent.html'),
+    ('Buxton',                  'areas-covered/removals-buxton.html'),
+    ('Crewe',                   'areas-covered/removals-crewe.html'),
+    ('Lichfield',               'areas-covered/removals-lichfield.html'),
+    ('Cannock',                 'areas-covered/removals-cannock.html'),
+    ('Tamworth',                'areas-covered/removals-tamworth.html'),
+]
+
+
+def _dropdown_items(items, depth, hub_href, hub_label):
+    p = '../' * depth
+    rows = [f'              <li><a href="{p}{hub_href}"><strong>All {hub_label.lower()} →</strong></a></li>']
+    for label, href in items:
+        rows.append(f'              <li><a href="{p}{href}">{label}</a></li>')
+    return '\n'.join(rows)
+
+
 def nav(current, depth=0):
     p = '../' * depth
-    links = [
-        ('Home',             '/',                                              'home'),
-        ('About',            f'{p}about-us.html',                              'about'),
-        ('Services',         f'{p}services/',                                  'services'),
-        ('Areas',            f'{p}areas-covered/',                             'areas'),
-        ('Advice',           f'{p}blog/',                                      'blog'),
-        ('Reviews',          f'{p}reviews.html',                               'reviews'),
-        ('Moving Calculator',f'{p}resources/storage-calculator.html',          'calc'),
-    ]
-    items = []
-    for label, href, key in links:
-        cur = ' aria-current="page"' if key == current else ''
-        items.append(f'          <li><a href="{href}"{cur}>{label}</a></li>')
-    items.append(f'          <li><a href="{p}quote.html" class="nav-cta">Free Quote</a></li>')
+    svc_dd = _dropdown_items(SERVICES_DROPDOWN, depth, 'services/', 'Services')
+    areas_dd = _dropdown_items(AREAS_DROPDOWN, depth, 'areas-covered/', 'Areas')
+
     return f'''  <header class="nav">
     <div class="nav-inner">
       <a class="brand" href="/" aria-label="North Staffordshire Removals &amp; Storage Ltd — home">
@@ -100,7 +136,24 @@ def nav(current, depth=0):
       <button class="menu-toggle" aria-expanded="false" aria-controls="primary-nav">☰ Menu</button>
       <nav aria-label="Primary">
         <ul id="primary-nav" class="nav-menu">
-{chr(10).join(items)}
+          <li><a href="/"{' aria-current="page"' if current == 'home' else ''}>Home</a></li>
+          <li><a href="{p}about-us.html"{' aria-current="page"' if current == 'about' else ''}>About</a></li>
+          <li class="has-dropdown">
+            <a href="{p}services/"{' aria-current="page"' if current == 'services' else ''} aria-haspopup="true">Services <span class="dd-caret" aria-hidden="true">▾</span></a>
+            <ul class="nav-dropdown">
+{svc_dd}
+            </ul>
+          </li>
+          <li class="has-dropdown">
+            <a href="{p}areas-covered/"{' aria-current="page"' if current == 'areas' else ''} aria-haspopup="true">Areas <span class="dd-caret" aria-hidden="true">▾</span></a>
+            <ul class="nav-dropdown nav-dropdown-2col">
+{areas_dd}
+            </ul>
+          </li>
+          <li><a href="{p}blog/"{' aria-current="page"' if current == 'blog' else ''}>Advice</a></li>
+          <li><a href="{p}reviews.html"{' aria-current="page"' if current == 'reviews' else ''}>Reviews</a></li>
+          <li><a href="{p}resources/storage-calculator.html"{' aria-current="page"' if current == 'calc' else ''}>Calculator</a></li>
+          <li><a href="{p}quote.html" class="nav-cta">Free Quote</a></li>
         </ul>
       </nav>
     </div>

@@ -346,11 +346,16 @@
   function recalc() {
     var invCuft = 0, invCum = 0, invKg = 0;
     for (var i = 0; i < inputs.length; i++) {
-      var q = parseInt(inputs[i].value, 10);
-      if (!q || q < 0) continue;
-      invCuft += q * parseFloat(inputs[i].dataset.cuft);
-      invCum  += q * parseFloat(inputs[i].dataset.cum);
-      invKg   += q * parseFloat(inputs[i].dataset.kg);
+      var q = parseInt(inputs[i].value, 10) || 0;
+      // Branded background when an item is selected; default white at 0.
+      if (q > 0) {
+        inputs[i].classList.add('is-active');
+        invCuft += q * parseFloat(inputs[i].dataset.cuft);
+        invCum  += q * parseFloat(inputs[i].dataset.cum);
+        invKg   += q * parseFloat(inputs[i].dataset.kg);
+      } else {
+        inputs[i].classList.remove('is-active');
+      }
     }
     var hasInventory = invCuft > 0;
     var manualCuft = 0;
@@ -420,8 +425,8 @@
                   : 'Removals + Storage';
     var fromInput = document.getElementById('qf-from');
     var toInput   = document.getElementById('qf-to');
-    var fromPC = fromInput ? fromInput.value.trim().toUpperCase() : '';
-    var toPC   = toInput   ? toInput.value.trim().toUpperCase()   : '';
+    var fromPC = fromInput ? tidyAddrValue(fromInput.value) : '';
+    var toPC   = toInput   ? tidyAddrValue(toInput.value)   : '';
     var miles = parseInt((milesInput && milesInput.value) || '0', 10) || 0;
     var days  = parseInt((storageDaysInput && storageDaysInput.value) || '0', 10) || 0;
 
@@ -503,8 +508,7 @@
         roomCuft += itemCuft;
         roomCount += qty;
         roomHtml +=
-          '<div class="qp-inv-row"><span class="qp-inv-name">' + qty + ' × ' + escapeHtml(name) + '</span>' +
-          '<span class="qp-inv-cuft">' + Math.round(itemCuft) + ' cu ft</span></div>';
+          '<div class="qp-inv-row"><span class="qp-inv-name">' + qty + ' × ' + escapeHtml(name) + '</span></div>';
       }
       if (roomCount > 0) {
         totalItems += roomCount;
@@ -679,14 +683,55 @@
 
   function filterItems(query) {
     var q = query.trim().toLowerCase();
-    var activePanel = root.querySelector('.calc-cat-panel.active');
-    if (!activePanel) return;
-    var items = activePanel.querySelectorAll('.calc-item');
-    for (var i = 0; i < items.length; i++) {
-      var nameEl = items[i].querySelector('.calc-item-name');
-      var name   = nameEl ? nameEl.textContent.toLowerCase() : '';
-      var match  = !q || name.indexOf(q) !== -1;
-      items[i].style.display = match ? '' : 'none';
+    var isSearching = q.length > 0;
+    root.classList.toggle('is-searching', isSearching);
+
+    for (var p = 0; p < panels.length; p++) {
+      var panel = panels[p];
+      var items = panel.querySelectorAll('.calc-item');
+      var anyMatch = false;
+
+      if (!isSearching) {
+        // Empty query → restore: every item visible, no per-panel label.
+        for (var i = 0; i < items.length; i++) items[i].style.display = '';
+        var existingLabel = panel.querySelector('.calc-search-room-label');
+        if (existingLabel) existingLabel.remove();
+        delete panel.dataset.searchHidden;
+        continue;
+      }
+
+      for (var j = 0; j < items.length; j++) {
+        var nameEl = items[j].querySelector('.calc-item-name');
+        var name = nameEl ? nameEl.textContent.toLowerCase() : '';
+        var match = name.indexOf(q) !== -1;
+        items[j].style.display = match ? '' : 'none';
+        if (match) anyMatch = true;
+      }
+
+      if (anyMatch) {
+        // Inject a room label so cross-room results are still grouped + labelled.
+        var label = panel.querySelector('.calc-search-room-label');
+        if (!label) {
+          var roomName = '';
+          for (var t = 0; t < tabs.length; t++) {
+            if (tabs[t].dataset.target === panel.id) {
+              var lab = tabs[t].querySelector('.calc-tab-label');
+              roomName = lab ? lab.textContent : '';
+              break;
+            }
+          }
+          label = document.createElement('div');
+          label.className = 'calc-search-room-label';
+          label.textContent = roomName;
+          panel.insertBefore(label, panel.firstChild);
+        }
+        delete panel.dataset.searchHidden;
+      } else {
+        // Hide whole panel if nothing matches in it.
+        panel.dataset.searchHidden = '1';
+        var emptyLabel = panel.querySelector('.calc-search-room-label');
+        if (emptyLabel) emptyLabel.remove();
+      }
     }
   }
 
@@ -756,6 +801,211 @@
   if (milesInput) {
     milesInput.addEventListener('input', recalc);
     milesInput.addEventListener('change', recalc);
+  }
+
+  // Distance lookup — POST the customer's FROM/TO addresses to the worker,
+  // which calls Google Routes API server-side (depot → from → to → depot)
+  // and returns total round-trip miles. On success we write into the
+  // manual miles input so the existing pricing path stays unchanged.
+  var distFromInput = document.getElementById('dist-from');
+  var distToInput   = document.getElementById('dist-to');
+  var distCalcBtn   = document.getElementById('dist-calc-btn');
+  var distStatus    = document.getElementById('dist-status');
+  var distResult    = document.getElementById('dist-result');
+  var distResultMi  = document.getElementById('dist-result-miles');
+  var distResultDet = document.getElementById('dist-result-detail');
+
+  function setDistStatus(text, isError) {
+    if (!distStatus) return;
+    if (!text) { distStatus.hidden = true; distStatus.textContent = ''; distStatus.classList.remove('is-error'); return; }
+    distStatus.hidden = false;
+    distStatus.textContent = text;
+    distStatus.classList.toggle('is-error', !!isError);
+  }
+
+  var distFromHouse = document.getElementById('dist-from-no');
+  var distToHouse   = document.getElementById('dist-to-no');
+
+  function combineAddr(house, addr) {
+    house = (house || '').trim();
+    addr  = (addr  || '').trim();
+    if (!addr) return '';
+    return house ? house + ', ' + addr : addr;
+  }
+  function shortAddr(s) {
+    s = String(s || '');
+    return s.length > 42 ? s.slice(0, 42).replace(/[,\s]+$/, '') + '…' : s;
+  }
+  // Normalise UK postcode formatting wherever it appears in the string.
+  // "bn213ab" → "BN21 3AB"; "123, pe210ea" → "123, PE21 0EA";
+  // "47 High Street, eastbourne bn21 3ab" → "47 High Street, eastbourne BN21 3AB".
+  // The rest of the address is left as the user typed it (UPPER-CASING a
+  // full address looks bad).
+  function tidyAddrValue(s) {
+    var v = String(s || '').trim();
+    if (!v) return '';
+    // Standalone bare postcode → uppercase + standard spacing.
+    var bare = /^[A-Za-z]{1,2}\d[A-Za-z\d]?\s*\d[A-Za-z]{2}$/;
+    if (bare.test(v)) {
+      var c = v.replace(/\s+/g, '').toUpperCase();
+      return c.slice(0, -3) + ' ' + c.slice(-3);
+    }
+    // Embedded postcode → uppercase + ensure single space before the last 3 chars.
+    var embedded = /\b([A-Za-z]{1,2}\d[A-Za-z\d]?)\s*(\d[A-Za-z]{2})\b/g;
+    return v.replace(embedded, function (_, a, b) {
+      return (a + ' ' + b).toUpperCase();
+    });
+  }
+  function flashField(el) {
+    if (!el) return;
+    el.classList.remove('is-autofilled');
+    // Force reflow so the animation restarts even when class is re-added quickly.
+    void el.offsetWidth;
+    el.classList.add('is-autofilled');
+    setTimeout(function () { el.classList.remove('is-autofilled'); }, 900);
+  }
+  function setMirrorValue(el, value) {
+    if (!el) return;
+    if (document.activeElement === el) return; // don't disturb a live edit
+    if (el.value === value) return;
+    el.value = value;
+    if (value) flashField(el);
+  }
+  // Mirror the calculator's address inputs into the quote-form postcode
+  // fields (qf-from / qf-to). Fires on every input/change so the form
+  // stays in sync as the customer edits. The email + PDF read qf-from /
+  // qf-to, so this is what the office sees in their inbox.
+  function mirrorAddrToQf() {
+    var qfFrom = document.getElementById('qf-from');
+    var qfTo   = document.getElementById('qf-to');
+    if (!qfFrom && !qfTo) return;
+    var fh = distFromHouse ? distFromHouse.value : '';
+    var fa = distFromInput ? distFromInput.value : '';
+    var th = distToHouse   ? distToHouse.value   : '';
+    var ta = distToInput   ? distToInput.value   : '';
+    setMirrorValue(qfFrom, tidyAddrValue(combineAddr(fh, fa)));
+    setMirrorValue(qfTo,   tidyAddrValue(combineAddr(th, ta)));
+  }
+
+  if (distCalcBtn && distFromInput && distToInput) {
+    distCalcBtn.addEventListener('click', function () {
+      var fromHouse = distFromHouse ? distFromHouse.value.trim() : '';
+      var toHouse   = distToHouse   ? distToHouse.value.trim()   : '';
+      var fromAddr  = combineAddr(fromHouse, distFromInput.value);
+      var toAddr    = combineAddr(toHouse,   distToInput.value);
+      if (!fromAddr || !toAddr) {
+        setDistStatus('Please enter both a FROM and TO postcode (or address).', true);
+        return;
+      }
+
+      setDistStatus('Calculating distance…', false);
+      distCalcBtn.disabled = true;
+      var oldLabel = distCalcBtn.innerHTML;
+      distCalcBtn.textContent = 'Calculating…';
+
+      fetch(WORKER_DISTANCE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ from: fromAddr, to: toAddr })
+      }).then(function (r) {
+        return r.json().catch(function () { return { ok: false, error: 'Server error' }; })
+          .then(function (data) { return { httpStatus: r.status, data: data }; });
+      }).then(function (resp) {
+        distCalcBtn.disabled = false;
+        distCalcBtn.innerHTML = oldLabel;
+        if (resp.httpStatus === 200 && resp.data && resp.data.ok) {
+          var miles = resp.data.miles;
+          var legs = resp.data.legs || [];
+          if (milesInput) {
+            milesInput.value = miles;
+            recalc();
+          }
+          if (distResult && distResultMi && distResultDet) {
+            distResult.hidden = false;
+            distResultMi.textContent = miles + ' mile' + (miles === 1 ? '' : 's') + ' round-trip';
+            // Build "depot → from (X mi) → to (Y mi) → depot (Z mi)" if we have 3 legs.
+            var fromShort = shortAddr(fromAddr);
+            var toShort   = shortAddr(toAddr);
+            var detail;
+            if (legs.length === 3) {
+              detail = 'depot → ' + fromShort + ' (' + legs[0] + ' mi) → ' +
+                       toShort + ' (' + legs[1] + ' mi) → depot (' + legs[2] + ' mi)';
+            } else {
+              detail = 'depot → ' + fromShort + ' → ' + toShort + ' → depot';
+            }
+            distResultDet.textContent = detail;
+          }
+          setDistStatus('', false);
+          // Push the calculator's addresses into the quote-form fields so the
+          // office email + PDF show what the customer actually entered.
+          mirrorAddrToQf();
+        } else {
+          var msg = (resp.data && resp.data.error) || 'Could not calculate distance right now.';
+          setDistStatus(msg + ' You can enter miles manually below.', true);
+        }
+      }).catch(function () {
+        distCalcBtn.disabled = false;
+        distCalcBtn.innerHTML = oldLabel;
+        setDistStatus('Network issue — please check your connection or enter miles manually.', true);
+      });
+    });
+
+    // Enter in either field triggers calculation.
+    [distFromInput, distToInput].forEach(function (el) {
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); distCalcBtn.click(); }
+      });
+    });
+
+    // Keep the quote-form postcode fields in sync with every change to
+    // the four distance inputs — input, change, blur all fire mirror.
+    [distFromHouse, distFromInput, distToHouse, distToInput].forEach(function (el) {
+      if (!el) return;
+      el.addEventListener('input',  mirrorAddrToQf);
+      el.addEventListener('change', mirrorAddrToQf);
+      el.addEventListener('blur',   mirrorAddrToQf);
+    });
+
+    // Google Places Autocomplete — attached when the Maps JS library
+    // finishes loading. The library calls window.initPlacesAutocomplete
+    // (set up by the loader in storage-calculator.html). If the key
+    // hasn't been replaced yet, this never runs and the inputs work as
+    // plain text fields — calculator still functional.
+    window.initPlacesAutocomplete = function () {
+      if (!window.google || !google.maps || !google.maps.places) return;
+      var acOpts = {
+        componentRestrictions: { country: ['gb'] },
+        fields: ['formatted_address', 'place_id'],
+        types: ['geocode'] // postcodes + addresses; landmarks naturally drop off once query is specific
+      };
+      // Browser autofill competes with Places dropdown — disable it.
+      distFromInput.setAttribute('autocomplete', 'off');
+      distToInput.setAttribute('autocomplete', 'off');
+
+      var fromAc = new google.maps.places.Autocomplete(distFromInput, acOpts);
+      var toAc   = new google.maps.places.Autocomplete(distToInput, acOpts);
+
+      fromAc.addListener('place_changed', function () {
+        var p = fromAc.getPlace();
+        if (p && p.formatted_address) {
+          distFromInput.value = p.formatted_address;
+          // Google's value update doesn't reliably fire 'input', so push the
+          // new full address into the quote form immediately.
+          mirrorAddrToQf();
+        }
+      });
+      toAc.addListener('place_changed', function () {
+        var p = toAc.getPlace();
+        if (p && p.formatted_address) {
+          distToInput.value = p.formatted_address;
+          mirrorAddrToQf();
+        }
+      });
+    };
+  }
+
+  function escapeText(s) {
+    return String(s).replace(/[<>&]/g, function (c) { return { '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]; });
   }
 
   // Calculator-mode radios (Removals only / Storage only / Both)
@@ -1005,8 +1255,14 @@
     if (el) el.addEventListener('input', recalc);
   });
 
-  // Quote request form — build a pre-filled mailto: with all the
-  // calculator output + the customer's contact details.
+  // Quote request form — POSTs the calculator output + customer details
+  // to the Cloudflare Worker, which forwards both emails via Resend.
+  // The Resend API key never touches client JS; see /worker/ for the relay.
+  var WORKER_QUOTE_ENDPOINT = 'https://markratcliffe-moving.vandymanservices.workers.dev';
+  // Distance lookup runs on a separate worker that holds the Google Maps
+  // API key. Same source code, different env / secrets per worker.
+  var WORKER_DISTANCE_ENDPOINT = 'https://markratcliffe-moving-routes-api.vandymanservices.workers.dev/distance';
+
   var quoteForm = document.getElementById('quote-request-form');
   if (quoteForm) {
     quoteForm.addEventListener('submit', function (e) {
@@ -1016,8 +1272,8 @@
       var last   = document.getElementById('qf-last').value.trim();
       var email  = document.getElementById('qf-email').value.trim();
       var phone  = document.getElementById('qf-phone').value.trim();
-      var fromPC = document.getElementById('qf-from').value.trim().toUpperCase();
-      var toPC   = document.getElementById('qf-to').value.trim().toUpperCase();
+      var fromPC = tidyAddrValue(document.getElementById('qf-from').value);
+      var toPC   = tidyAddrValue(document.getElementById('qf-to').value);
       var notes  = document.getElementById('qf-notes').value.trim();
       var moveDate = (document.getElementById('qf-date') && document.getElementById('qf-date').value) || '';
       var moveFlex = (document.getElementById('qf-date-flex') && document.getElementById('qf-date-flex').value) || '';
@@ -1070,8 +1326,10 @@
       function fp(n) { return '£' + n.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
       function pad(label, val) { while (label.length < 22) label += ' '; return label + val; }
 
-      // Items grouped by room
+      // Items grouped by room — collect both a flat text list (for the
+      // email body) and a structured list (for the PDF generator).
       var roomLines = [];
+      var pdfRooms = [];
       var totalItems = 0;
       for (var p = 0; p < panels.length; p++) {
         var panel = panels[p];
@@ -1085,6 +1343,7 @@
         }
         var items = panel.querySelectorAll('.calc-item');
         var rows = [];
+        var structuredRows = [];
         var roomCuft = 0;
         var roomCount = 0;
         for (var ii = 0; ii < items.length; ii++) {
@@ -1098,13 +1357,15 @@
           var itemCuft = qty * cuftPer;
           roomCuft += itemCuft;
           roomCount += qty;
-          rows.push('    ' + qty + ' × ' + name + ' — ' + Math.round(itemCuft) + ' cu ft');
+          rows.push('    ' + qty + ' × ' + name);
+          structuredRows.push({ qty: qty, name: name, cuft: Math.round(itemCuft) });
         }
         if (roomCount > 0) {
           totalItems += roomCount;
           roomLines.push('  ' + roomLabel + ' (' + Math.round(roomCuft) + ' cu ft)');
           roomLines = roomLines.concat(rows);
           roomLines.push('');
+          pdfRooms.push({ name: roomLabel, cuft: Math.round(roomCuft), items: structuredRows });
         }
       }
 
@@ -1149,20 +1410,32 @@
         lines.push(pad('  Storage duration:', days + ' day' + (days === 1 ? '' : 's') + '  (~' + (days / 7).toFixed(days % 7 === 0 ? 0 : 1) + ' weeks)'));
       }
       lines.push('');
-      lines.push('QUOTE (nett — VAT added at booking)');
-      if (calcMode !== 'storage') lines.push(pad('  Removals:', fp(rmNett)));
-      if (calcMode !== 'removals') lines.push(pad('  Storage:',  fp(stNett)));
+      var EMAIL_VAT_RATE = 0.20;
+      var subtotalNet = rmNett + stNett;
+      var vatAmount  = subtotalNet * EMAIL_VAT_RATE;
+      var grossTotal = subtotalNet + vatAmount;
+      lines.push('ESTIMATE');
+      if (calcMode !== 'storage') lines.push(pad('  Removals (net):', fp(rmNett)));
+      if (calcMode !== 'removals') lines.push(pad('  Storage (net):',  fp(stNett)));
       lines.push('  ──────────────────────────────────────────────');
-      lines.push(pad('  TOTAL nett:', fp(rmNett + stNett) + '  (+ VAT at booking)'));
+      lines.push(pad('  Subtotal (net):', fp(subtotalNet)));
+      lines.push(pad('  VAT @ 20%:',      fp(vatAmount)));
+      lines.push('  ──────────────────────────────────────────────');
+      lines.push(pad('  TOTAL (inc. VAT):', fp(grossTotal)));
+      lines.push('');
+      lines.push('  Final invoice issued on completion. Estimate valid 30 days.');
+      lines.push('  VAT Reg: GB 67 9047 74');
       lines.push('');
 
       if (roomLines.length > 0) {
-        lines.push('INVENTORY  (' + totalItems + ' items · ' + cuft.toLocaleString('en-GB') + ' cu ft)');
+        lines.push('INVENTORY');
+        lines.push(pad('  Items ticked:', totalItems + ' items'));
+        lines.push(pad('  Total volume:', cuft.toLocaleString('en-GB') + ' cu ft'));
+        lines.push('  Full room-by-room list is in the attached estimate PDF.');
         lines.push('');
-        lines = lines.concat(roomLines);
       } else {
         lines.push('INVENTORY');
-        lines.push('  (No specific items ticked — quote calculated from the cu ft figure.)');
+        lines.push('  No specific items ticked — quote calculated from the cu ft figure above.');
         lines.push('');
       }
       if (notes) {
@@ -1181,18 +1454,595 @@
         ' · ' + (fromPC || 'FROM') + ' → ' + (toPC || 'TO') + ' · ' +
         cuft.toLocaleString('en-GB') + ' cu ft · ' + fp(totalNett) + ' nett';
 
-      // Send only to office — the customer's email is already in the body
-      // (so office can reply to it). No CC means the customer's inbox
-      // doesn't get a copy of the internal calculation details.
-      var mailto = 'mailto:enquiries@northstaffordshireremovals.co.uk?' +
-        'subject=' + encodeURIComponent(subject) +
-        '&body='  + encodeURIComponent(lines.join('\n'));
+      // Honeypot — bots tend to fill every field; humans leave this blank.
+      var hpField = document.getElementById('qf-hp');
+      var submitBtn = quoteForm.querySelector('button[type="submit"]');
 
-      if (status) {
-        status.textContent = 'Opening your email app… we send to enquiries@northstaffordshireremovals.co.uk and they reply within 24 hours. If nothing happens, email enquiries@northstaffordshireremovals.co.uk directly with the figures from the preview above.';
+      if (status) status.textContent = 'Sending your quote request…';
+      if (submitBtn) submitBtn.disabled = true;
+
+      // Build the branded inventory PDF if the customer ticked items.
+      // Build the formal Estimate PDF for every quote (not just inventory-ticked).
+      // PDF generation is best-effort — if jsPDF didn't load (very rare),
+      // the email still sends, just without the attachment.
+      var attachments = [];
+      try {
+        var estimateOut = buildEstimatePdf({
+          customer:   { name: fullName, email: email, phone: phone, fromAddress: fromPC, toAddress: toPC },
+          move:       { fromPC: fromPC, toPC: toPC, miles: miles, modeLabel: modeLabel, moveDateFmt: moveDateFmt || (moveFlex === 'Date to be confirmed' ? 'To be confirmed' : ''), moveFlex: moveFlex, notes: notes },
+          property:   { bedLabel: bedSelected.label, cuft: cuft, cum: cum, storageDays: days, storageRoomLabel: stBits.join(' + ') },
+          pricing:    { calcMode: calcMode, removals: rmNett, storage: stNett, total: rmNett + stNett, vehicle: vehicle },
+          inventory:  { totalItems: totalItems, rooms: pdfRooms }
+        });
+        if (estimateOut && estimateOut.base64) {
+          attachments.push({
+            filename: 'MRM-Estimate-' + estimateOut.reference + '.pdf',
+            contentBase64: estimateOut.base64
+          });
+        }
+      } catch (err) {
+        if (window.console && console.warn) console.warn('Estimate PDF generation failed:', err);
       }
-      window.location.href = mailto;
+
+      var payload = {
+        hp: hpField ? hpField.value : '',
+        name: fullName,
+        email: email,
+        phone: phone,
+        subject: subject,
+        summary: lines.join('\n'),
+        // Structured data lets the worker render a proper branded HTML
+        // summary card instead of a monospace <pre> block.
+        details: {
+          fromAddr: fromPC,
+          toAddr: toPC,
+          miles: miles,
+          modeLabel: modeLabel,
+          moveDateFmt: moveDateFmt || (moveFlex === 'Date to be confirmed' ? 'To be confirmed' : ''),
+          moveFlex: moveFlex,
+          bedLabel: bedSelected.label,
+          cuft: cuft,
+          cum: cum,
+          storageDays: days,
+          storageRoom: stBits.join(' + '),
+          calcMode: calcMode,
+          removalsNet: rmNett,
+          storageNet: stNett,
+          subtotalNet: subtotalNet,
+          vatRate: EMAIL_VAT_RATE,
+          vatAmount: vatAmount,
+          grossTotal: grossTotal,
+          totalItems: totalItems,
+          notes: notes
+        }
+      };
+      if (attachments.length > 0) payload.attachments = attachments;
+
+      fetch(WORKER_QUOTE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function (r) {
+        return r.json().catch(function () { return { ok: false, error: 'Server error' }; })
+          .then(function (data) { return { httpStatus: r.status, data: data }; });
+      }).then(function (resp) {
+        if (resp.httpStatus === 200 && resp.data && resp.data.ok) {
+          quoteForm.reset();
+          showQuoteThanksModal(email);
+          return; // skip the re-enable in finally — page is about to reload
+        } else {
+          var msg = (resp.data && resp.data.error) ||
+            'Could not send your request right now — please call 01782 939124 or email enquiries@northstaffordshireremovals.co.uk.';
+          if (status) status.textContent = msg;
+        }
+      }).catch(function () {
+        if (status) {
+          status.textContent = 'Network issue — please check your connection, or email enquiries@northstaffordshireremovals.co.uk directly with the figures from the preview above.';
+        }
+      }).then(function () {
+        if (submitBtn) submitBtn.disabled = false;
+      });
     });
+  }
+
+  // Build a branded A4 ESTIMATE PDF for the office + customer. This is a
+  // formal written estimate (not a tax invoice) — clearly labelled as such,
+  // with full supplier identification, VAT registration, customer block,
+  // itemised lines, VAT @ 20% breakdown, terms, and a unique reference.
+  //
+  // Returns { base64, reference } or null if jsPDF isn't loaded.
+  function buildEstimatePdf(data) {
+    if (!window.jspdf || !window.jspdf.jsPDF) return null;
+    var doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4', compress: true });
+
+    var PW = doc.internal.pageSize.getWidth();
+    var PH = doc.internal.pageSize.getHeight();
+    var MX = 40;
+    var PURPLE = [77, 46, 143];
+    var GOLD = [200, 168, 118];
+    var GOLD_LIGHT = [230, 222, 201];
+    var GOLD_FAINT = [243, 235, 215];
+    var INK = [34, 34, 34];
+    var INK_SOFT = [85, 85, 85];
+    var SURFACE = [250, 248, 243];
+
+    // Supplier (us)
+    var BIZ = {
+      legalName: 'North Staffordshire Removals &amp; Storage Ltd',
+      tradingAs: 'North Staffordshire Removals &amp; Storage Ltd',
+      addr1: 'Unit J12 Swallow Business Park',
+      addr2: 'Diamond Drive, Lower Dicker',
+      addr3: 'East Staffordshire BN27 4EL',
+      phone: '01782 939124',
+      email: 'enquiries@northstaffordshireremovals.co.uk',
+      web:   'northstaffordshireremovals.co.uk',
+      vatNo: 'GB 67 9047 74',
+      founded: '2010'
+    };
+
+    // VAT — UK standard 20%
+    var VAT_RATE = 0.20;
+
+    // Reference: MRM-YYMMDD-HHMM (unique per minute; client-generated).
+    var now = new Date();
+    function pad2(n) { return ('0' + n).slice(-2); }
+    var ymd = String(now.getFullYear()).slice(-2) + pad2(now.getMonth() + 1) + pad2(now.getDate());
+    var hm = pad2(now.getHours()) + pad2(now.getMinutes());
+    var REF = 'MRM-' + ymd + '-' + hm;
+    var ISSUE = now.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' });
+    var VALID_UNTIL = new Date(now.getTime() + 30 * 86400000)
+      .toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' });
+
+    function fp(n) {
+      return '£' + Number(n || 0).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function rgb(c) { doc.setTextColor(c[0], c[1], c[2]); }
+    function fill(c) { doc.setFillColor(c[0], c[1], c[2]); }
+    function stroke(c) { doc.setDrawColor(c[0], c[1], c[2]); }
+
+    var y = 0;
+
+    function pageHeader() {
+      fill(PURPLE); doc.rect(0, 0, PW, 92, 'F');
+      fill(GOLD);   doc.rect(0, 92, PW, 4, 'F');
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(22);
+      rgb(GOLD); doc.text('North Staffordshire Removals', MX, 42);
+      var w = doc.getTextWidth('North Staffordshire Removals');
+      doc.setFont('helvetica', 'normal');
+      rgb([255, 255, 255]); doc.text(' Moving & Storage', MX + w, 42);
+
+      doc.setFontSize(8.5);
+      rgb(GOLD_LIGHT);
+      doc.text('Family-run removals & storage in East Staffordshire since ' + BIZ.founded, MX, 60);
+      doc.text('VAT Reg: ' + BIZ.vatNo, MX, 76);
+
+      // Right block: ESTIMATE + ref + dates
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(20);
+      rgb([255, 255, 255]);
+      doc.text('ESTIMATE', PW - MX, 32, { align: 'right' });
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      rgb(GOLD_LIGHT);
+      doc.text('Ref:  ' + REF, PW - MX, 50, { align: 'right' });
+      doc.text('Issued:  ' + ISSUE, PW - MX, 64, { align: 'right' });
+      doc.text('Valid until:  ' + VALID_UNTIL, PW - MX, 78, { align: 'right' });
+
+      y = 116;
+    }
+
+    function pageFooter() {
+      var fy = PH - 36;
+      stroke(GOLD); doc.setLineWidth(0.6);
+      doc.line(MX, fy - 14, PW - MX, fy - 14);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      rgb(INK_SOFT);
+      doc.text(BIZ.legalName + ' t/a ' + BIZ.tradingAs + '  ·  VAT Reg ' + BIZ.vatNo + '  ·  ' + BIZ.addr1 + ', ' + BIZ.addr2 + ', ' + BIZ.addr3, PW / 2, fy - 4, { align: 'center' });
+      doc.text(BIZ.phone + '  ·  ' + BIZ.email + '  ·  ' + BIZ.web, PW / 2, fy + 6, { align: 'center' });
+
+      var pageNum = doc.internal.getCurrentPageInfo
+        ? doc.internal.getCurrentPageInfo().pageNumber
+        : doc.internal.getNumberOfPages();
+      rgb([150, 150, 150]); doc.setFontSize(7);
+      doc.text('Ref ' + REF, MX, fy + 16);
+      doc.text('Page ' + pageNum, PW - MX, fy + 16, { align: 'right' });
+    }
+
+    function ensureSpace(n) {
+      if (y + n > PH - 68) {
+        pageFooter();
+        doc.addPage();
+        pageHeader();
+      }
+    }
+
+    function sectionTitle(text) {
+      ensureSpace(28);
+      y += 6;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      rgb(PURPLE);
+      doc.text(String(text).toUpperCase(), MX, y);
+      stroke(GOLD); doc.setLineWidth(1);
+      doc.line(MX, y + 4, MX + 44, y + 4);
+      y += 16;
+    }
+
+    function kvRow(label, value, leftX, labelW, valueW) {
+      leftX = leftX || MX; labelW = labelW || 110; valueW = valueW || (PW - MX - leftX - labelW - 4);
+      ensureSpace(14);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
+      rgb(INK_SOFT); doc.text(label, leftX, y);
+      doc.setFont('helvetica', 'normal');
+      rgb(INK);
+      var v = (value == null || value === '') ? '—' : String(value);
+      var wrapped = doc.splitTextToSize(v, valueW);
+      doc.text(wrapped, leftX + labelW, y);
+      y += 13 * Math.max(1, wrapped.length);
+    }
+
+    // --- Render ---
+    pageHeader();
+
+    // FROM / TO blocks
+    var colW = (PW - 2 * MX - 16) / 2;
+    var fromX = MX;
+    var toX = MX + colW + 16;
+    var blockTop = y;
+
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5);
+    rgb(PURPLE); doc.text('FROM', fromX, blockTop);
+    doc.text('TO  (CUSTOMER)', toX, blockTop);
+
+    // Left col — supplier
+    var ly = blockTop + 14;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+    rgb(INK); doc.text(BIZ.legalName, fromX, ly); ly += 13;
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
+    rgb(INK_SOFT); doc.text('t/a ' + BIZ.tradingAs, fromX, ly); ly += 12;
+    rgb(INK);
+    doc.text(BIZ.addr1, fromX, ly); ly += 11;
+    doc.text(BIZ.addr2, fromX, ly); ly += 11;
+    doc.text(BIZ.addr3, fromX, ly); ly += 11;
+    rgb(INK_SOFT); doc.setFontSize(8.5);
+    doc.text(BIZ.phone + '  ·  ' + BIZ.email, fromX, ly); ly += 11;
+    doc.text('VAT Reg: ' + BIZ.vatNo, fromX, ly); ly += 11;
+    var leftBottom = ly;
+
+    // Right col — customer
+    var ry = blockTop + 14;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+    rgb(INK); doc.text(String(data.customer.name || '—'), toX, ry); ry += 13;
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
+    rgb(INK);
+    var pickupLines = doc.splitTextToSize('Pickup: ' + String(data.customer.fromAddress || data.move.fromPC || '—'), colW);
+    doc.text(pickupLines, toX, ry); ry += 11 * pickupLines.length;
+    var deliveryLines = doc.splitTextToSize('Delivery: ' + String(data.customer.toAddress || data.move.toPC || '—'), colW);
+    doc.text(deliveryLines, toX, ry); ry += 11 * deliveryLines.length;
+    rgb(INK_SOFT); doc.setFontSize(8.5);
+    doc.text(String(data.customer.email || ''), toX, ry); ry += 11;
+    doc.text(String(data.customer.phone || ''), toX, ry); ry += 11;
+    var rightBottom = ry;
+
+    y = Math.max(leftBottom, rightBottom) + 8;
+
+    // Move details
+    sectionTitle('Move details');
+    kvRow('Service', data.move.modeLabel);
+    kvRow('Distance (round-trip)', (data.move.miles || 0) + ' mile' + ((data.move.miles === 1) ? '' : 's'));
+    kvRow('Volume', (data.property.cuft || 0).toLocaleString('en-GB') + ' cu ft  (' + data.property.cum + ' cu m)');
+    kvRow('Home size', data.property.bedLabel);
+    if (data.move.moveDateFmt) kvRow('Preferred move date', data.move.moveDateFmt);
+    if (data.move.moveFlex && data.move.moveFlex !== 'Date to be confirmed') kvRow('Date flexibility', data.move.moveFlex);
+    if (data.pricing.calcMode !== 'removals' && data.property.storageDays > 0) {
+      kvRow('Storage duration', data.property.storageDays + ' day' + (data.property.storageDays === 1 ? '' : 's'));
+      if (data.property.storageRoomLabel) kvRow('Storage room', data.property.storageRoomLabel);
+    }
+
+    // Estimate breakdown — itemised lines + VAT
+    sectionTitle('Estimate breakdown');
+
+    // Table header
+    ensureSpace(24);
+    fill(GOLD_FAINT); doc.rect(MX - 4, y - 11, PW - 2 * MX + 8, 18, 'F');
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
+    rgb(PURPLE);
+    doc.text('Description', MX, y + 1);
+    doc.text('Net (£)', PW - MX, y + 1, { align: 'right' });
+    y += 18;
+
+    // Line items
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5); rgb(INK);
+    if (data.pricing.calcMode !== 'storage') {
+      ensureSpace(28);
+      doc.setFont('helvetica', 'normal');
+      doc.text('Removals service', MX, y);
+      doc.text(fp(data.pricing.removals).replace('£', ''), PW - MX, y, { align: 'right' });
+      doc.setFontSize(8); rgb(INK_SOFT);
+      var rmDesc = 'Pad-wrap, load, transport and unload · ' +
+        (data.property.cuft || 0).toLocaleString('en-GB') + ' cu ft · ' +
+        (data.move.miles || 0) + ' mi round-trip';
+      doc.text(doc.splitTextToSize(rmDesc, PW - 2 * MX - 80), MX, y + 11);
+      doc.setFontSize(9.5); rgb(INK);
+      y += 26;
+    }
+    if (data.pricing.calcMode !== 'removals' && (data.pricing.storage || 0) > 0) {
+      ensureSpace(28);
+      doc.text('Self-storage', MX, y);
+      doc.text(fp(data.pricing.storage).replace('£', ''), PW - MX, y, { align: 'right' });
+      doc.setFontSize(8); rgb(INK_SOFT);
+      var stDesc = 'Steel strong-room' + (data.property.storageRoomLabel ? ' (' + data.property.storageRoomLabel + ')' : '') +
+        ' · ' + (data.property.storageDays || 0) + ' day' + (data.property.storageDays === 1 ? '' : 's');
+      doc.text(doc.splitTextToSize(stDesc, PW - 2 * MX - 80), MX, y + 11);
+      doc.setFontSize(9.5); rgb(INK);
+      y += 26;
+    }
+
+    // Subtotal / VAT / Total
+    var subtotal = (data.pricing.total || 0);
+    var vat = subtotal * VAT_RATE;
+    var gross = subtotal + vat;
+
+    // Label/value columns — generous so 12pt bold TOTAL has breathing room.
+    var TOT_LABEL_X = PW - MX - 220;
+    var TOT_VALUE_X = PW - MX;
+
+    ensureSpace(72);
+    stroke(GOLD_LIGHT); doc.setLineWidth(0.5);
+    doc.line(MX + (PW - 2 * MX) * 0.45, y, PW - MX, y);
+    y += 12;
+
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+    rgb(INK_SOFT);
+    doc.text('Subtotal (net)', TOT_LABEL_X, y);
+    rgb(INK);
+    doc.text(fp(subtotal), TOT_VALUE_X, y, { align: 'right' });
+    y += 15;
+    rgb(INK_SOFT);
+    doc.text('VAT @ ' + (VAT_RATE * 100) + '%', TOT_LABEL_X, y);
+    rgb(INK);
+    doc.text(fp(vat), TOT_VALUE_X, y, { align: 'right' });
+    y += 10;
+
+    stroke(PURPLE); doc.setLineWidth(1.2);
+    doc.line(TOT_LABEL_X, y, PW - MX, y);
+    y += 16;
+
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(13);
+    rgb(PURPLE);
+    doc.text('TOTAL  (inc. VAT)', TOT_LABEL_X, y);
+    doc.text(fp(gross), TOT_VALUE_X, y, { align: 'right' });
+    y += 22;
+
+    // Customer notes
+    if (data.move.notes) {
+      sectionTitle('Customer notes');
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5); rgb(INK);
+      var noteLines = doc.splitTextToSize(String(data.move.notes), PW - 2 * MX);
+      for (var k = 0; k < noteLines.length; k++) {
+        ensureSpace(12);
+        doc.text(noteLines[k], MX, y);
+        y += 12;
+      }
+    }
+
+    // Terms & notes
+    sectionTitle('Terms and notes');
+    var terms = [
+      'This document is an estimate, not a tax invoice. A formal VAT invoice will be issued on completion of the work.',
+      'Prices shown are estimates only. The final figure may change after a free survey, or if access conditions, volume or items differ from those listed above.',
+      'This estimate is valid for 30 days from the issue date (' + ISSUE + ').',
+      'Booking is confirmed with a 20% deposit; the balance is payable on completion of the move.',
+      'All work is carried out under our published Terms & Conditions: ' + BIZ.web + '/terms-conditions-and-insurance-details.html',
+      'Goods in Transit and Public Liability cover apply. Specific limits available on request.'
+    ];
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); rgb(INK);
+    for (var t = 0; t < terms.length; t++) {
+      ensureSpace(20);
+      var bulletLines = doc.splitTextToSize('•  ' + terms[t], PW - 2 * MX - 6);
+      doc.text(bulletLines, MX + 4, y);
+      y += 11 * bulletLines.length + 3;
+    }
+
+    // Inventory — ALWAYS on a fresh page (page 2+), so the main estimate
+    // document on page 1 (header, customer, breakdown, VAT, notes, terms)
+    // stays clean and reads end-to-end without scrolling past a list of
+    // items. 2-column flow with greedy bin-packing for balance.
+    if (data.inventory && data.inventory.rooms && data.inventory.rooms.length > 0) {
+      pageFooter();
+      doc.addPage();
+      pageHeader();
+      sectionTitle('Inventory  (' + data.inventory.totalItems + ' items  ·  ' + (data.property.cuft || 0).toLocaleString('en-GB') + ' cu ft)');
+
+      var COL_GAP = 16;
+      var INV_COL_W = (PW - 2 * MX - COL_GAP) / 2;
+      var col1X = MX;
+      var col2X = MX + INV_COL_W + COL_GAP;
+      var pageBottom = PH - 78;
+      var col1Y = y;
+      var col2Y = y;
+
+      function measureRoom(room) {
+        var itemsHeight = 0;
+        doc.setFontSize(9);
+        for (var jj = 0; jj < room.items.length; jj++) {
+          var label = room.items[jj].qty + ' × ' + room.items[jj].name;
+          var lines = doc.splitTextToSize(label, INV_COL_W - 12);
+          itemsHeight += lines.length * 11;
+        }
+        return 16 + itemsHeight + 8;
+      }
+
+      function drawRoom(room, colX, startY) {
+        var ty = startY;
+        fill(SURFACE); doc.rect(colX - 4, ty - 10, INV_COL_W + 8, 16, 'F');
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9.5);
+        rgb(PURPLE); doc.text(room.name, colX, ty + 1);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5);
+        rgb(INK_SOFT); doc.text(room.cuft + ' cu ft', colX + INV_COL_W, ty + 1, { align: 'right' });
+        ty += 14;
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(9); rgb(INK);
+        for (var jj = 0; jj < room.items.length; jj++) {
+          var label = room.items[jj].qty + ' × ' + room.items[jj].name;
+          var lines = doc.splitTextToSize(label, INV_COL_W - 12);
+          doc.text(lines, colX + 8, ty);
+          ty += 11 * lines.length;
+        }
+        return ty + 6;
+      }
+
+      for (var i = 0; i < data.inventory.rooms.length; i++) {
+        var room = data.inventory.rooms[i];
+        var h = measureRoom(room);
+        if (Math.min(col1Y, col2Y) + h > pageBottom) {
+          pageFooter();
+          doc.addPage();
+          pageHeader();
+          col1Y = y;
+          col2Y = y;
+        }
+        if (col1Y <= col2Y) {
+          col1Y = drawRoom(room, col1X, col1Y);
+        } else {
+          col2Y = drawRoom(room, col2X, col2Y);
+        }
+      }
+
+      y = Math.max(col1Y, col2Y) + 4;
+    }
+
+    pageFooter();
+
+    var dataUri = doc.output('datauristring');
+    var idx = dataUri.indexOf(',');
+    var base64 = idx >= 0 ? dataUri.substring(idx + 1) : null;
+    return base64 ? { base64: base64, reference: REF } : null;
+  }
+
+  // Branded thank-you modal shown on successful quote send. Closes the
+  // quote form, gives the customer a clear "it's gone" confirmation, then
+  // reloads the page so the calculator returns to a clean state.
+  function showQuoteThanksModal(toEmail) {
+    if (document.getElementById('mrm-thanks-overlay')) return;
+
+    // Close the quote dropdown if it's still open.
+    var qd = document.getElementById('quote-dropdown');
+    if (qd) qd.hidden = true;
+
+    var overlay = document.createElement('div');
+    overlay.id = 'mrm-thanks-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-labelledby', 'mrm-thanks-title');
+    overlay.innerHTML =
+      '<style>' +
+        '#mrm-thanks-overlay{position:fixed;inset:0;z-index:100000;background:rgba(15,8,33,0.78);' +
+          '-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:flex;align-items:center;' +
+          'justify-content:center;padding:20px;animation:mrmThanksFade 0.22s ease-out;}' +
+        '@keyframes mrmThanksFade{from{opacity:0;}to{opacity:1;}}' +
+        '@keyframes mrmThanksCard{from{transform:translateY(16px) scale(0.98);opacity:0;}' +
+          'to{transform:translateY(0) scale(1);opacity:1;}}' +
+        '@keyframes mrmThanksTick{0%{transform:scale(0.4) rotate(-15deg);opacity:0;}' +
+          '60%{transform:scale(1.15) rotate(0);opacity:1;}100%{transform:scale(1) rotate(0);opacity:1;}}' +
+        '#mrm-thanks-card{background:#fff;border-radius:16px;max-width:500px;width:100%;' +
+          'box-shadow:0 28px 70px rgba(77,46,143,0.55);overflow:hidden;font-family:Arial,Helvetica,sans-serif;' +
+          'animation:mrmThanksCard 0.32s ease-out 0.05s both;}' +
+        '#mrm-thanks-banner{background:#4d2e8f;padding:28px 28px 22px;text-align:center;color:#fff;' +
+          'position:relative;}' +
+        '#mrm-thanks-banner:after{content:"";display:block;position:absolute;left:0;right:0;bottom:0;' +
+          'height:4px;background:#C8A876;}' +
+        '#mrm-thanks-icon{width:68px;height:68px;border-radius:50%;background:#C8A876;margin:0 auto 14px;' +
+          'display:flex;align-items:center;justify-content:center;color:#3a226d;font-size:34px;' +
+          'font-weight:bold;line-height:1;animation:mrmThanksTick 0.45s cubic-bezier(0.3,1.4,0.5,1) both;}' +
+        '#mrm-thanks-title{font-family:Georgia,"Times New Roman",serif;font-size:26px;margin:0;' +
+          'font-weight:normal;color:#fff;letter-spacing:0.3px;}' +
+        '#mrm-thanks-sub{margin:6px 0 0;color:#e6dec9;font-size:13px;letter-spacing:0.4px;text-transform:uppercase;}' +
+        '#mrm-thanks-body{padding:22px 28px 26px;text-align:center;color:#222;}' +
+        '#mrm-thanks-body p{margin:0 0 12px;line-height:1.55;font-size:15px;}' +
+        '#mrm-thanks-body p.lead{font-size:16px;color:#3a226d;}' +
+        '#mrm-thanks-email{color:#4d2e8f;font-weight:700;word-break:break-all;}' +
+        '#mrm-thanks-actions{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap;}' +
+        '#mrm-thanks-close{background:#C8A876;color:#3a226d;border:0;padding:12px 28px;border-radius:8px;' +
+          'cursor:pointer;font-size:15px;font-weight:700;letter-spacing:0.3px;transition:background 0.15s ease;}' +
+        '#mrm-thanks-close:hover,#mrm-thanks-close:focus{background:#D6B274;outline:none;}' +
+        '#mrm-thanks-foot{font-size:11.5px;color:#888;margin-top:14px;font-style:italic;}' +
+      '</style>' +
+      '<div id="mrm-thanks-card">' +
+        '<div id="mrm-thanks-banner">' +
+          '<div id="mrm-thanks-icon">✓</div>' +
+          '<h2 id="mrm-thanks-title">Thank you</h2>' +
+          '<p id="mrm-thanks-sub">Quote request received</p>' +
+        '</div>' +
+        '<div id="mrm-thanks-body">' +
+          '<p class="lead">Your quote request has been sent to the office.</p>' +
+          '<p>A copy of your formal written estimate is on its way to ' +
+            '<span id="mrm-thanks-email"></span>.</p>' +
+          '<p>The office will reply within <strong>24 hours</strong> — usually sooner during business hours (Mon–Fri 08:00–17:30, Sat 09:00–13:00).</p>' +
+          '<div id="mrm-thanks-actions">' +
+            '<button type="button" id="mrm-thanks-close">Close &amp; refresh</button>' +
+          '</div>' +
+          '<div id="mrm-thanks-foot">This page will refresh automatically in a moment.</div>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    // Safe text injection for the email.
+    var emailSpan = document.getElementById('mrm-thanks-email');
+    if (emailSpan) emailSpan.textContent = String(toEmail || 'your email');
+
+    // Prevent scroll on the background while modal is up.
+    document.documentElement.style.overflow = 'hidden';
+
+    function doReload() { window.location.reload(); }
+    var closeBtn = document.getElementById('mrm-thanks-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', doReload);
+      closeBtn.focus();
+    }
+    // Auto-refresh after 6 seconds.
+    setTimeout(doReload, 6000);
+  }
+
+  // Deep-link from the homepage hero quick-quote: pick up ?bed=…&miles=…
+  // and pre-select the matching home-size radio + miles input before the
+  // first recalc, so the customer lands exactly where they left off.
+  // Also scroll quickly down to the "Send these figures for a quote"
+  // button so the customer can continue without hunting.
+  var arrivedFromHero = false;
+  try {
+    var qs = new URLSearchParams(window.location.search);
+    var qsBed = qs.get('bed');
+    var qsMiles = qs.get('miles');
+    if (qsBed) {
+      arrivedFromHero = true;
+      var bedRadio = document.querySelector('input[name="home-size"][value="' + qsBed.replace(/"/g, '') + '"]');
+      if (bedRadio) {
+        bedRadio.checked = true;
+        if (typeof applyHomeSizeDefault === 'function') applyHomeSizeDefault();
+      }
+    }
+    if (qsMiles != null && milesInput) {
+      arrivedFromHero = true;
+      var m = parseInt(qsMiles, 10);
+      if (!isNaN(m) && m >= 0) milesInput.value = String(m);
+    }
+  } catch (e) { /* URLSearchParams not supported on very old browsers — ignore */ }
+
+  // If the customer arrived via the hero quick-quote deep-link, scroll
+  // straight down to the "Send these figures for a quote" CTA so they
+  // can go directly to entering contact details.
+  if (arrivedFromHero) {
+    setTimeout(function () {
+      var target = document.getElementById('quote-cta-toggle');
+      if (target && target.scrollIntoView) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 150);
   }
 
   recalc();

@@ -1,7 +1,7 @@
   <section class="np-section calc-section">
     <div class="np-inner">
-      <h2>Get your estimate in 30 seconds</h2>
-      <p class="calc-lead">Pick what you want priced, the size of your home, the round-trip distance and (if you need it) storage days. Your figure updates as you type — refine with a room-by-room inventory below if you want a sharper number.</p>
+      <h2 class="calc-intro">Get your estimate in 60 seconds</h2>
+      <p class="calc-lead calc-intro">Pick what you want priced, the size of your home, the round-trip distance and (if you need it) storage days. Your figure updates as you type — refine with a room-by-room inventory below if you want a sharper number.</p>
 
       <div class="calc-panel-wrap">
         <div class="quote-card quote-card-full" aria-live="polite" aria-label="Live estimate">
@@ -74,12 +74,52 @@
                 <input type="number" id="cost-manual-cuft" min="0" step="50" value="1200" inputmode="numeric" aria-describedby="cost-manual-cuft-help">
                 <span class="qc-num-help" id="cost-manual-cuft-help">Auto-fills typical figure; tick items below for a precise volume.</span>
               </label>
-              <label class="qc-num qc-num-attention" data-show-modes="removals both">
-                <span class="qc-num-label">Adjust total job miles</span>
-                <input type="number" id="cost-miles" min="0" value="0" inputmode="numeric" aria-describedby="cost-miles-help">
-                <span class="qc-num-help" id="cost-miles-help">Round-trip: depot → home → new home → depot.</span>
-              </label>
-              <label class="qc-num" data-show-modes="storage both">
+              <div class="qc-num qc-num-attention qc-num-distance" data-show-modes="removals both">
+                <span class="qc-num-label">Round-trip distance</span>
+                <div class="qc-distance-fields">
+                  <div class="qc-distance-row">
+                    <span class="qc-distance-field-label">Moving FROM</span>
+                    <div class="qc-distance-row-inputs">
+                      <label class="qc-distance-input-wrap">
+                        <span class="qc-distance-input-label">House number or name</span>
+                        <input type="text" id="dist-from-no" class="qc-distance-house" placeholder="e.g. 47 or Rose Cottage" autocomplete="off">
+                      </label>
+                      <label class="qc-distance-input-wrap">
+                        <span class="qc-distance-input-label">Postcode or full address</span>
+                        <input type="text" id="dist-from" class="qc-distance-address" placeholder="e.g. BN21 3AB or 47 High Street, Stoke-on-Trent" autocomplete="off" spellcheck="false">
+                      </label>
+                    </div>
+                  </div>
+                  <div class="qc-distance-row">
+                    <span class="qc-distance-field-label">Moving TO</span>
+                    <div class="qc-distance-row-inputs">
+                      <label class="qc-distance-input-wrap">
+                        <span class="qc-distance-input-label">House number or name</span>
+                        <input type="text" id="dist-to-no" class="qc-distance-house" placeholder="e.g. 12 or The Old Vicarage" autocomplete="off">
+                      </label>
+                      <label class="qc-distance-input-wrap">
+                        <span class="qc-distance-input-label">Postcode or full address</span>
+                        <input type="text" id="dist-to" class="qc-distance-address" placeholder="e.g. TN22 5JD or 12 Old Road, Uckfield" autocomplete="off" spellcheck="false">
+                      </label>
+                    </div>
+                  </div>
+                  <button type="button" id="dist-calc-btn" class="qc-distance-calc-btn">Calculate distance &rarr;</button>
+                </div>
+                <div class="qc-distance-status" id="dist-status" role="status" aria-live="polite" hidden></div>
+                <div class="qc-distance-result" id="dist-result" hidden aria-live="polite">
+                  <span class="qc-distance-result-miles" id="dist-result-miles">— miles</span>
+                  <span class="qc-distance-result-detail" id="dist-result-detail">depot &rarr; home &rarr; new home &rarr; depot</span>
+                </div>
+                <details class="qc-distance-manual">
+                  <summary>Adjust manually</summary>
+                  <label class="qc-distance-manual-row">
+                    <span>Total job miles</span>
+                    <input type="number" id="cost-miles" min="0" value="0" inputmode="numeric" aria-describedby="cost-miles-help">
+                  </label>
+                  <span class="qc-num-help" id="cost-miles-help">Override the auto-calculated figure, or use this if Google can't find your address.</span>
+                </details>
+              </div>
+              <label class="qc-num qc-num-attention" data-show-modes="storage both">
                 <span class="qc-num-label">Days of storage</span>
                 <input type="number" id="storage-days" min="1" value="28" inputmode="numeric" aria-describedby="storage-days-help">
                 <span class="qc-num-help" id="storage-days-help">7 days = 1 week. Default 28 (~4 wks).</span>
@@ -2636,16 +2676,23 @@
           <p class="quote-card-alt" data-show-modes="storage both">Also available: <strong>75 sqft low-ceiling room at £5.76/day (nett)</strong> — ideal if your contents won&rsquo;t stack high.</p>
 
           <button type="button" class="quote-card-cta" id="quote-cta-toggle" aria-expanded="false" aria-controls="quote-dropdown">Send these figures for a quote &rarr;</button>
-          <p class="quote-card-disclaimer">Estimate only. The exact quote depends on access, stairs, packing materials, antiques handling and timing. <a href="../mark-ratcliffe-moving-online-removals-quote.html">Request a free survey</a> — reply in 24 hours.</p>
+          <p class="quote-card-disclaimer">Estimate only. The exact quote depends on access, stairs, packing materials, antiques handling and timing. <a href="../mark-ratcliffe-moving-online-removals-quote.html">Request a free survey</a> — reply in 48 hours.</p>
 
           <!-- Quote-request dropdown — collapses out beneath the CTA. -->
           <div class="qc-quote-dropdown" id="quote-dropdown" hidden>
             <div class="qc-quote-dropdown-header">
               <strong>Send these figures with a quote request</strong>
-              <p>Two quick steps. We send the full summary — every item, the cube, the recommended vehicle and the nett pricing — to <a href="mailto:enquiries@northstaffordshireremovals.co.uk">enquiries@northstaffordshireremovals.co.uk</a> — reply within 24 hours. Reply within 24 hours.</p>
+              <p>Two quick steps. We email the full summary — every item, the cube, the recommended vehicle and the nett pricing — to the office, plus a copy to you. The office replies within 48 hours.</p>
             </div>
 
             <form class="quote-form" id="quote-request-form">
+
+              <!-- Honeypot — hidden from users + screen readers; bots fill it and get silently dropped. -->
+              <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" tabindex="-1">
+                <label>Leave this field empty
+                  <input type="text" id="qf-hp" name="company_website" tabindex="-1" autocomplete="off">
+                </label>
+              </div>
 
               <!-- STEP 1 — Contact details -->
               <div class="qc-quote-step" id="quote-step-1">
@@ -2686,12 +2733,12 @@
                     <input type="tel" name="phone" id="qf-phone" required autocomplete="tel" placeholder="01234 567 890">
                   </label>
                   <label>
-                    <span class="quote-form-label">Moving FROM (postcode)</span>
-                    <input type="text" name="from_postcode" id="qf-from" required autocomplete="postal-code" placeholder="BN21 3AB">
+                    <span class="quote-form-label">Moving FROM (address)</span>
+                    <input type="text" name="from_postcode" id="qf-from" required autocomplete="postal-code" placeholder="47, BN21 3AB">
                   </label>
                   <label>
-                    <span class="quote-form-label">Moving TO (postcode)</span>
-                    <input type="text" name="to_postcode" id="qf-to" required autocomplete="postal-code" placeholder="TN22 5JD">
+                    <span class="quote-form-label">Moving TO (address)</span>
+                    <input type="text" name="to_postcode" id="qf-to" required autocomplete="postal-code" placeholder="12, TN22 5JD">
                   </label>
                   <label>
                     <span class="quote-form-label">Preferred move date</span>
@@ -2774,7 +2821,7 @@
 
                 <div class="quote-form-actions">
                   <button type="submit" class="np-btn np-btn-primary">Send quote request</button>
-                  <p class="quote-form-help">Opens your email app with the full summary pre-filled. Sends to <a href="mailto:enquiries@northstaffordshireremovals.co.uk">enquiries@northstaffordshireremovals.co.uk</a>.</p>
+                  <p class="quote-form-help">Sends instantly. A copy lands in your inbox; the office replies within 48 hours.</p>
                 </div>
                 <div class="quote-form-status" id="qf-status" role="status" aria-live="polite"></div>
               </div>

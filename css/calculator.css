@@ -1,4 +1,4 @@
-/* NSR calculator widget styles (cloned from MRM) — only loaded on resources/storage-calculator.html */
+/* NSR calculator widget styles (cloned from MRM live as of 2026-05-24) */
 /* NSR brand override for MRM-built calculator widget */
 :root {
   --np-primary: #11365a; --np-primary-light: #1d4e80; --np-accent: #ef6c1d;
@@ -8,32 +8,21 @@
   --brand-sage: #ef6c1d; --brand-off-white: #faf7f2; --brand-ink: #131722; --brand-mute: #5b6470;
 }
 
-/* === Constrain calculator widget to the standard NSR 1280px container ===== */
-/* MRM ships .np-section as full-bleed; on NSR we want it card-shaped and
-   centred inside the same container width every other section uses. */
+/* === Constrain calculator widget to NSR's 1280px container ===== */
 .np-section.calc-section {
-  max-width: 1280px;
-  margin: 1.5rem auto;
+  max-width: 1280px; margin: 1.5rem auto;
   padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 3.5vw, 2rem);
-  border-radius: 18px;
-  box-shadow: 0 12px 32px rgba(17, 54, 90, 0.14);
+  border-radius: 18px; box-shadow: 0 12px 32px rgba(17, 54, 90, 0.14);
   overflow: hidden;
 }
-.np-section.calc-section .np-inner {
-  max-width: none;
-  margin: 0;
-  padding: 0;
-}
-/* Other .np-section blocks on the page should match container width too. */
+.np-section.calc-section .np-inner { max-width: none; margin: 0; padding: 0; }
 .np-section:not(.calc-section) {
-  max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 1280px; margin-left: auto; margin-right: auto;
   padding-left: clamp(1rem, 3.5vw, 2rem);
   padding-right: clamp(1rem, 3.5vw, 2rem);
 }
 
-/* === Calculator widget CSS extracted from new-pages.css (lines 443-2495) === */
+/* === Calculator widget CSS extracted from new-pages.css === */
 .calc-totals {
   position: sticky;
   top: 96px;

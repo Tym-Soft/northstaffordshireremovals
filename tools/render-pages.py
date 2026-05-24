@@ -300,77 +300,97 @@ RELATED_FOR = {
     'home':                              [_COST, _RELI, _HIDD],
 
     # ── SERVICES ─────────────────────────────────────────
-    'services-index':                    [_COST, _RELI, _HIDD],
-    'services-domestic-removals':        [_COST, _DECL, _FRAG],
-    'services-commercial-removals':      [_OFFC, _HIDD, _RELI],
-    'services-packing-services':         [_FRAG, _DECL, _HIDD],
+    # Each service page leads with its own dedicated topic blog
+    # (where one exists) plus two contextually-related secondaries.
+    'services-index':                    [_COST, _RELI, _WGLV],
+    'services-domestic-removals':        [_COST, _DECL, _PETS],
+    'services-commercial-removals':      [_OFFC, _EURO, _RELI],
+    'services-packing-services':         [_FRAG, _DECL, _CLEA],
     'services-storage-services':         [_STOR, _DOWN, _INSU],
     'services-piano-removals':           [_PIAN, _INSU, _FRAG],
-    'services-man-and-van':              [_MVAN, _DIY,  _COST],
-    'services-european-removals':        [_EURO, _INTL, _INSU],
-    'services-international-removals':   [_INTL, _INSU, _RELI],
+    'services-man-and-van':              [_MVAN, _DIY,  _STUD],
+    'services-european-removals':        [_EURO, _INTL, _OFFC],
+    'services-international-removals':   [_INTL, _EURO, _INSU],
     'services-house-clearance':          [_HCLR, _ELDR, _DOWN],
     'services-student-removals':         [_STUD, _MVAN, _COST],
-    'services-antiques-moving':          [_ANTI, _INSU, _FRAG],
-    'services-white-glove-service':      [_WGLV, _ANTI, _INSU],
-    'services-packaging-shop':           [_FRAG, _DECL, _COST],
+    'services-antiques-moving':          [_ANTI, _WGLV, _INSU],
+    'services-white-glove-service':      [_WGLV, _ANTI, _PIAN],
+    'services-packaging-shop':           [_FRAG, _DECL, _DIY],
 
     # ── AREAS (hub + 20 town pages) ──────────────────────
+    # Each area page gets its own distinct trio shaped by the
+    # town's character: city-centre Potteries get tighter-access
+    # / smaller-property themes; rural Moorlands get weather /
+    # storage themes; commuter belt gets value / practical themes;
+    # high-value rural gets antiques / white-glove.
     'areas-covered-index':               [_COST, _BTY,  _RELI],
-    # All 20 area pages share the same universal trio — the topical
-    # need is identical (cost, timing, trust). Per-town customisation
-    # can come later if user wants.
-    'areas-covered-removals-stoke-on-trent':     [_COST, _BTY,  _RELI],
-    'areas-covered-removals-hanley':             [_COST, _BTY,  _RELI],
-    'areas-covered-removals-burslem':            [_COST, _BTY,  _RELI],
-    'areas-covered-removals-tunstall':           [_COST, _BTY,  _RELI],
-    'areas-covered-removals-longton':            [_COST, _BTY,  _RELI],
-    'areas-covered-removals-fenton':             [_COST, _BTY,  _RELI],
-    'areas-covered-removals-newcastle-under-lyme': [_COST, _BTY,  _RELI],
-    'areas-covered-removals-kidsgrove':          [_COST, _HIDD, _INSU],
-    'areas-covered-removals-stafford':           [_COST, _BTY,  _RELI],
-    'areas-covered-removals-stone':              [_COST, _BTY,  _RELI],
-    'areas-covered-removals-leek':               [_COST, _HIDD, _INSU],
-    'areas-covered-removals-cheadle':            [_COST, _HIDD, _INSU],
-    'areas-covered-removals-biddulph':           [_COST, _BTY,  _RELI],
-    'areas-covered-removals-eccleshall':         [_COST, _HIDD, _INSU],
-    'areas-covered-removals-burton-on-trent':    [_COST, _BTY,  _RELI],
-    'areas-covered-removals-buxton':             [_COST, _BTY,  _RELI],
-    'areas-covered-removals-crewe':              [_COST, _BTY,  _RELI],
-    'areas-covered-removals-lichfield':          [_COST, _HIDD, _INSU],
-    'areas-covered-removals-cannock':            [_COST, _BTY,  _RELI],
-    'areas-covered-removals-tamworth':           [_COST, _BTY,  _RELI],
+
+    # Stoke-on-Trent and the six Potteries cities
+    'areas-covered-removals-stoke-on-trent':     [_COST, _RELI, _HCLR],
+    'areas-covered-removals-hanley':             [_COST, _BTD,  _MVAN],
+    'areas-covered-removals-burslem':            [_COST, _DECL, _FRAG],
+    'areas-covered-removals-tunstall':           [_COST, _CLEA, _PETS],
+    'areas-covered-removals-longton':            [_COST, _CLEA, _DECL],
+    'areas-covered-removals-fenton':             [_COST, _PETS, _FRAG],
+
+    # Newcastle-under-Lyme (Keele University)
+    'areas-covered-removals-newcastle-under-lyme': [_STUD, _COST, _RELI],
+
+    # North Staffs towns
+    'areas-covered-removals-kidsgrove':          [_BTY,  _ELDR, _DOWN],
+
+    # Stafford / Stone (county town + adjacent)
+    'areas-covered-removals-stafford':           [_COST, _WGLV, _ANTI],
+    'areas-covered-removals-stone':              [_DOWN, _ELDR, _RELI],
+
+    # Staffordshire Moorlands + rural North Staffs
+    'areas-covered-removals-leek':               [_BTY,  _INSU, _STOR],
+    'areas-covered-removals-cheadle':            [_PETS, _CLEA, _BTY],
+    'areas-covered-removals-biddulph':           [_HIDD, _STOR, _BTD],
+    'areas-covered-removals-eccleshall':         [_ANTI, _WGLV, _DOWN],
+
+    # East Staffs (Burton brewery town)
+    'areas-covered-removals-burton-on-trent':    [_OFFC, _EURO, _COST],
+
+    # Peak District / Cheshire borderland
+    'areas-covered-removals-buxton':             [_INSU, _STOR, _DIY],
+    'areas-covered-removals-crewe':              [_RELI, _BTD,  _MVAN],
+
+    # South Staffs cathedral + commuter belt
+    'areas-covered-removals-lichfield':          [_OFFC, _ANTI, _HCLR],
+    'areas-covered-removals-cannock':            [_DIY,  _MVAN, _HIDD],
+    'areas-covered-removals-tamworth':           [_PETS, _MVAN, _BTY],
 
     # ── RESOURCES ────────────────────────────────────────
-    'resources-storage-calculator':      [_COST, _STOR, _DOWN],
+    'resources-storage-calculator':      [_COST, _STOR, _ELDR],
 
     # ── ROOT UTILITY ─────────────────────────────────────
     'about-us':                          [_RELI, _HIDD, _INSU],
-    'reviews':                           [_RELI, _COST, _HIDD],
+    'reviews':                           [_RELI, _INSU, _PIAN],
     'quote':                             [_COST, _BTY,  _HIDD],
 
     # ── BLOG POSTS (per-post, never self-referential) ────
     'blog-cost-of-moving-house-stoke-on-trent-2026':     [_HIDD, _DIY,  _BTY],
-    'blog-choosing-a-reliable-removal-company-stoke':    [_INSU, _HIDD, _COST],
-    'blog-hidden-costs-of-moving-house':                 [_COST, _RELI, _INSU],
-    'blog-best-time-of-year-to-move-house-staffordshire': [_BTD,  _COST, _RELI],
-    'blog-best-time-of-day-to-move-house':               [_BTY,  _COST, _HIDD],
+    'blog-choosing-a-reliable-removal-company-stoke':    [_INSU, _ANTI, _HIDD],
+    'blog-hidden-costs-of-moving-house':                 [_COST, _RELI, _DIY],
+    'blog-best-time-of-year-to-move-house-staffordshire': [_BTD,  _COST, _PETS],
+    'blog-best-time-of-day-to-move-house':               [_BTY,  _COST, _DECL],
     'blog-moving-home-with-pets-staffordshire-checklist': [_CLEA, _DECL, _BTD],
-    'blog-how-to-pack-fragile-items-properly':           [_DECL, _INSU, _DIY],
-    'blog-self-storage-vs-full-service-storage':         [_DOWN, _INSU, _COST],
+    'blog-how-to-pack-fragile-items-properly':           [_DECL, _INSU, _ANTI],
+    'blog-self-storage-vs-full-service-storage':         [_DOWN, _STOR, _COST],
     'blog-how-to-declutter-before-a-house-move':         [_FRAG, _DOWN, _CLEA],
-    'blog-diy-vs-professional-house-move-cost':          [_COST, _HIDD, _RELI],
+    'blog-diy-vs-professional-house-move-cost':          [_COST, _HIDD, _MVAN],
     'blog-move-in-cleaning-checklist-staffordshire':     [_DECL, _FRAG, _BTD],
-    'blog-moving-with-elderly-parents-staffordshire':    [_DOWN, _DECL, _RELI],
-    'blog-downsizing-storage-staffordshire':             [_STOR, _DECL, _ELDR],
-    'blog-office-relocation-planning-timeline':          [_RELI, _HIDD, _INSU],
-    'blog-moving-insurance-explained':                   [_RELI, _HIDD, _FRAG],
-    'blog-moving-a-piano-staffordshire-guide-2026':      [_INSU, _FRAG, _RELI],
-    'blog-antiques-moving-staffordshire-specialist-guide': [_INSU, _PIAN, _RELI],
-    'blog-international-removals-from-the-uk-2026-guide': [_INSU, _HIDD, _RELI],
-    'blog-european-removals-from-staffordshire-2026':    [_INTL, _INSU, _HIDD],
-    'blog-man-and-van-vs-full-removal-staffordshire':    [_DIY,  _COST, _HIDD],
-    'blog-what-is-a-white-glove-moving-service':         [_ANTI, _INSU, _PIAN],
+    'blog-moving-with-elderly-parents-staffordshire':    [_DOWN, _HCLR, _RELI],
+    'blog-downsizing-storage-staffordshire':             [_STOR, _ELDR, _DECL],
+    'blog-office-relocation-planning-timeline':          [_EURO, _INTL, _RELI],
+    'blog-moving-insurance-explained':                   [_PIAN, _ANTI, _RELI],
+    'blog-moving-a-piano-staffordshire-guide-2026':      [_INSU, _FRAG, _WGLV],
+    'blog-antiques-moving-staffordshire-specialist-guide': [_WGLV, _INSU, _PIAN],
+    'blog-international-removals-from-the-uk-2026-guide': [_EURO, _INSU, _OFFC],
+    'blog-european-removals-from-staffordshire-2026':    [_INTL, _OFFC, _INSU],
+    'blog-man-and-van-vs-full-removal-staffordshire':    [_DIY,  _STUD, _COST],
+    'blog-what-is-a-white-glove-moving-service':         [_ANTI, _PIAN, _INSU],
     'blog-house-clearance-after-bereavement-staffordshire': [_ELDR, _DOWN, _DECL],
     'blog-student-moves-keele-staffordshire-guide':      [_MVAN, _COST, _BTY],
 

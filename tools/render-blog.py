@@ -460,7 +460,7 @@ POSTS = [
         'date': '2026-05-20',
         'eyebrow': 'Cleaning checklist · Pre-move-in',
         'lead': "The property you're moving into looked clean on viewing day. Move-in day reveals what was hidden behind the previous owners' furniture &mdash; dust trails behind the wardrobe, grease behind the cooker, limescale you didn't notice. This room-by-room checklist gets you ahead of it before your own contents arrive.",
-        'hero_img': 'empty-room-moving-boxes-ready.jpg',
+        'hero_img': 'unpacking-bedroom-boxes.jpg',
         'sections': [
             ('Why pre-move-in cleaning matters', [
                 "Estate agents and conveyancers tell you the property will be left in a 'reasonably clean' condition. In practice, 'reasonably clean' covers a wide range — from immaculate (rare) to surface-tidy-with-grime-everywhere-you-don't-look (common) to actively-dirty (occasional).",
@@ -586,7 +586,7 @@ POSTS = [
         'date': '2026-05-15',
         'eyebrow': 'Downsizing · Storage strategy',
         'lead': "Downsizing — from a 4-bed family home to a 2-bed bungalow, from a house to a flat, from independent living to sheltered accommodation — almost always generates an excess of belongings that won't fit the new property but you're not ready to part with. This guide explains how to use storage strategically to make downsizing easier.",
-        'hero_img': 'cardboard-boxes-storage-warehouse.jpg',
+        'hero_img': 'couple-packing-living-room.jpg',
         'sections': [
             ('Why downsizing creates a storage need', [
                 "The arithmetic of downsizing is simple. A 4-bed family home holds 1,400-1,800 cubic feet of contents. A typical 2-bed bungalow holds 600-900 cubic feet. The difference — 600-1,000 cubic feet — has to go somewhere.",
@@ -885,7 +885,7 @@ POSTS = [
         'date': '2026-05-05',
         'eyebrow': 'Move-day timing · When to start',
         'lead': "The time of day your removal crew starts work makes a real difference to how smoothly the day runs. Morning starts have advantages over afternoon starts; midweek slots have advantages over weekends. This guide explains the patterns we've seen across thousands of Staffordshire moves &mdash; and helps you pick the right start time for your move.",
-        'hero_img': 'family-celebrating-keys-new-home.jpg',
+        'hero_img': 'empty-room-moving-boxes-ready.jpg',
         'sections': [
             ('The default: early morning starts', [
                 "Most of our Staffordshire moves start at 8am. There are good reasons for this:",
@@ -951,7 +951,7 @@ POSTS = [
         'date': '2026-05-02',
         'eyebrow': 'Hidden costs · Budget planning',
         'lead': "The cost of moving house is more than the removal quote. This guide covers the often-forgotten costs that add up to £1,000-£3,000 on a typical Staffordshire 2-3 bed move &mdash; the legal fees, survey fees, broadband transfers, post redirects, the carpet you'll need to replace at the new property, and the council tax overlap nobody warned you about.",
-        'hero_img': 'man-yellow-tshirt-with-moving-box.jpg',
+        'hero_img': 'moving-day-packing-checklist.jpg',
         'sections': [
             ('Why this guide exists', [
                 "Most house-move budgets focus on the removal quote and the deposit. Those are usually the two biggest line items. But they're not the only ones, and the missed line items add up to a meaningful additional cost &mdash; typically £1,000-£3,000 on a 2-3 bed move.",

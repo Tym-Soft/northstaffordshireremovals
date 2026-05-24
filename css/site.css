@@ -991,20 +991,15 @@ footer.site-footer .legal {
 footer.site-footer .legal a { color: #8da3bf; }
 footer.site-footer .legal a:hover { color: var(--orange-soft); }
 
-/* ─── Sticky FAB stack (bottom-right, every page) ─────────
-   Two pills stacked vertically: Quote on top (orange), Phone on
-   bottom (navy). Mobile collapses both to 56px circles.            */
-.fab-stack {
+/* ─── Sticky FABs (bottom-left email + bottom-right phone) ──
+   Two independent fixed-position FABs flanking the bottom of the
+   viewport. Email (orange, envelope) on the left, Phone (navy with
+   orange icon, pulsing) on the right. Mobile collapses both to
+   56px circles.                                                     */
+.fab {
   position: fixed;
-  right: 24px;
   bottom: 24px;
   z-index: 99;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: .65rem;
-}
-.fab {
   display: inline-flex;
   align-items: center;
   gap: .6rem;
@@ -1030,19 +1025,36 @@ footer.site-footer .legal a:hover { color: var(--orange-soft); }
   font-size: 18px;
   line-height: 1;
 }
-/* Quote variant — orange (primary CTA, on top) */
-.fab-quote {
+/* Email variant — orange, bottom-LEFT, white envelope icon */
+.fab-email {
+  left: 24px;
   background: var(--orange);
   color: #fff;
 }
-.fab-quote:hover, .fab-quote:focus-visible {
+.fab-email:hover, .fab-email:focus-visible {
   background: var(--orange-dark);
   color: #fff;
 }
-/* Phone variant — navy bg with ORANGE phone icon (icon orange ties
-   in visually with the orange pulse ring; text stays white for
-   readability on the desktop pill). */
+/* Envelope icon painted via CSS mask (same bulletproof approach
+   as the phone icon — survives any cached HTML state). */
+.fab-email .fab-icon {
+  position: relative;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  color: transparent !important;
+}
+.fab-email .fab-icon > * { opacity: 0; }
+.fab-email .fab-icon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #fff;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z'/></svg>") center/contain no-repeat;
+          mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z'/></svg>") center/contain no-repeat;
+}
+/* Phone variant — navy bg with ORANGE phone icon, bottom-RIGHT */
 .fab-phone {
+  right: 24px;
   background: var(--navy);
   color: #fff;
 }
@@ -1134,18 +1146,16 @@ footer.site-footer .legal a:hover { color: var(--orange-soft); }
 }
 
 @media (max-width: 680px) {
-  .fab-stack {
-    right: 16px;
-    bottom: 16px;
-    gap: .55rem;
-  }
   .fab {
     padding: 0;
     width: 56px;
     height: 56px;
     justify-content: center;
     gap: 0;
+    bottom: 16px;
   }
+  .fab-email { left: 16px; }
+  .fab-phone { right: 16px; }
   .fab-text { display: none; }
   .fab-icon { font-size: 22px; width: 24px; height: 24px; }
 }

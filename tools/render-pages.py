@@ -10,7 +10,7 @@ import json, os, sys, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 BASE = 'https://www.northstaffordshireremovals.co.uk'
-CSS_V = '20260524n'
+CSS_V = '20260524o'
 
 # ─── Shared boilerplate ────────────────────────────────────────────────
 
@@ -196,24 +196,19 @@ def cta_strip(depth=0):
 
 
 def fab_stack(depth=0):
-    """Bottom-right sticky FAB stack: orange Quote pill on top, navy
-    Phone pill below (with orange phone icon). Mobile collapses both
-    to 56px circles."""
-    p = '../' * depth
-    return f'''  <div class="fab-stack" aria-label="Quick actions">
-    <a class="fab fab-quote" href="{p}quote.html" aria-label="Get a free removals quote">
-      <span class="fab-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="m9 16.17-3.88-3.88a1 1 0 0 0-1.41 1.42l4.59 4.59a1 1 0 0 0 1.41 0L20.71 7.71a1 1 0 0 0-1.41-1.42L9 16.17z"/></svg>
-      </span>
-      <span class="fab-text">Get a free quote</span>
-    </a>
-    <a class="fab fab-phone" href="tel:+441782939124" aria-label="Call North Staffordshire Removals on 01782 939124">
-      <span class="fab-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg>
-      </span>
-      <span class="fab-text">Call 01782 939124</span>
-    </a>
-  </div>'''
+    """Two sticky FABs flanking the bottom of the viewport:
+    bottom-LEFT  = orange email FAB (envelope icon, mailto)
+    bottom-RIGHT = navy phone FAB  (orange phone icon, pulsing, tel)
+    Mobile collapses both to 56px circles. Icons painted by CSS mask
+    so the rendering survives any cached HTML state."""
+    return f'''  <a class="fab fab-email" href="mailto:enquiries@northstaffordshireremovals.co.uk" aria-label="Email North Staffordshire Removals">
+    <span class="fab-icon" aria-hidden="true"></span>
+    <span class="fab-text">Email us</span>
+  </a>
+  <a class="fab fab-phone" href="tel:+441782939124" aria-label="Call North Staffordshire Removals on 01782 939124">
+    <span class="fab-icon" aria-hidden="true"></span>
+    <span class="fab-text">Call 01782 939124</span>
+  </a>'''
 
 # Back-compat constant; kept in case any older render still imports it.
 PHONE_FAB = '''  <a class="phone-fab" href="tel:+441782939124" aria-label="Call North Staffordshire Removals on 01782 939124">

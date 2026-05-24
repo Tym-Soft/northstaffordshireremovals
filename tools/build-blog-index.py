@@ -1,11 +1,31 @@
 #!/usr/bin/env python3
-"""Rebuild blog/index.html — newest posts first, capped at 9."""
+"""Rebuild blog/index.html — newest posts first, ALL posts shown."""
 from __future__ import annotations
-import glob, json, os, re, sys
+import glob, importlib.util, json, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
-BLOG_INDEX_MAX = 9
+# Show every blog post on the hub (previously capped at 9). The hub
+# is the canonical browse-all-posts page; pagination can come later
+# if the list grows much beyond 50 posts.
+BLOG_INDEX_MAX = 9999
+
+# Load BLOG_META + CTA shortcuts from render-pages.py so we can use
+# the per-blog CTA text ("See 2026 pricing", "Read the piano guide",
+# etc.) instead of spamming "Read article" on every card.
+_rp_path = os.path.join(ROOT, 'tools', 'render-pages.py')
+_spec = importlib.util.spec_from_file_location('_rp', _rp_path)
+_rp = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_rp)
+_BLOG_META_BY_HREF = {m['href']: m for m in _rp.BLOG_META.values()}
+
+
+def cta_for(slug: str) -> str:
+    """Return the per-blog CTA text from BLOG_META, falling back to
+    a generic 'Read article' if the slug isn't in the metadata."""
+    href = f'blog/{slug}'
+    meta = _BLOG_META_BY_HREF.get(href)
+    return (meta.get('cta') if meta else None) or 'Read article'
 
 
 def post_meta(path: str) -> dict | None:
@@ -55,7 +75,7 @@ def main() -> int:
             <time datetime="{p['date']}">{p['date']}</time>
             <h3><a href="{p['slug']}">{p['headline']}</a></h3>
             <p>{p['desc']}</p>
-            <a class="blog-card-link" href="{p['slug']}">Read article →</a>
+            <a class="blog-card-link" href="{p['slug']}">{cta_for(p['slug'])}</a>
           </div>
         </article>''')
 

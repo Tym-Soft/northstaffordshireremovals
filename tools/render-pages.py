@@ -10,7 +10,7 @@ import json, os, sys, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 BASE = 'https://www.northstaffordshireremovals.co.uk'
-CSS_V = '20260525b'
+CSS_V = '20260525c'
 
 # ─── Shared boilerplate ────────────────────────────────────────────────
 
@@ -625,7 +625,7 @@ def nav(current, depth=0):
 {areas_dd}
             </ul>
           </li>
-          <li><a href="{p}blog/"{' aria-current="page"' if current == 'blog' else ''}>Advice</a></li>
+          <li><a href="{p}blog/"{' aria-current="page"' if current == 'blog' else ''}>Blog</a></li>
           <li><a href="{p}reviews.html"{' aria-current="page"' if current == 'reviews' else ''}>Reviews</a></li>
           <li><a href="{p}resources/storage-calculator.html"{' aria-current="page"' if current == 'calc' else ''}>Calculator</a></li>
           <li class="nav-cta-row"><a href="{p}quote.html" class="nav-cta">Free Quote</a></li>

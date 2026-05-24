@@ -265,6 +265,14 @@ BLOG_META = {
         'href': 'blog/student-moves-keele-staffordshire-guide.html',
         'cta': 'Read the student guide',
     },
+    'professional-packing-services-staffordshire-2026': {
+        'title': 'Professional packing services Staffordshire 2026',
+        'card_desc': "Full-pack, fragile-only or DIY? Honest 2026 cost comparison, the insurance gap on self-packed cartons, and how to decide what suits your move.",
+        'img': 'woman-packing-bedroom-floor.jpg',
+        'alt': 'Removal crew member packing bedroom contents into labelled cartons',
+        'href': 'blog/professional-packing-services-staffordshire-2026.html',
+        'cta': 'See packing options',
+    },
 }
 
 # Shorthand aliases for the universal blog slugs (used heavily below).
@@ -291,6 +299,7 @@ _MVAN = 'man-and-van-vs-full-removal-staffordshire'
 _WGLV = 'what-is-a-white-glove-moving-service'
 _HCLR = 'house-clearance-after-bereavement-staffordshire'
 _STUD = 'student-moves-keele-staffordshire-guide'
+_PACK = 'professional-packing-services-staffordshire-2026'
 
 # Per-page mapping. Key is the auto-derived page key (see
 # _auto_related_key below). Pages absent from this dict render no
@@ -305,7 +314,7 @@ RELATED_FOR = {
     'services-index':                    [_COST, _RELI, _WGLV],
     'services-domestic-removals':        [_COST, _DECL, _PETS],
     'services-commercial-removals':      [_OFFC, _EURO, _RELI],
-    'services-packing-services':         [_FRAG, _DECL, _CLEA],
+    'services-packing-services':         [_PACK, _FRAG, _DECL],
     'services-storage-services':         [_STOR, _DOWN, _INSU],
     'services-piano-removals':           [_PIAN, _INSU, _FRAG],
     'services-man-and-van':              [_MVAN, _DIY,  _STUD],
@@ -350,10 +359,10 @@ RELATED_FOR = {
     'areas-covered-removals-eccleshall':         [_ANTI, _WGLV, _DOWN],
 
     # East Staffs (Burton brewery town)
-    'areas-covered-removals-burton-on-trent':    [_OFFC, _EURO, _COST],
+    'areas-covered-removals-burton-on-trent':    [_OFFC, _RELI, _COST],
 
     # Peak District / Cheshire borderland
-    'areas-covered-removals-buxton':             [_INSU, _STOR, _DIY],
+    'areas-covered-removals-buxton':             [_INSU, _STOR, _ANTI],
     'areas-covered-removals-crewe':              [_RELI, _BTD,  _MVAN],
 
     # South Staffs cathedral + commuter belt
@@ -362,25 +371,25 @@ RELATED_FOR = {
     'areas-covered-removals-tamworth':           [_PETS, _MVAN, _BTY],
 
     # ── RESOURCES ────────────────────────────────────────
-    'resources-storage-calculator':      [_COST, _STOR, _ELDR],
+    'resources-storage-calculator':      [_COST, _STOR, _HIDD],
 
     # ── ROOT UTILITY ─────────────────────────────────────
     'about-us':                          [_RELI, _HIDD, _INSU],
-    'reviews':                           [_RELI, _INSU, _PIAN],
+    'reviews':                           [_RELI, _INSU, _WGLV],
     'quote':                             [_COST, _BTY,  _HIDD],
 
     # ── BLOG POSTS (per-post, never self-referential) ────
     'blog-cost-of-moving-house-stoke-on-trent-2026':     [_HIDD, _DIY,  _BTY],
     'blog-choosing-a-reliable-removal-company-stoke':    [_INSU, _ANTI, _HIDD],
     'blog-hidden-costs-of-moving-house':                 [_COST, _RELI, _DIY],
-    'blog-best-time-of-year-to-move-house-staffordshire': [_BTD,  _COST, _PETS],
-    'blog-best-time-of-day-to-move-house':               [_BTY,  _COST, _DECL],
+    'blog-best-time-of-year-to-move-house-staffordshire': [_BTD,  _COST, _OFFC],
+    'blog-best-time-of-day-to-move-house':               [_BTY,  _COST, _PETS],
     'blog-moving-home-with-pets-staffordshire-checklist': [_CLEA, _DECL, _BTD],
     'blog-how-to-pack-fragile-items-properly':           [_DECL, _INSU, _ANTI],
-    'blog-self-storage-vs-full-service-storage':         [_DOWN, _STOR, _COST],
+    'blog-self-storage-vs-full-service-storage':         [_DOWN, _INSU, _COST],
     'blog-how-to-declutter-before-a-house-move':         [_FRAG, _DOWN, _CLEA],
     'blog-diy-vs-professional-house-move-cost':          [_COST, _HIDD, _MVAN],
-    'blog-move-in-cleaning-checklist-staffordshire':     [_DECL, _FRAG, _BTD],
+    'blog-move-in-cleaning-checklist-staffordshire':     [_DECL, _FRAG, _PETS],
     'blog-moving-with-elderly-parents-staffordshire':    [_DOWN, _HCLR, _RELI],
     'blog-downsizing-storage-staffordshire':             [_STOR, _ELDR, _DECL],
     'blog-office-relocation-planning-timeline':          [_EURO, _INTL, _RELI],
@@ -393,6 +402,7 @@ RELATED_FOR = {
     'blog-what-is-a-white-glove-moving-service':         [_ANTI, _PIAN, _INSU],
     'blog-house-clearance-after-bereavement-staffordshire': [_ELDR, _DOWN, _DECL],
     'blog-student-moves-keele-staffordshire-guide':      [_MVAN, _COST, _BTY],
+    'blog-professional-packing-services-staffordshire-2026': [_FRAG, _DECL, _INSU],
 
     # ── INTENTIONALLY UNMAPPED (no related section) ──────
     # 404.html, privacy-policy.html, terms.html, careers.html, blog/index.html

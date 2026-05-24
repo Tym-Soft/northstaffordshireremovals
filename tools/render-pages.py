@@ -241,6 +241,14 @@ BLOG_META = {
         'href': 'blog/man-and-van-vs-full-removal-staffordshire.html',
         'cta': 'See the comparison',
     },
+    'what-is-a-white-glove-moving-service': {
+        'title': 'What is a white-glove moving service?',
+        'card_desc': "The seven things that distinguish white-glove from a standard removal, who actually needs it, the declared-value insurance story, and 2026 costs.",
+        'img': 'wrapping-fragile-items-paper.jpg',
+        'alt': 'Removal crew member wrapping fragile items in acid-free archival paper',
+        'href': 'blog/what-is-a-white-glove-moving-service.html',
+        'cta': 'See white-glove',
+    },
 }
 
 # Shorthand aliases for the universal blog slugs (used heavily below).
@@ -264,6 +272,7 @@ _ANTI = 'antiques-moving-staffordshire-specialist-guide'
 _INTL = 'international-removals-from-the-uk-2026-guide'
 _EURO = 'european-removals-from-staffordshire-2026'
 _MVAN = 'man-and-van-vs-full-removal-staffordshire'
+_WGLV = 'what-is-a-white-glove-moving-service'
 
 # Per-page mapping. Key is the auto-derived page key (see
 # _auto_related_key below). Pages absent from this dict render no
@@ -285,7 +294,7 @@ RELATED_FOR = {
     'services-house-clearance':          [_DECL, _DOWN, _HIDD],
     'services-student-removals':         [_COST, _DIY,  _BTY],
     'services-antiques-moving':          [_ANTI, _INSU, _FRAG],
-    'services-white-glove-service':      [_FRAG, _INSU, _RELI],
+    'services-white-glove-service':      [_WGLV, _ANTI, _INSU],
     'services-packaging-shop':           [_FRAG, _DECL, _COST],
 
     # ── AREAS (hub + 20 town pages) ──────────────────────
@@ -343,6 +352,7 @@ RELATED_FOR = {
     'blog-international-removals-from-the-uk-2026-guide': [_INSU, _HIDD, _RELI],
     'blog-european-removals-from-staffordshire-2026':    [_INTL, _INSU, _HIDD],
     'blog-man-and-van-vs-full-removal-staffordshire':    [_DIY,  _COST, _HIDD],
+    'blog-what-is-a-white-glove-moving-service':         [_ANTI, _INSU, _PIAN],
 
     # ── INTENTIONALLY UNMAPPED (no related section) ──────
     # 404.html, privacy-policy.html, terms.html, careers.html, blog/index.html

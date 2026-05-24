@@ -262,7 +262,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <!-- blog (20 URLs) -->
+  <!-- blog (21 URLs) -->
   <url>
     <loc>https://www.northstaffordshireremovals.co.uk/blog/antiques-moving-staffordshire-specialist-guide.html</loc>
     <lastmod>2026-05-24</lastmod>
@@ -337,6 +337,12 @@
   </url>
   <url>
     <loc>https://www.northstaffordshireremovals.co.uk/blog/international-removals-from-the-uk-2026-guide.html</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.northstaffordshireremovals.co.uk/blog/man-and-van-vs-full-removal-staffordshire.html</loc>
     <lastmod>2026-05-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

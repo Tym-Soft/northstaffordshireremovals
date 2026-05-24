@@ -233,6 +233,14 @@ BLOG_META = {
         'href': 'blog/european-removals-from-staffordshire-2026.html',
         'cta': 'Read the EU guide',
     },
+    'man-and-van-vs-full-removal-staffordshire': {
+        'title': 'Man and van vs full removal — Staffordshire 2026',
+        'card_desc': "When man and van wins, when it loses, the insurance reality of cheap quotes, and an honest 2026 cost comparison across all the common Staffordshire move sizes.",
+        'img': 'man-carrying-cardboard-box-home.jpg',
+        'alt': 'Man carrying a single cardboard box into a home during a small-scale move',
+        'href': 'blog/man-and-van-vs-full-removal-staffordshire.html',
+        'cta': 'See the comparison',
+    },
 }
 
 # Shorthand aliases for the universal blog slugs (used heavily below).
@@ -255,6 +263,7 @@ _PIAN = 'moving-a-piano-staffordshire-guide-2026'
 _ANTI = 'antiques-moving-staffordshire-specialist-guide'
 _INTL = 'international-removals-from-the-uk-2026-guide'
 _EURO = 'european-removals-from-staffordshire-2026'
+_MVAN = 'man-and-van-vs-full-removal-staffordshire'
 
 # Per-page mapping. Key is the auto-derived page key (see
 # _auto_related_key below). Pages absent from this dict render no
@@ -270,7 +279,7 @@ RELATED_FOR = {
     'services-packing-services':         [_FRAG, _DECL, _HIDD],
     'services-storage-services':         [_STOR, _DOWN, _INSU],
     'services-piano-removals':           [_PIAN, _INSU, _FRAG],
-    'services-man-and-van':              [_DIY,  _COST, _HIDD],
+    'services-man-and-van':              [_MVAN, _DIY,  _COST],
     'services-european-removals':        [_EURO, _INTL, _INSU],
     'services-international-removals':   [_INTL, _INSU, _RELI],
     'services-house-clearance':          [_DECL, _DOWN, _HIDD],
@@ -333,6 +342,7 @@ RELATED_FOR = {
     'blog-antiques-moving-staffordshire-specialist-guide': [_INSU, _PIAN, _RELI],
     'blog-international-removals-from-the-uk-2026-guide': [_INSU, _HIDD, _RELI],
     'blog-european-removals-from-staffordshire-2026':    [_INTL, _INSU, _HIDD],
+    'blog-man-and-van-vs-full-removal-staffordshire':    [_DIY,  _COST, _HIDD],
 
     # ── INTENTIONALLY UNMAPPED (no related section) ──────
     # 404.html, privacy-policy.html, terms.html, careers.html, blog/index.html

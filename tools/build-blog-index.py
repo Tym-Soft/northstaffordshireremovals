@@ -9,6 +9,10 @@ BLOG_INDEX_MAX = 9
 
 
 def post_meta(path: str) -> dict | None:
+    """Extract blog post metadata for the index card.
+    Image comes from the BlogPosting schema's `image` field (reliable
+    — always the hero image, always the correct filename) rather than
+    scraping the first <img> in the HTML (which catches the nav logo)."""
     html = open(path, encoding='utf-8').read()
     for m in re.finditer(r'<script type="application/ld\+json">(.*?)</script>', html, re.S):
         try: data = json.loads(m.group(1))
@@ -17,13 +21,19 @@ def post_meta(path: str) -> dict | None:
         for it in items:
             if isinstance(it, dict) and it.get('@type') == 'BlogPosting':
                 desc_m = re.search(r'<meta\s+name="description"\s+content="([^"]+)"', html, re.I)
-                hero_m = re.search(r'<img[^>]+src="([^"]+)"[^>]+alt', html, re.I)
+                # Schema image is typically a full URL — strip everything
+                # before /images/ so we end up with just images/filename.jpg
+                img_url = it.get('image') or ''
+                if isinstance(img_url, list): img_url = img_url[0] if img_url else ''
+                if isinstance(img_url, dict): img_url = img_url.get('url', '')
+                img_m = re.search(r'images/[^/]+\.(?:jpg|jpeg|png|webp)$', img_url, re.I)
+                img = img_m.group(0) if img_m else 'images/family-celebrating-keys-new-home.jpg'
                 return {
                     'slug': os.path.basename(path),
                     'date': it.get('datePublished'),
                     'headline': it.get('headline') or '',
                     'desc': desc_m.group(1) if desc_m else '',
-                    'img': hero_m.group(1) if hero_m else 'images/family-celebrating-keys-new-home.jpg',
+                    'img': img,
                 }
     return None
 
@@ -55,8 +65,12 @@ def main() -> int:
     if not os.path.exists(idx_path):
         print('blog/index.html missing — create it first'); return 1
     html = open(idx_path).read()
-    new = re.sub(r'(<div class="np-blog-grid">)(.*?)(</div>\s*</div>)',
-                 lambda m: m.group(1) + '\n' + grid + '\n      ' + m.group(3),
+    # Tolerate any attributes on the wrapper (style, data-*, etc.)
+    # so the regex matches whether the template has inline styles or not.
+    # Also strip the embedded <style> block that older templates put
+    # inside the wrapper — modern .np-blog-grid CSS lives in site.css.
+    new = re.sub(r'(<div class="np-blog-grid"[^>]*>)(.*?)(</div>\s*</div>)',
+                 lambda m: '<div class="np-blog-grid">\n' + grid + '\n      ' + m.group(3),
                  html, count=1, flags=re.S)
     open(idx_path, 'w').write(new)
     print(f'blog/index.html updated with {len(posts)} posts')

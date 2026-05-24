@@ -10,7 +10,7 @@ import json, os, sys, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 BASE = 'https://www.northstaffordshireremovals.co.uk'
-CSS_V = '20260525a'
+CSS_V = '20260525b'
 
 # ─── Shared boilerplate ────────────────────────────────────────────────
 

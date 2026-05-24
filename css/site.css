@@ -881,10 +881,12 @@ li { margin-bottom: .3rem; }
 .related-card:hover .related-arrow::after { transform: translateX(4px); }
 
 /* ─── Blog hub index grid (/blog/) ─────────────────────
-   Compact 3-col grid of blog post cards. Previously each card
-   was rendering at native browser size (no CSS existed), making
-   the hub page roughly 100vh per post. Now matches the related-
-   reading card style for visual consistency. */
+   4-column grid matching the home-page services-grid pattern
+   (small cards, image + title + description + READ ARTICLE
+   link). Original blog/index.html template carried hardcoded
+   inline styles on every card which were overriding the CSS;
+   cleaned up via build-blog-index.py + the cleanup edit to
+   blog/index.html itself. */
 .np-blog-grid {
   display: grid;
   gap: var(--gap-md);
@@ -892,7 +894,7 @@ li { margin-bottom: .3rem; }
   margin: clamp(1.25rem, 2vw, 1.75rem) 0;
 }
 @media (min-width: 580px) { .np-blog-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 880px) { .np-blog-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 960px) { .np-blog-grid { grid-template-columns: repeat(4, 1fr); } }
 
 .blog-card {
   background: var(--paper);

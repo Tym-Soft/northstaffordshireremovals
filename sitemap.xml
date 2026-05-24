@@ -262,7 +262,13 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <!-- blog (17 URLs) -->
+  <!-- blog (18 URLs) -->
+  <url>
+    <loc>https://www.northstaffordshireremovals.co.uk/blog/antiques-moving-staffordshire-specialist-guide.html</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
   <url>
     <loc>https://www.northstaffordshireremovals.co.uk/blog/best-time-of-day-to-move-house.html</loc>
     <lastmod>2026-05-24</lastmod>

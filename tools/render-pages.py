@@ -209,6 +209,14 @@ BLOG_META = {
         'href': 'blog/moving-a-piano-staffordshire-guide-2026.html',
         'cta': 'Read the piano guide',
     },
+    'antiques-moving-staffordshire-specialist-guide': {
+        'title': 'Antiques moving in Staffordshire — specialist guide',
+        'card_desc': "Crating, declared-value insurance, provenance documents and 2026 prices for moving antiques across Staffordshire — from a single piece to a full collection.",
+        'img': 'couple-unpacking-photo-frames-memories.jpg',
+        'alt': 'Couple carefully unpacking framed family memorabilia after a Staffordshire move',
+        'href': 'blog/antiques-moving-staffordshire-specialist-guide.html',
+        'cta': 'Read the antiques guide',
+    },
 }
 
 # Shorthand aliases for the universal blog slugs (used heavily below).
@@ -228,6 +236,7 @@ _DOWN = 'downsizing-storage-staffordshire'
 _OFFC = 'office-relocation-planning-timeline'
 _INSU = 'moving-insurance-explained'
 _PIAN = 'moving-a-piano-staffordshire-guide-2026'
+_ANTI = 'antiques-moving-staffordshire-specialist-guide'
 
 # Per-page mapping. Key is the auto-derived page key (see
 # _auto_related_key below). Pages absent from this dict render no
@@ -248,7 +257,7 @@ RELATED_FOR = {
     'services-international-removals':   [_INSU, _RELI, _HIDD],
     'services-house-clearance':          [_DECL, _DOWN, _HIDD],
     'services-student-removals':         [_COST, _DIY,  _BTY],
-    'services-antiques-moving':          [_FRAG, _INSU, _RELI],
+    'services-antiques-moving':          [_ANTI, _INSU, _FRAG],
     'services-white-glove-service':      [_FRAG, _INSU, _RELI],
     'services-packaging-shop':           [_FRAG, _DECL, _COST],
 
@@ -303,6 +312,7 @@ RELATED_FOR = {
     'blog-office-relocation-planning-timeline':          [_RELI, _HIDD, _INSU],
     'blog-moving-insurance-explained':                   [_RELI, _HIDD, _FRAG],
     'blog-moving-a-piano-staffordshire-guide-2026':      [_INSU, _FRAG, _RELI],
+    'blog-antiques-moving-staffordshire-specialist-guide': [_INSU, _PIAN, _RELI],
 
     # ── INTENTIONALLY UNMAPPED (no related section) ──────
     # 404.html, privacy-policy.html, terms.html, careers.html, blog/index.html

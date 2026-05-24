@@ -10,7 +10,7 @@ import json, os, sys, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 BASE = 'https://www.northstaffordshireremovals.co.uk'
-CSS_V = '20260525d'
+CSS_V = '20260525e'
 
 # ─── Shared boilerplate ────────────────────────────────────────────────
 
@@ -666,16 +666,12 @@ def cta_strip(depth=0):
 
 
 def fab_stack(depth=0):
-    """Two sticky FABs flanking the bottom of the viewport:
-    bottom-LEFT  = orange email FAB (envelope icon, mailto)
-    bottom-RIGHT = navy phone FAB  (orange phone icon, pulsing, tel)
-    Mobile collapses both to 56px circles. Icons painted by CSS mask
-    so the rendering survives any cached HTML state."""
-    return f'''  <a class="fab fab-email" href="mailto:enquiries@northstaffordshireremovals.co.uk" aria-label="Email North Staffordshire Removals">
-    <span class="fab-icon" aria-hidden="true"></span>
-    <span class="fab-text">Email us</span>
-  </a>
-  <a class="fab fab-phone" href="tel:+441782939124" aria-label="Call North Staffordshire Removals on 01782 939124">
+    """Sticky FAB at the bottom-RIGHT of the viewport: navy phone
+    FAB with orange phone icon and pulse animation. Email FAB was
+    removed per user request — phone is the primary contact CTA;
+    email is still accessible via the nav drawer, footer, and the
+    quote form on every page. Mobile collapses to 56px circle."""
+    return f'''  <a class="fab fab-phone" href="tel:+441782939124" aria-label="Call North Staffordshire Removals on 01782 939124">
     <span class="fab-icon" aria-hidden="true"></span>
     <span class="fab-text">Call 01782 939124</span>
   </a>'''

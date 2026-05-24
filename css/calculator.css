@@ -2100,3 +2100,192 @@ display: none !important;
 body[data-calc-mode="removals"] .qc-num[data-show-modes]:not([data-show-modes~="removals"]),
 body[data-calc-mode="storage"] .qc-num[data-show-modes]:not([data-show-modes~="storage"]),
 body[data-calc-mode="both"] .qc-num[data-show-modes]:not([data-show-modes~="both"]) {
+  display: none !important;
+}
+
+/* ─── Step 3 — Round-trip distance subsection ─────────────────
+   No .qc-distance-* rules existed before, so inputs inherited the
+   .qc-num input { font-size: 1.45rem } rule meant for the big cu-ft
+   field, placeholders rendered huge, and the Calculate button stayed
+   native-OS-styled. Adding proper styling matched to the calculator's
+   navy + bronze palette. Layout only — no JS/markup changes. */
+.qc-distance-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: 0.35rem;
+}
+.qc-distance-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.qc-distance-field-label {
+  font-family: "Inter", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--brand-bronze, #ef6c1d);
+}
+.qc-distance-row-inputs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr);
+  gap: 0.5rem;
+}
+@media (max-width: 540px) {
+  .qc-distance-row-inputs { grid-template-columns: 1fr; }
+}
+.qc-distance-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+.qc-distance-input-label {
+  font-family: "Inter", sans-serif;
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.62);
+  letter-spacing: 0.02em;
+}
+/* Use !important to override the big .qc-num input baseline that
+   would otherwise make these inputs 1.45rem (huge) and borderless. */
+.qc-distance-house,
+.qc-distance-address {
+  font-family: "Inter", sans-serif !important;
+  font-size: 0.92rem !important;
+  font-weight: 500 !important;
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: 7px !important;
+  padding: 0.55rem 0.7rem !important;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.qc-distance-house::placeholder,
+.qc-distance-address::placeholder {
+  color: rgba(255, 255, 255, 0.34);
+  font-weight: 400;
+  font-size: 0.82rem;
+  letter-spacing: 0;
+}
+.qc-distance-house:focus,
+.qc-distance-address:focus {
+  border-color: var(--brand-bronze, #ef6c1d) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+.qc-distance-calc-btn {
+  align-self: flex-start;
+  font-family: "Inter", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: var(--brand-bronze, #ef6c1d);
+  border: 0;
+  border-radius: 7px;
+  padding: 0.6rem 1.05rem;
+  cursor: pointer;
+  margin-top: 0.4rem;
+  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
+}
+.qc-distance-calc-btn:hover {
+  background: #cf5710;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.28);
+}
+.qc-distance-calc-btn:active { transform: translateY(0); }
+.qc-distance-calc-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.qc-distance-status {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.72);
+  margin-top: 0.4rem;
+  font-style: italic;
+}
+
+.qc-distance-result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.7rem 0.85rem;
+  margin-top: 0.55rem;
+  background: rgba(239, 108, 29, 0.18);
+  border: 1px solid rgba(239, 108, 29, 0.42);
+  border-radius: 8px;
+}
+.qc-distance-result-miles {
+  font-family: "Inter", sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.qc-distance-result-detail {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.qc-distance-manual {
+  margin-top: 0.4rem;
+}
+.qc-distance-manual > summary {
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.72);
+  padding: 0.35rem 0;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  user-select: none;
+}
+.qc-distance-manual > summary::-webkit-details-marker { display: none; }
+.qc-distance-manual > summary::before {
+  content: "▸";
+  font-size: 0.7rem;
+  transition: transform 0.15s ease;
+  display: inline-block;
+}
+.qc-distance-manual[open] > summary::before { transform: rotate(90deg); }
+.qc-distance-manual > summary:hover { color: var(--brand-bronze, #ef6c1d); }
+.qc-distance-manual-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+.qc-distance-manual-row > span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.62);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.qc-distance-manual-row > input {
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 7px;
+  padding: 0.5rem 0.7rem;
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  font-variant-numeric: tabular-nums;
+}
+.qc-distance-manual-row > input:focus {
+  border-color: var(--brand-bronze, #ef6c1d);
+  background: rgba(255, 255, 255, 0.12);
+}

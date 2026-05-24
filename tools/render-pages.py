@@ -10,7 +10,7 @@ import json, os, sys, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 BASE = 'https://www.northstaffordshireremovals.co.uk'
-CSS_V = '20260524e'
+CSS_V = '20260524g'
 
 # ─── Shared boilerplate ────────────────────────────────────────────────
 
@@ -144,13 +144,15 @@ def nav(current, depth=0):
           <li><a href="{home}"{' aria-current="page"' if current == 'home' else ''}>Home</a></li>
           <li><a href="{p}about-us.html"{' aria-current="page"' if current == 'about' else ''}>About</a></li>
           <li class="has-dropdown">
-            <a href="{p}services/"{' aria-current="page"' if current == 'services' else ''} aria-haspopup="true">Services <span class="dd-caret" aria-hidden="true">▾</span></a>
+            <a href="{p}services/"{' aria-current="page"' if current == 'services' else ''} aria-haspopup="true">Services</a>
+            <button class="dd-toggle" type="button" aria-expanded="false" aria-label="Toggle services menu">▾</button>
             <ul class="nav-dropdown">
 {svc_dd}
             </ul>
           </li>
           <li class="has-dropdown">
-            <a href="{p}areas-covered/"{' aria-current="page"' if current == 'areas' else ''} aria-haspopup="true">Areas <span class="dd-caret" aria-hidden="true">▾</span></a>
+            <a href="{p}areas-covered/"{' aria-current="page"' if current == 'areas' else ''} aria-haspopup="true">Areas</a>
+            <button class="dd-toggle" type="button" aria-expanded="false" aria-label="Toggle areas menu">▾</button>
             <ul class="nav-dropdown nav-dropdown-2col">
 {areas_dd}
             </ul>

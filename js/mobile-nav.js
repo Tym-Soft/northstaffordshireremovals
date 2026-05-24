@@ -14,6 +14,23 @@
     });
   }
 
+  // ── Mobile dropdown toggles ────────────────────────────
+  // Each .has-dropdown carries a small caret button next to the parent link.
+  // Tapping the caret toggles .is-expanded on the LI (CSS animates the
+  // dropdown open/closed). Tapping the parent link itself navigates as
+  // normal — the caret is the dedicated expand affordance.
+  var ddToggles = document.querySelectorAll('.has-dropdown .dd-toggle');
+  for (var i = 0; i < ddToggles.length; i++) {
+    ddToggles[i].addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var li = this.closest('.has-dropdown');
+      if (!li) return;
+      var expanded = li.classList.toggle('is-expanded');
+      this.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    });
+  }
+
   // ── file:// browsing fallback ──────────────────────────
   // Two cases under file:// (no server to do directory resolution):
   //   1. href="/"          → site-root index.html, found by walking back up

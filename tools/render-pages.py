@@ -249,6 +249,14 @@ BLOG_META = {
         'href': 'blog/what-is-a-white-glove-moving-service.html',
         'cta': 'See white-glove',
     },
+    'house-clearance-after-bereavement-staffordshire': {
+        'title': 'House clearance after bereavement — Staffordshire guide',
+        'card_desc': "What bereavement clearance involves, the realistic 3–8 week timeline, sensitive handling of family-keeper items, and honest 2026 costs in Staffordshire.",
+        'img': 'stacked-removal-boxes-hallway.jpg',
+        'alt': 'Stacked removal boxes in the hallway of a property during a house clearance',
+        'href': 'blog/house-clearance-after-bereavement-staffordshire.html',
+        'cta': 'Read the clearance guide',
+    },
 }
 
 # Shorthand aliases for the universal blog slugs (used heavily below).
@@ -273,6 +281,7 @@ _INTL = 'international-removals-from-the-uk-2026-guide'
 _EURO = 'european-removals-from-staffordshire-2026'
 _MVAN = 'man-and-van-vs-full-removal-staffordshire'
 _WGLV = 'what-is-a-white-glove-moving-service'
+_HCLR = 'house-clearance-after-bereavement-staffordshire'
 
 # Per-page mapping. Key is the auto-derived page key (see
 # _auto_related_key below). Pages absent from this dict render no
@@ -291,7 +300,7 @@ RELATED_FOR = {
     'services-man-and-van':              [_MVAN, _DIY,  _COST],
     'services-european-removals':        [_EURO, _INTL, _INSU],
     'services-international-removals':   [_INTL, _INSU, _RELI],
-    'services-house-clearance':          [_DECL, _DOWN, _HIDD],
+    'services-house-clearance':          [_HCLR, _ELDR, _DOWN],
     'services-student-removals':         [_COST, _DIY,  _BTY],
     'services-antiques-moving':          [_ANTI, _INSU, _FRAG],
     'services-white-glove-service':      [_WGLV, _ANTI, _INSU],
@@ -353,6 +362,7 @@ RELATED_FOR = {
     'blog-european-removals-from-staffordshire-2026':    [_INTL, _INSU, _HIDD],
     'blog-man-and-van-vs-full-removal-staffordshire':    [_DIY,  _COST, _HIDD],
     'blog-what-is-a-white-glove-moving-service':         [_ANTI, _INSU, _PIAN],
+    'blog-house-clearance-after-bereavement-staffordshire': [_ELDR, _DOWN, _DECL],
 
     # ── INTENTIONALLY UNMAPPED (no related section) ──────
     # 404.html, privacy-policy.html, terms.html, careers.html, blog/index.html

@@ -334,38 +334,11 @@ def careers_page():
 
 # ─── Quote (form page) ──────────────────────────────────────────
 def quote_page():
-    form = '''    <section>
-      <div class="container">
-        <div style="max-width:780px;margin:0 auto">
-          <div class="quote-form" id="quote-form" style="border-top:5px solid var(--orange);padding:2rem 1.75rem">
-            <h2>Tell us about your move</h2>
-            <p class="qf-sub">Most customers receive a written, fixed-price quote within 24 hours. No card details, no obligation.</p>
-            <form action="https://formspree.io/f/your-form-id" method="post" novalidate>
-              <div class="qf-row two">
-                <div class="qf-field"><label for="qf-name">Your name</label><input id="qf-name" name="name" type="text" autocomplete="name" required></div>
-                <div class="qf-field"><label for="qf-phone">Phone</label><input id="qf-phone" name="phone" type="tel" autocomplete="tel" required></div>
-              </div>
-              <div class="qf-row"><div class="qf-field"><label for="qf-email">Email</label><input id="qf-email" name="email" type="email" autocomplete="email" required></div></div>
-              <div class="qf-row two">
-                <div class="qf-field"><label for="qf-from">Moving from (postcode)</label><input id="qf-from" name="from" type="text" autocomplete="postal-code" placeholder="ST1 1AA" required></div>
-                <div class="qf-field"><label for="qf-to">Moving to (postcode)</label><input id="qf-to" name="to" type="text" autocomplete="postal-code" placeholder="ST5 1BB" required></div>
-              </div>
-              <div class="qf-row two">
-                <div class="qf-field"><label for="qf-size">Property size</label><select id="qf-size" name="size" required><option value="">Choose…</option><option>Studio / 1-bed flat</option><option>2-bed</option><option>3-bed</option><option>4+ bed</option><option>Office / commercial</option></select></div>
-                <div class="qf-field"><label for="qf-date">Preferred date</label><input id="qf-date" name="date" type="date"></div>
-              </div>
-              <div class="qf-row two">
-                <div class="qf-field"><label for="qf-services">Services needed</label><select id="qf-services" name="services"><option>Removal only</option><option>Removal + packing</option><option>Removal + storage</option><option>Removal + packing + storage</option><option>Office / commercial</option><option>Piano move</option></select></div>
-                <div class="qf-field"><label for="qf-survey">Survey preference</label><select id="qf-survey" name="survey"><option>Either home or video</option><option>Home visit</option><option>Video walk-through</option></select></div>
-              </div>
-              <div class="qf-row"><div class="qf-field"><label for="qf-notes">Anything else we should know?</label><input id="qf-notes" name="notes" type="text" placeholder="Access notes, large items, special requirements…"></div></div>
-              <button class="btn btn-block" type="submit">Send my quote request</button>
-              <p class="qf-foot">Prefer to talk? Call <a href="tel:+441782939124"><strong>01782 939124</strong></a> Mon–Fri 8am–6pm, Sat 9am–2pm.</p>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>'''
+    # The full quote form lives in the hero (via root_hero +
+    # rp.hero_quote_form). The standalone "Tell us about your move"
+    # section that previously sat below the hero was a duplicate of
+    # the same form — removed to avoid two identical forms on the
+    # same page. Customers land in the hero form first.
     why = block_prose_root(
         eyebrow="What happens next",
         h2='What happens after you submit',
@@ -379,7 +352,7 @@ def quote_page():
             "<strong>If you're shopping around.</strong> We expect customers to get multiple quotes — most do. Look closely at what each quote includes (and what it excludes). Cheap quotes often exclude packing materials, fuel surcharges, or insurance cover at the level you'd want. Our quote always includes all of these, so the headline number is the actual number you'll pay. Where we lose on price we usually win on certainty.",
             "<strong>If your situation is complex.</strong> Probate moves, downsizing with significant disposal, commercial relocations with IT decommissioning, multi-day moves with storage gaps, international relocations — none of these are unusual for us. Mention the complexity at quote stage and we'll allocate a more experienced surveyor and crew lead to your job. The fixed-price model still applies; it just takes a little longer to build the right quote.",
         ], alt_bg=True)
-    sections = form + why + block_why_cards_root(alt_bg=False) + rp.block_closing_prose(depth=0) + block_accred_root() + block_internal_links_root(root_internal_links(), alt_bg=True)
+    sections = why + block_why_cards_root(alt_bg=False) + rp.block_closing_prose(depth=0) + block_accred_root() + block_internal_links_root(root_internal_links(), alt_bg=True)
     quote_faqs = [
         ("How long does it take to get a written quote?",
          "Within 24 hours of the survey, typically. Submit the form and we'll confirm receipt within an hour during office hours, book the free survey within 2-3 days, and the written fixed-price quote follows the survey within 24 hours."),

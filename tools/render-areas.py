@@ -1007,7 +1007,7 @@ def render_area(a):
     sections.append(supplementary_block(a['town']))
     sections.append(rp.block_why_cards(
         eyebrow=f"Why {a['town']} chooses us",
-        h2=f"Six reasons {a['town']} chooses us first",
+        h2=f"Eight reasons {a['town']} chooses us first",
         alt_bg=False,
     ))
     sections.append(rp.block_closing_prose(depth=1))

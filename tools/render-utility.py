@@ -96,7 +96,7 @@ def block_prose_root(*, eyebrow, h2, paras, alt_bg=False, orange_bg=False):
 
 
 # Root-level helpers that wrap rp.block_why_cards / rp.block_accred for depth=0 pages
-def block_why_cards_root(eyebrow='Why choose us', h2='Six reasons Staffordshire chooses us first', alt_bg=False):
+def block_why_cards_root(eyebrow='Why choose us', h2='Eight reasons Staffordshire chooses us first', alt_bg=False):
     return rp.block_why_cards(eyebrow=eyebrow, h2=h2, alt_bg=alt_bg)
 def block_accred_root():
     return rp.block_accred()

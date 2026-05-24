@@ -10,7 +10,7 @@ import json, os, sys, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 BASE = 'https://www.northstaffordshireremovals.co.uk'
-CSS_V = '20260525f'
+CSS_V = '20260525g'
 
 # ─── Shared boilerplate ────────────────────────────────────────────────
 
@@ -1603,10 +1603,10 @@ def render_services():
           <p>Pick the service that fits your move below, or <a href="../quote.html">request a tailored quote</a>.</p>
         </div>
         <div class="services-grid">
-          <a class="svc-card" href="domestic-removals.html"><div class="svc-img"><img src="../images/couple-unpacking-boxes-new-home.jpg" alt="Couple unpacking removal boxes in their new home" width="1066" height="1600" loading="lazy"><span class="svc-icon" aria-hidden="true">🏠</span></div><div class="svc-body"><h3>Residential removals</h3><p>Full home moves across Staffordshire. Two- and four-man crews, modern lorries, fixed-price quote.</p><span class="arrow">Learn more</span></div></a>
-          <a class="svc-card" href="commercial-removals.html"><div class="svc-img"><img src="../images/stacked-cardboard-boxes-empty-room.jpg" alt="Cardboard boxes ready for a Stoke-on-Trent office relocation" width="1600" height="1066" loading="lazy"><span class="svc-icon" aria-hidden="true">🏢</span></div><div class="svc-body"><h3>Commercial removals</h3><p>Out-of-hours office relocations across the Potteries — IT decommission, crate hire, planned floor-by-floor lifts.</p><span class="arrow">Learn more</span></div></a>
-          <a class="svc-card" href="storage-services.html"><div class="svc-img"><img src="../images/cardboard-boxes-storage-warehouse.jpg" alt="Palletised storage containers in our Stoke-on-Trent warehouse" width="1200" height="800" loading="lazy"><span class="svc-icon" aria-hidden="true">🏬</span></div><div class="svc-body"><h3>Storage solutions</h3><p>Secure, alarmed container storage in Stoke-on-Trent. From a single pallet for a few weeks to long-term household storage.</p><span class="arrow">Learn more</span></div></a>
-          <a class="svc-card" href="packing-services.html"><div class="svc-img"><img src="../images/packing-kitchenware-cardboard-box.jpg" alt="Professional packer wrapping kitchenware into a moving box" width="1600" height="1066" loading="lazy"><span class="svc-icon" aria-hidden="true">📦</span></div><div class="svc-body"><h3>Packing services</h3><p>Professional packers can wrap and box an average house in a single day, or just handle the fragile kitchen and china.</p><span class="arrow">Learn more</span></div></a>
+          <a class="svc-card" href="domestic-removals.html"><div class="svc-img"><img src="../images/couple-unpacking-boxes-new-home.jpg" alt="Couple unpacking removal boxes in their new home" width="1066" height="1600" loading="lazy"><span class="svc-icon" aria-hidden="true">🏠</span></div><div class="svc-body"><h3>Residential removals</h3><p>Full home moves across Staffordshire. Two- and four-man crews, modern lorries, fixed-price quote.</p><span class="arrow">See home moves</span></div></a>
+          <a class="svc-card" href="commercial-removals.html"><div class="svc-img"><img src="../images/stacked-cardboard-boxes-empty-room.jpg" alt="Cardboard boxes ready for a Stoke-on-Trent office relocation" width="1600" height="1066" loading="lazy"><span class="svc-icon" aria-hidden="true">🏢</span></div><div class="svc-body"><h3>Commercial removals</h3><p>Out-of-hours office relocations across the Potteries — IT decommission, crate hire, planned floor-by-floor lifts.</p><span class="arrow">Plan office move</span></div></a>
+          <a class="svc-card" href="storage-services.html"><div class="svc-img"><img src="../images/cardboard-boxes-storage-warehouse.jpg" alt="Palletised storage containers in our Stoke-on-Trent warehouse" width="1200" height="800" loading="lazy"><span class="svc-icon" aria-hidden="true">🏬</span></div><div class="svc-body"><h3>Storage solutions</h3><p>Secure, alarmed container storage in Stoke-on-Trent. From a single pallet for a few weeks to long-term household storage.</p><span class="arrow">Reserve storage</span></div></a>
+          <a class="svc-card" href="packing-services.html"><div class="svc-img"><img src="../images/packing-kitchenware-cardboard-box.jpg" alt="Professional packer wrapping kitchenware into a moving box" width="1600" height="1066" loading="lazy"><span class="svc-icon" aria-hidden="true">📦</span></div><div class="svc-body"><h3>Packing services</h3><p>Professional packers can wrap and box an average house in a single day, or just handle the fragile kitchen and china.</p><span class="arrow">See packing tiers</span></div></a>
         </div>
       </div>
     </section>'''

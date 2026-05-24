@@ -1044,6 +1044,60 @@ footer.site-footer .legal a:hover { color: var(--orange-soft); }
   color: #fff;
 }
 
+/* ── "Flash to encourage calls" — gentle pulse + ring + icon wiggle.
+   Three layered effects, intentionally on different periods (2s ring,
+   1.6s icon) so the motion reads as organic rather than mechanical.
+   0.5 Hz cycle is well within WCAG 2.3.1 flash-rate limits, and the
+   whole stack is gated behind prefers-reduced-motion. */
+@keyframes fab-phone-pulse {
+  0% {
+    box-shadow:
+      0 10px 28px rgba(17, 54, 90, .28),
+      0 3px 8px rgba(0, 0, 0, .18),
+      0 0 0 0 rgba(239, 108, 29, .55);
+    transform: scale(1);
+  }
+  70% {
+    box-shadow:
+      0 10px 28px rgba(17, 54, 90, .28),
+      0 3px 8px rgba(0, 0, 0, .18),
+      0 0 0 18px rgba(239, 108, 29, 0);
+    transform: scale(1.05);
+  }
+  100% {
+    box-shadow:
+      0 10px 28px rgba(17, 54, 90, .28),
+      0 3px 8px rgba(0, 0, 0, .18),
+      0 0 0 0 rgba(239, 108, 29, 0);
+    transform: scale(1);
+  }
+}
+@keyframes fab-phone-ring {
+  0%, 60%, 100% { transform: rotate(0); }
+  8%  { transform: rotate(-14deg); }
+  16% { transform: rotate(12deg); }
+  24% { transform: rotate(-10deg); }
+  32% { transform: rotate(8deg); }
+  40% { transform: rotate(-4deg); }
+  48% { transform: rotate(2deg); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .fab-phone {
+    animation: fab-phone-pulse 2s ease-out infinite;
+  }
+  .fab-phone .fab-icon {
+    transform-origin: 50% 60%;
+    animation: fab-phone-ring 1.6s ease-in-out infinite;
+  }
+  /* Pause animations while user is interacting — let :hover transform win */
+  .fab-phone:hover,
+  .fab-phone:focus-visible,
+  .fab-phone:hover .fab-icon,
+  .fab-phone:focus-visible .fab-icon {
+    animation-play-state: paused;
+  }
+}
+
 @media (max-width: 680px) {
   .fab-stack {
     right: 16px;

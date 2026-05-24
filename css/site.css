@@ -133,6 +133,11 @@ a:hover { color: var(--navy); }
 .nav-menu .has-dropdown > a { display: inline-flex; align-items: center; gap: .25rem; }
 /* Desktop: hide mobile-only action bar */
 .nav-actions { display: none; }
+/* Defensive: any cached page still carrying the old <button class="dd-toggle">
+   markup must NOT render a native-styled OS button next to the dropdown
+   link. The new design uses a CSS ::after chevron on .has-dropdown > a
+   exclusively, so the old toggle button is always hidden. */
+.dd-toggle { display: none !important; }
 
 .nav-dropdown {
   position: absolute; top: 100%; left: 0;

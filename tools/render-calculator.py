@@ -62,20 +62,32 @@ def bed_inventory_script():
     return open(p, encoding='utf-8').read()
 
 
-def render():
-    # Page-specific intro before the widget
-    intro = rp.block_prose(
-        eyebrow='Moving Calculator · 2026 pricing',
-        h2='Estimate your removals &amp; storage cost in seconds',
-        paras=[
-            "Pick what you're moving, the home size, the round-trip distance and (if you need it) storage days. Your figure updates live as you type. Refine with a room-by-room inventory below for a sharper number.",
-            "Indicative 2026 pricing for Staffordshire moves &mdash; converted into a written fixed-price quote after a free survey. All figures are nett; VAT added at booking.",
-        ],
-        alt_bg=False,
-    )
+def plain_hero():
+    """MRM-style plain-background hero for the calculator page —
+    H1 + eyebrow + lead + 2 CTAs on the left, hero image on the right.
+    No dark gradient banner — matches MRM exactly."""
+    return '''    <section style="background:#fff;padding:clamp(2rem,4vw,3.25rem) 0;">
+      <div class="container">
+        <div class="split">
+          <div class="split-content">
+            <span class="eyebrow">Free tool · Staffordshire removers since 2010</span>
+            <h1>Removals Cost &amp; Volume Calculator</h1>
+            <p class="lead" style="font-size:clamp(1.05rem,1.5vw,1.2rem);color:var(--ink-soft);max-width:60ch;">Tick the items in your home, set the move distance and the calculator returns cubic feet, vehicle size, weight and an itemised cost estimate &mdash; the same numbers our crews use to plan a Staffordshire job.</p>
+            <div class="hero-actions" style="margin-top:1.25rem">
+              <a class="btn" href="../quote.html">Get a free quote</a>
+              <a class="btn btn-ghost" href="tel:+441782939124">Call 01782 939124</a>
+            </div>
+          </div>
+          <div class="split-img">
+            <img src="../images/loading-cardboard-removal-boxes.jpg" alt="North Staffordshire Removals crew loading a Stoke-on-Trent move" width="1066" height="1600" fetchpriority="high">
+          </div>
+        </div>
+      </div>
+    </section>'''
 
-    sections = (intro
-                + '\n' + calc_widget_html()
+
+def render():
+    sections = ('' + calc_widget_html()
                 + '\n' + how_it_works_block()
                 + '\n' + follow_up_block()
                 + '\n' + rp.block_why_cards(alt_bg=True)
@@ -107,11 +119,7 @@ def render():
         rp.topbar(1),
         rp.nav('calc', 1),
         '  <main id="main">',
-        rp.hero(eyebrow='Moving Calculator · 2026 pricing',
-                h1='Moving &amp; storage calculator',
-                lead="Estimate your removals and storage cost in seconds. Indicative 2026 pricing for Staffordshire moves — refined to a fixed-price written quote after a free survey.",
-                depth=1, hero_img='loading-cardboard-removal-boxes.jpg',
-                show_form=False),
+        plain_hero(),
         sections,
         rp.cta_strip(1),
         '  </main>',

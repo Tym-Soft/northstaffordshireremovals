@@ -15,12 +15,30 @@
   }
 
   // ── file:// browsing fallback ──────────────────────────
-  // Directory URLs like services/ don't resolve to services/index.html under
-  // file:// (no server). On file:// only, intercept any click on a link whose
-  // href ends in / and navigate to <href>index.html instead. Production hosts
-  // (Cloudflare Pages, Netlify, GitHub Pages, nginx, Apache) handle this
-  // natively, so the shim is a no-op everywhere else.
+  // Two cases under file:// (no server to do directory resolution):
+  //   1. href="/"          → site-root index.html, found by walking back up
+  //                          based on the current file's depth in the project.
+  //   2. href ending in /  → that-dir/index.html, e.g. services/ → services/index.html
+  // Production hosts (Cloudflare Pages, Netlify, GitHub Pages, nginx, Apache)
+  // handle both natively, so this shim is a no-op everywhere else.
   if (location.protocol === 'file:') {
+    // Detect project root depth by looking for the deepest folder that
+    // doesn't appear in our known project subfolders.
+    var KNOWN_SUBFOLDERS = ['services', 'areas-covered', 'blog', 'resources', 'images', 'css', 'js', 'documents', 'tools'];
+    function pathToSiteRoot() {
+      var segs = location.pathname.split('/').filter(Boolean);
+      // Drop the filename
+      segs.pop();
+      // Walk back from the end, counting how many segments match known
+      // project subfolders.
+      var up = 0;
+      for (var i = segs.length - 1; i >= 0; i--) {
+        if (KNOWN_SUBFOLDERS.indexOf(segs[i]) !== -1) up++;
+        else break;
+      }
+      return up === 0 ? './' : new Array(up + 1).join('../');
+    }
+
     document.addEventListener('click', function (e) {
       var a = e.target.closest && e.target.closest('a');
       if (!a) return;
@@ -28,7 +46,15 @@
       if (!href) return;
       if (/^(mailto:|tel:|javascript:|#)/i.test(href)) return;
       if (/^(?:https?:)?\/\//.test(href)) return;
-      // Strip query/hash for the test
+
+      // Case 1: bare "/" → site-root index.html
+      if (href === '/') {
+        e.preventDefault();
+        window.location.href = pathToSiteRoot() + 'index.html';
+        return;
+      }
+
+      // Case 2: relative dir URL ending in "/" → that-dir/index.html
       var clean = href.split('#')[0].split('?')[0];
       if (clean && clean.charAt(clean.length - 1) === '/') {
         e.preventDefault();

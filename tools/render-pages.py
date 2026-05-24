@@ -200,6 +200,15 @@ BLOG_META = {
         'href': 'blog/moving-insurance-explained.html',
         'cta': 'Get cover explained',
     },
+    # ── New niche blogs (Phase 2 gap fillers) ────────────
+    'moving-a-piano-staffordshire-guide-2026': {
+        'title': 'Moving a piano in Staffordshire (2026 guide)',
+        'card_desc': "300+ piano moves of experience — what separates a real piano crew from a cheap one, 2026 costs, insurance, the four piano types we move most.",
+        'img': 'couple-wrapping-furniture-protection.jpg',
+        'alt': 'Removal team carefully wrapping a large piece of furniture for safe transit',
+        'href': 'blog/moving-a-piano-staffordshire-guide-2026.html',
+        'cta': 'Read the piano guide',
+    },
 }
 
 # Shorthand aliases for the universal blog slugs (used heavily below).
@@ -218,6 +227,7 @@ _ELDR = 'moving-with-elderly-parents-staffordshire'
 _DOWN = 'downsizing-storage-staffordshire'
 _OFFC = 'office-relocation-planning-timeline'
 _INSU = 'moving-insurance-explained'
+_PIAN = 'moving-a-piano-staffordshire-guide-2026'
 
 # Per-page mapping. Key is the auto-derived page key (see
 # _auto_related_key below). Pages absent from this dict render no
@@ -232,7 +242,7 @@ RELATED_FOR = {
     'services-commercial-removals':      [_OFFC, _HIDD, _RELI],
     'services-packing-services':         [_FRAG, _DECL, _HIDD],
     'services-storage-services':         [_STOR, _DOWN, _INSU],
-    'services-piano-removals':           [_FRAG, _INSU, _RELI],
+    'services-piano-removals':           [_PIAN, _INSU, _FRAG],
     'services-man-and-van':              [_DIY,  _COST, _HIDD],
     'services-european-removals':        [_INSU, _RELI, _HIDD],
     'services-international-removals':   [_INSU, _RELI, _HIDD],
@@ -292,6 +302,7 @@ RELATED_FOR = {
     'blog-downsizing-storage-staffordshire':             [_STOR, _DECL, _ELDR],
     'blog-office-relocation-planning-timeline':          [_RELI, _HIDD, _INSU],
     'blog-moving-insurance-explained':                   [_RELI, _HIDD, _FRAG],
+    'blog-moving-a-piano-staffordshire-guide-2026':      [_INSU, _FRAG, _RELI],
 
     # ── INTENTIONALLY UNMAPPED (no related section) ──────
     # 404.html, privacy-policy.html, terms.html, careers.html, blog/index.html

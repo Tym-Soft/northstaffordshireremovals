@@ -406,22 +406,112 @@ def quote_page():
 
 # ─── 404 ────────────────────────────────────────────────────────
 def four_oh_four():
-    sections = ''.join([
-        block_prose_root(
-            eyebrow='Page not found',
-            h2="Sorry — the page you were looking for isn't here",
-            paras=[
-                "We can't find the page you tried to open. It may have moved, the link you followed may be out of date, or there may be a typo in the URL.",
-                "Try one of the popular pages below, or use the menu at the top of the page to navigate around. If you came here from a search engine, please <a href='mailto:enquiries@northstaffordshireremovals.co.uk'>let us know</a> so we can fix the broken link.",
-            ]),
-        block_internal_links_root(root_internal_links(), alt_bg=True),
-    ])
+    """Redesigned 404 — uses the site's visual vocabulary (orange-band
+    sections, hero, svc-card grid, related-reading band) but with
+    404-appropriate content. No quote form (it's awkward when the
+    visitor is lost), no padding — just get them back on track fast.
+    Borrows the on-brand "removals company knows about things in the
+    wrong place" tone for a friendlier 404 experience."""
+
+    # Custom hero — no quote form, prominent "back on track" actions
+    custom_hero = '''    <section class="hero hero-404" style="background:linear-gradient(115deg, rgba(10,34,62,.94) 0%, rgba(17,54,90,.86) 50%, rgba(10,34,62,.82) 100%), url('images/family-celebrating-keys-new-home.jpg') center/cover no-repeat;">
+      <div class="container">
+        <div class="hero-404-inner">
+          <span class="hero-404-code" aria-hidden="true">404</span>
+          <span class="eyebrow">Page not found</span>
+          <h1>Hmm — this page seems to have moved</h1>
+          <p class="lead">We're a removals company, after all — sometimes things end up in the wrong place. The page you were looking for might have been renamed, removed, or you might be following an old link. Here's how to get back on track.</p>
+          <div class="hero-actions">
+            <a class="btn" href="./">Back to home</a>
+            <a class="btn btn-outline" href="quote.html">Get a free quote</a>
+            <a class="btn btn-outline" href="tel:+441782939124">Call 01782 939124</a>
+          </div>
+          <div class="hero-trust">
+            <span><span class="tick">✓</span> Family-run since 2010</span>
+            <span><span class="tick">✓</span> Fully covered</span>
+            <span><span class="tick">✓</span> Fixed prices</span>
+            <span><span class="tick">✓</span> 187 verified reviews</span>
+          </div>
+        </div>
+      </div>
+    </section>'''
+
+    # Three big destination cards using the existing svc-card pattern
+    # so visually it matches the home page's services grid.
+    destination_cards = '''    <section class="services-section" aria-label="Where to next">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Where to next</span>
+          <h2>Three good places to start</h2>
+          <p>Pick whichever fits where you were trying to go — or use the menu at the top to browse the whole site.</p>
+        </div>
+        <div class="services-grid services-grid-3">
+          <a class="svc-card reveal" href="quote.html">
+            <div class="svc-img">
+              <img src="images/holding-house-keys-new-home.jpg" alt="Hands holding the keys to a new Staffordshire home after a successful move" width="1600" height="1066" loading="lazy">
+              <span class="svc-icon" aria-hidden="true">✓</span>
+            </div>
+            <div class="svc-body">
+              <h3>Get a free quote</h3>
+              <p>Most customers receive a written fixed-price quote within 24 hours. No card details, no obligation, no sales follow-up.</p>
+              <span class="arrow">Start your quote</span>
+            </div>
+          </a>
+          <a class="svc-card reveal" href="services/">
+            <div class="svc-img">
+              <img src="images/loading-cardboard-removal-boxes.jpg" alt="Removal crew loading cardboard boxes on a Stoke-on-Trent moving day" width="1600" height="1066" loading="lazy">
+              <span class="svc-icon" aria-hidden="true">🚚</span>
+            </div>
+            <div class="svc-body">
+              <h3>Browse our services</h3>
+              <p>Residential, commercial, packing, storage, piano, antiques, white-glove — every service we offer across Staffordshire.</p>
+              <span class="arrow">See all services</span>
+            </div>
+          </a>
+          <a class="svc-card reveal" href="areas-covered/">
+            <div class="svc-img">
+              <img src="images/couple-unpacking-boxes-new-home.jpg" alt="Couple unpacking removal boxes in their new Stoke-on-Trent home" width="1600" height="1066" loading="lazy">
+              <span class="svc-icon" aria-hidden="true">📍</span>
+            </div>
+            <div class="svc-body">
+              <h3>Find your area</h3>
+              <p>Stoke-on-Trent, Newcastle-under-Lyme, Stafford, Leek, Cheadle and 16 more Staffordshire towns we cover daily.</p>
+              <span class="arrow">See areas covered</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Inline links section — boosts in-body internal-link count
+         past the 10-link audit threshold and gives users a denser
+         navigation option than just the 3 destination cards above. -->
+    <section class="alt-bg" aria-label="Quick links">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Or jump straight to</span>
+          <h2>Popular pages</h2>
+        </div>
+        <div class="prose-wide">
+          <p style="max-width:none">Looking for a specific service? Try <a href="services/domestic-removals.html">residential removals</a>, <a href="services/commercial-removals.html">commercial removals</a>, <a href="services/packing-services.html">packing services</a>, <a href="services/storage-services.html">storage solutions</a>, <a href="services/piano-removals.html">piano removals</a>, <a href="services/man-and-van.html">man and van</a>, or <a href="services/house-clearance.html">house clearance</a>.</p>
+          <p style="max-width:none">Need a Staffordshire area page? <a href="areas-covered/removals-stoke-on-trent.html">Stoke-on-Trent</a>, <a href="areas-covered/removals-newcastle-under-lyme.html">Newcastle-under-Lyme</a>, <a href="areas-covered/removals-stafford.html">Stafford</a>, <a href="areas-covered/removals-leek.html">Leek</a>, <a href="areas-covered/removals-cheadle.html">Cheadle</a> or <a href="areas-covered/">see the full list of areas</a>.</p>
+          <p style="max-width:none">Other useful pages: <a href="about-us.html">about North Staffordshire Removals</a>, <a href="reviews.html">customer reviews</a>, <a href="resources/storage-calculator.html">moving &amp; storage calculator</a>, <a href="blog/">advice &amp; tips blog</a>. Still can't find what you need? <a href="mailto:enquiries@northstaffordshireremovals.co.uk">Email the office</a> or call <a href="tel:+441782939124">01782 939124</a> and we'll point you in the right direction.</p>
+        </div>
+      </div>
+    </section>'''
+
+    # Three popular blogs — universal "what new customers want to know"
+    # trio. Same visual pattern as every other content page on the site.
+    related = rp.related_blogs('home', depth=0,
+                                heading='Popular reading',
+                                lead="Three guides our customers find most useful — read first, decide with full information.")
+
     # 404 is a special page — should be noindex
     canonical = f'{rp.BASE}/404.html'
     extra = '\n  <script type="application/ld+json">' + '{"@context":"https://schema.org","@type":"WebPage","name":"Page not found","description":"404 — page not found"}' + '</script>'
     parts = [
         rp.head(title='Page not found | North Staffordshire Removals',
-                desc="404 — the page you were looking for isn't here. Use the menu to find what you need.",
+                desc="404 — the page you were looking for isn't here. Pick a popular destination below or browse the menu.",
                 canonical=canonical, og_image='family-celebrating-keys-new-home.jpg',
                 preload_img='family-celebrating-keys-new-home.jpg', depth=0,
                 extra_schema=extra).replace('"index,follow,max-image-preview:large"', '"noindex,follow"'),
@@ -430,10 +520,9 @@ def four_oh_four():
         rp.topbar(0),
         rp.nav('', 0),
         '  <main id="main">',
-        root_hero(eyebrow='404', h1="Sorry — page not found",
-                  lead="We can't find the page you were looking for. Try the popular pages below.",
-                  hero_img='family-celebrating-keys-new-home.jpg'),
-        sections,
+        custom_hero,
+        destination_cards,
+        related,
         rp.cta_strip(0),
         '  </main>',
         rp.footer(0),

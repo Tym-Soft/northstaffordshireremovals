@@ -702,6 +702,86 @@ li { margin-bottom: .3rem; }
 .svc-card .arrow::after { content: " →"; transition: transform .2s ease; display: inline-block; }
 .svc-card:hover .arrow::after { transform: translateX(4px); }
 
+/* 3-column services-grid variant (used on the 404 page) — the
+   default services-grid is 4-col at desktop, but for the 404
+   "where to next" block we only have 3 destinations. */
+.services-grid-3 {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 580px) { .services-grid-3 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 880px) { .services-grid-3 { grid-template-columns: repeat(3, 1fr); } }
+
+/* ─── 404 hero — no quote form, big background 404 numeral,
+   compact messaging, prominent recovery actions ───────── */
+.hero-404 {
+  padding: clamp(3rem, 6vw, 5rem) 0 clamp(2.5rem, 5vw, 4.5rem);
+  position: relative;
+  overflow: hidden;
+}
+.hero-404-inner {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  color: #fff;
+  z-index: 2;
+}
+.hero-404-inner .eyebrow {
+  color: var(--orange-soft);
+  margin-bottom: .55rem;
+}
+.hero-404-inner .eyebrow::before { background: var(--orange-soft); }
+.hero-404-inner h1 {
+  color: #fff;
+  font-size: clamp(1.85rem, 4.5vw, 2.85rem);
+  line-height: 1.1;
+  margin: 0 0 1rem;
+}
+.hero-404-inner .lead {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: clamp(1rem, 1.6vw, 1.12rem);
+  line-height: 1.55;
+  max-width: 640px;
+  margin: 0 auto 1.5rem;
+}
+.hero-404-inner .hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .65rem;
+  margin: 0 auto 1.5rem;
+}
+.hero-404-inner .hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .5rem 1.3rem;
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.78);
+}
+.hero-404-inner .hero-trust .tick {
+  color: var(--orange-soft);
+  font-weight: 800;
+  margin-right: .25rem;
+}
+/* The giant background 404 numeral — sits behind the messaging,
+   low-opacity, sets the visual identity of the page. */
+.hero-404-code {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(11rem, 24vw, 22rem);
+  color: rgba(239, 108, 29, 0.18);
+  letter-spacing: -0.05em;
+  line-height: 1;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
 /* ─── Related-reading band (orange, 3 blog cards) ──────
    Sits just above the final CTA strip on every content page.
    Mirrors the .services-section / .svc-card visual treatment so

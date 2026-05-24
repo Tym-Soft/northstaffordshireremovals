@@ -273,6 +273,30 @@ BLOG_META = {
         'href': 'blog/professional-packing-services-staffordshire-2026.html',
         'cta': 'See packing options',
     },
+    'storage-size-guide-staffordshire': {
+        'title': 'How much storage space do I need? Staffordshire guide',
+        'card_desc': "Per-room cubic-feet sizing, realistic totals by property size, NSR palletised unit dimensions, and the 5 most-common sizing mistakes to avoid.",
+        'img': 'kitchen-removal-box-bedroom-stack.jpg',
+        'alt': 'Stacked removal boxes in a kitchen ready for storage sizing assessment',
+        'href': 'blog/storage-size-guide-staffordshire.html',
+        'cta': 'See sizing guide',
+    },
+    'self-storage-security-staffordshire': {
+        'title': 'How secure is self storage? Staffordshire 2026 guide',
+        'card_desc': "Four security layers explained, what to verify before booking, the self-storage vs full-service comparison, and inside NSR's Stoke-on-Trent warehouse.",
+        'img': 'unpacking-cardboard-removal-boxes.jpg',
+        'alt': 'Removal boxes being securely unpacked after retrieval from Stoke-on-Trent storage',
+        'href': 'blog/self-storage-security-staffordshire.html',
+        'cta': 'See security guide',
+    },
+    'storage-prohibited-items-uk': {
+        'title': "What you can't store — UK self storage rules 2026",
+        'card_desc': "Seven universal prohibitions, why each rule exists, what to do with items that can't be stored, and the pre-storage inventory checklist.",
+        'img': 'opening-removal-box-room.jpg',
+        'alt': 'Person opening a removal box checking contents before storage',
+        'href': 'blog/storage-prohibited-items-uk.html',
+        'cta': "See what's prohibited",
+    },
 }
 
 # Shorthand aliases for the universal blog slugs (used heavily below).
@@ -300,6 +324,9 @@ _WGLV = 'what-is-a-white-glove-moving-service'
 _HCLR = 'house-clearance-after-bereavement-staffordshire'
 _STUD = 'student-moves-keele-staffordshire-guide'
 _PACK = 'professional-packing-services-staffordshire-2026'
+_SIZE = 'storage-size-guide-staffordshire'
+_SECU = 'self-storage-security-staffordshire'
+_PROH = 'storage-prohibited-items-uk'
 
 # Per-page mapping. Key is the auto-derived page key (see
 # _auto_related_key below). Pages absent from this dict render no
@@ -315,7 +342,7 @@ RELATED_FOR = {
     'services-domestic-removals':        [_COST, _DECL, _PETS],
     'services-commercial-removals':      [_OFFC, _EURO, _RELI],
     'services-packing-services':         [_PACK, _FRAG, _DECL],
-    'services-storage-services':         [_STOR, _DOWN, _INSU],
+    'services-storage-services':         [_SIZE, _SECU, _PROH],
     'services-piano-removals':           [_PIAN, _INSU, _FRAG],
     'services-man-and-van':              [_MVAN, _DIY,  _STUD],
     'services-european-removals':        [_EURO, _INTL, _OFFC],
@@ -371,7 +398,7 @@ RELATED_FOR = {
     'areas-covered-removals-tamworth':           [_PETS, _MVAN, _BTY],
 
     # ── RESOURCES ────────────────────────────────────────
-    'resources-storage-calculator':      [_COST, _STOR, _HIDD],
+    'resources-storage-calculator':      [_SIZE, _COST, _STOR],
 
     # ── ROOT UTILITY ─────────────────────────────────────
     'about-us':                          [_RELI, _HIDD, _INSU],
@@ -403,6 +430,9 @@ RELATED_FOR = {
     'blog-house-clearance-after-bereavement-staffordshire': [_ELDR, _DOWN, _DECL],
     'blog-student-moves-keele-staffordshire-guide':      [_MVAN, _COST, _BTY],
     'blog-professional-packing-services-staffordshire-2026': [_FRAG, _DECL, _INSU],
+    'blog-storage-size-guide-staffordshire':             [_SECU, _PROH, _STOR],
+    'blog-self-storage-security-staffordshire':          [_SIZE, _PROH, _INSU],
+    'blog-storage-prohibited-items-uk':                  [_SIZE, _SECU, _DECL],
 
     # ── INTENTIONALLY UNMAPPED (no related section) ──────
     # 404.html, privacy-policy.html, terms.html, careers.html, blog/index.html

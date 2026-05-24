@@ -178,9 +178,11 @@ SEO_STOP_WORDS = {
     # Site-wide boilerplate
     'guide', 'staffordshire', 'uk',
 }
-SEO_BODY_DENSITY_MIN = 0.15     # hard floor — under = clearly under-targeted
+SEO_BODY_DENSITY_MIN = 0.5      # hard floor — fully-green requires ≥0.5%
 SEO_BODY_DENSITY_MAX = 4.0      # hard ceiling — over = stuffing risk
-SEO_BODY_DENSITY_IDEAL = (0.5, 1.5)  # informational sweet spot (memory rule)
+SEO_BODY_DENSITY_IDEAL = (0.5, 1.5)  # informational-blog sweet spot (memory rule)
+# Note: 0.5-3.0% is healthy for location/service pages (high topical relevance).
+# 0.5-1.5% is the sweet spot for purely informational content.
 SEO_BODY_MIN_WORDS = 400        # too-short pages skip the body check
 
 

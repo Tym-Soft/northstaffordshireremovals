@@ -225,6 +225,14 @@ BLOG_META = {
         'href': 'blog/international-removals-from-the-uk-2026-guide.html',
         'cta': 'See the int\'l guide',
     },
+    'european-removals-from-staffordshire-2026': {
+        'title': 'European removals from Staffordshire — 2026 guide',
+        'card_desc': "Post-Brexit reality, van service vs container, ToR paperwork, Ireland as the special case — and what the eight most-common EU destinations actually cost.",
+        'img': 'removal-lorry-loading-furniture.jpg',
+        'alt': 'Removal lorry being loaded with furniture for a European removal journey',
+        'href': 'blog/european-removals-from-staffordshire-2026.html',
+        'cta': 'Read the EU guide',
+    },
 }
 
 # Shorthand aliases for the universal blog slugs (used heavily below).
@@ -246,6 +254,7 @@ _INSU = 'moving-insurance-explained'
 _PIAN = 'moving-a-piano-staffordshire-guide-2026'
 _ANTI = 'antiques-moving-staffordshire-specialist-guide'
 _INTL = 'international-removals-from-the-uk-2026-guide'
+_EURO = 'european-removals-from-staffordshire-2026'
 
 # Per-page mapping. Key is the auto-derived page key (see
 # _auto_related_key below). Pages absent from this dict render no
@@ -262,7 +271,7 @@ RELATED_FOR = {
     'services-storage-services':         [_STOR, _DOWN, _INSU],
     'services-piano-removals':           [_PIAN, _INSU, _FRAG],
     'services-man-and-van':              [_DIY,  _COST, _HIDD],
-    'services-european-removals':        [_INSU, _RELI, _HIDD],
+    'services-european-removals':        [_EURO, _INTL, _INSU],
     'services-international-removals':   [_INTL, _INSU, _RELI],
     'services-house-clearance':          [_DECL, _DOWN, _HIDD],
     'services-student-removals':         [_COST, _DIY,  _BTY],
@@ -323,6 +332,7 @@ RELATED_FOR = {
     'blog-moving-a-piano-staffordshire-guide-2026':      [_INSU, _FRAG, _RELI],
     'blog-antiques-moving-staffordshire-specialist-guide': [_INSU, _PIAN, _RELI],
     'blog-international-removals-from-the-uk-2026-guide': [_INSU, _HIDD, _RELI],
+    'blog-european-removals-from-staffordshire-2026':    [_INTL, _INSU, _HIDD],
 
     # ── INTENTIONALLY UNMAPPED (no related section) ──────
     # 404.html, privacy-policy.html, terms.html, careers.html, blog/index.html

@@ -1,4 +1,6 @@
 (function () {
+  var MOBILE = '(max-width: 980px)';
+
   var toggle = document.querySelector('.menu-toggle');
   var menu = document.getElementById('primary-nav');
   if (toggle && menu) {
@@ -14,21 +16,39 @@
     });
   }
 
-  // ── Mobile dropdown toggles ────────────────────────────
-  // Each .has-dropdown carries a small caret button next to the parent link.
-  // Tapping the caret toggles .is-expanded on the LI (CSS animates the
-  // dropdown open/closed). Tapping the parent link itself navigates as
-  // normal — the caret is the dedicated expand affordance.
-  var ddToggles = document.querySelectorAll('.has-dropdown .dd-toggle');
-  for (var i = 0; i < ddToggles.length; i++) {
-    ddToggles[i].addEventListener('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
+  // ── Mobile-only: whole dropdown row toggles its sub-menu ───────
+  // On mobile the entire .has-dropdown > a row acts as the toggle:
+  // first tap expands, second tap navigates to the hub page (or use
+  // the "All X →" link at the top of the expanded list). On desktop
+  // hover handles the menu and the link navigates as normal.
+  var ddLinks = document.querySelectorAll('.has-dropdown > a');
+  for (var i = 0; i < ddLinks.length; i++) {
+    ddLinks[i].addEventListener('click', function (e) {
+      if (!window.matchMedia(MOBILE).matches) return;
       var li = this.closest('.has-dropdown');
       if (!li) return;
-      var expanded = li.classList.toggle('is-expanded');
-      this.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      if (!li.classList.contains('is-expanded')) {
+        e.preventDefault();
+        li.classList.add('is-expanded');
+        this.setAttribute('aria-expanded', 'true');
+      }
+      // second tap: allow default navigation to the hub page
     });
+  }
+
+  // Reset expanded state when crossing back to desktop
+  if (window.matchMedia) {
+    var mq = window.matchMedia(MOBILE);
+    var resetExpanded = function () {
+      if (!mq.matches) {
+        var open = document.querySelectorAll('.has-dropdown.is-expanded');
+        for (var j = 0; j < open.length; j++) {
+          open[j].classList.remove('is-expanded');
+        }
+      }
+    };
+    if (mq.addEventListener) mq.addEventListener('change', resetExpanded);
+    else if (mq.addListener) mq.addListener(resetExpanded);
   }
 
   // ── file:// browsing fallback ──────────────────────────
@@ -39,15 +59,10 @@
   // Production hosts (Cloudflare Pages, Netlify, GitHub Pages, nginx, Apache)
   // handle both natively, so this shim is a no-op everywhere else.
   if (location.protocol === 'file:') {
-    // Detect project root depth by looking for the deepest folder that
-    // doesn't appear in our known project subfolders.
     var KNOWN_SUBFOLDERS = ['services', 'areas-covered', 'blog', 'resources', 'images', 'css', 'js', 'documents', 'tools'];
     function pathToSiteRoot() {
       var segs = location.pathname.split('/').filter(Boolean);
-      // Drop the filename
       segs.pop();
-      // Walk back from the end, counting how many segments match known
-      // project subfolders.
       var up = 0;
       for (var i = segs.length - 1; i >= 0; i--) {
         if (KNOWN_SUBFOLDERS.indexOf(segs[i]) !== -1) up++;
@@ -64,14 +79,12 @@
       if (/^(mailto:|tel:|javascript:|#)/i.test(href)) return;
       if (/^(?:https?:)?\/\//.test(href)) return;
 
-      // Case 1: bare "/" → site-root index.html
       if (href === '/') {
         e.preventDefault();
         window.location.href = pathToSiteRoot() + 'index.html';
         return;
       }
 
-      // Case 2: relative dir URL ending in "/" → that-dir/index.html
       var clean = href.split('#')[0].split('?')[0];
       if (clean && clean.charAt(clean.length - 1) === '/') {
         e.preventDefault();

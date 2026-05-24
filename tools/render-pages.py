@@ -10,7 +10,7 @@ import json, os, sys, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 BASE = 'https://www.northstaffordshireremovals.co.uk'
-CSS_V = '20260524g'
+CSS_V = '20260524h'
 
 # ─── Shared boilerplate ────────────────────────────────────────────────
 
@@ -145,14 +145,12 @@ def nav(current, depth=0):
           <li><a href="{p}about-us.html"{' aria-current="page"' if current == 'about' else ''}>About</a></li>
           <li class="has-dropdown">
             <a href="{p}services/"{' aria-current="page"' if current == 'services' else ''} aria-haspopup="true">Services</a>
-            <button class="dd-toggle" type="button" aria-expanded="false" aria-label="Toggle services menu">▾</button>
             <ul class="nav-dropdown">
 {svc_dd}
             </ul>
           </li>
           <li class="has-dropdown">
             <a href="{p}areas-covered/"{' aria-current="page"' if current == 'areas' else ''} aria-haspopup="true">Areas</a>
-            <button class="dd-toggle" type="button" aria-expanded="false" aria-label="Toggle areas menu">▾</button>
             <ul class="nav-dropdown nav-dropdown-2col">
 {areas_dd}
             </ul>
@@ -160,7 +158,21 @@ def nav(current, depth=0):
           <li><a href="{p}blog/"{' aria-current="page"' if current == 'blog' else ''}>Advice</a></li>
           <li><a href="{p}reviews.html"{' aria-current="page"' if current == 'reviews' else ''}>Reviews</a></li>
           <li><a href="{p}resources/storage-calculator.html"{' aria-current="page"' if current == 'calc' else ''}>Calculator</a></li>
-          <li><a href="{p}quote.html" class="nav-cta">Free Quote</a></li>
+          <li class="nav-cta-row"><a href="{p}quote.html" class="nav-cta">Free Quote</a></li>
+          <li class="nav-actions" aria-hidden="false">
+            <a class="nav-action nav-action-solid" href="tel:+441782939124">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg>
+              <span>Call us</span>
+            </a>
+            <a class="nav-action nav-action-outline" href="mailto:enquiries@northstaffordshireremovals.co.uk">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              <span>Email us</span>
+            </a>
+            <a class="nav-action nav-action-solid" href="{p}quote.html">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="m9 16.17-3.88-3.88a1 1 0 0 0-1.41 1.42l4.59 4.59a1 1 0 0 0 1.41 0L20.71 7.71a1 1 0 0 0-1.41-1.42L9 16.17z"/></svg>
+              <span>Get quote</span>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>

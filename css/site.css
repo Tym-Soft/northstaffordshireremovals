@@ -317,8 +317,33 @@ a:hover { color: var(--navy); }
   .nav-dropdown a strong {
     color: var(--orange-soft);
   }
-  .nav-dropdown-2col { columns: 1; min-width: 0; }
-  .nav-dropdown-2col li:first-child { border-bottom: 1px solid rgba(255,255,255,0.08); margin: 0; padding: 0; }
+  /* Areas dropdown stays 2-column on mobile (20+ items would be a huge
+     single-column scroll otherwise). "All areas →" header spans both. */
+  .nav-dropdown-2col {
+    columns: 2;
+    column-gap: 0;
+    min-width: 0;
+  }
+  .nav-dropdown-2col li {
+    break-inside: avoid;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .nav-dropdown-2col li:first-child {
+    column-span: all;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    margin: 0;
+    padding: 0;
+  }
+  .nav-dropdown-2col a {
+    padding: .7rem .85rem .7rem 1.1rem !important;
+    font-size: 13px !important;
+    line-height: 1.25 !important;
+  }
+  /* Keep the "All areas →" header link at the larger size */
+  .nav-dropdown-2col li:first-child a {
+    padding: .85rem 1.4rem .85rem 2rem !important;
+    font-size: 14px !important;
+  }
 
   /* Hide the redundant "Free Quote" nav-cta row on mobile — replaced
      by the icon Get-Quote button in nav-actions below. */

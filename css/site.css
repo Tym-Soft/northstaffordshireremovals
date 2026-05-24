@@ -1039,7 +1039,9 @@ footer.site-footer .legal a:hover { color: var(--orange-soft); }
   background: var(--orange-dark);
   color: #fff;
 }
-/* Phone variant — navy (secondary, on bottom for thumb reach) */
+/* Phone variant — navy bg with ORANGE phone icon (icon orange ties
+   in visually with the orange pulse ring; text stays white for
+   readability on the desktop pill). */
 .fab-phone {
   background: var(--navy);
   color: #fff;
@@ -1047,6 +1049,15 @@ footer.site-footer .legal a:hover { color: var(--orange-soft); }
 .fab-phone:hover, .fab-phone:focus-visible {
   background: var(--navy-dark);
   color: #fff;
+}
+.fab-phone .fab-icon {
+  color: var(--orange);
+}
+/* SVGs inside any .fab-icon scale to fill the slot */
+.fab-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 /* ── "Flash to encourage calls" — gentle pulse + ring + icon wiggle.

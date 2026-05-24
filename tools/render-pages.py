@@ -10,7 +10,7 @@ import json, os, sys, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 BASE = 'https://www.northstaffordshireremovals.co.uk'
-CSS_V = '20260524l'
+CSS_V = '20260524m'
 
 # ─── Shared boilerplate ────────────────────────────────────────────────
 
@@ -197,15 +197,20 @@ def cta_strip(depth=0):
 
 def fab_stack(depth=0):
     """Bottom-right sticky FAB stack: orange Quote pill on top, navy
-    Phone pill below. Mobile collapses both to 56px circles."""
+    Phone pill below (with orange phone icon). Mobile collapses both
+    to 56px circles."""
     p = '../' * depth
     return f'''  <div class="fab-stack" aria-label="Quick actions">
     <a class="fab fab-quote" href="{p}quote.html" aria-label="Get a free removals quote">
-      <span class="fab-icon" aria-hidden="true">✓</span>
+      <span class="fab-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="m9 16.17-3.88-3.88a1 1 0 0 0-1.41 1.42l4.59 4.59a1 1 0 0 0 1.41 0L20.71 7.71a1 1 0 0 0-1.41-1.42L9 16.17z"/></svg>
+      </span>
       <span class="fab-text">Get a free quote</span>
     </a>
     <a class="fab fab-phone" href="tel:+441782939124" aria-label="Call North Staffordshire Removals on 01782 939124">
-      <span class="fab-icon" aria-hidden="true">📞</span>
+      <span class="fab-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg>
+      </span>
       <span class="fab-text">Call 01782 939124</span>
     </a>
   </div>'''

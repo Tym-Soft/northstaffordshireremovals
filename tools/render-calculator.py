@@ -121,6 +121,7 @@ def render():
         '  <main id="main">',
         plain_hero(),
         sections,
+        rp.related_blogs('resources-storage-calculator', 1),
         rp.cta_strip(1),
         '  </main>',
         rp.footer(1).replace('mobile-nav.js?v=' + rp.CSS_V + '"></script>',

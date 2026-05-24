@@ -1349,6 +1349,7 @@ def render_post(p):
         '  <main id="main">',
         rp.hero(eyebrow=p['eyebrow'], h1=p['h1'], lead=p['lead'], depth=1, hero_img=p['hero_img']),
         '\n'.join(body_sections),
+        rp.related_blogs(rp._auto_related_key(p['slug']), 1),
         rp.cta_strip(1),
         '  </main>',
         rp.footer(1),

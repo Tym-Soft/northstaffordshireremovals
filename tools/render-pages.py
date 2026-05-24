@@ -101,27 +101,212 @@ BLOG_META = {
         'alt': 'Moving-day checklist on a clipboard surrounded by labelled removal boxes',
         'href': 'blog/hidden-costs-of-moving-house.html',
     },
-    # Phase 2 — remaining 12 entries land here as we roll out to
-    # service / area / blog / utility pages, plus any NEW blogs
-    # we write to fill topic gaps.
+    'best-time-of-year-to-move-house-staffordshire': {
+        'title': 'Best time of year to move house in Staffordshire',
+        'card_desc': "Seasonal pricing rhythms, winter availability, summer queues — when to book to save money or guarantee your preferred date in 2026.",
+        'img': 'family-celebrating-keys-new-home.jpg',
+        'alt': 'Family celebrating moving into a new Staffordshire home with keys in hand',
+        'href': 'blog/best-time-of-year-to-move-house-staffordshire.html',
+    },
+    'best-time-of-day-to-move-house': {
+        'title': 'Best time of day to move house',
+        'card_desc': "Early starts vs midday vs back-of-day — how the time you book affects price, completion-day stress and the smoothness of your handover.",
+        'img': 'empty-room-moving-boxes-ready.jpg',
+        'alt': 'Empty room ready for movers at the start of a Staffordshire moving day',
+        'href': 'blog/best-time-of-day-to-move-house.html',
+    },
+    'moving-home-with-pets-staffordshire-checklist': {
+        'title': 'Moving home with pets — a Staffordshire checklist',
+        'card_desc': "What to plan for cats, dogs, rabbits and small animals on moving day — boarding options, microchip updates, settling-in week.",
+        'img': 'smiling-woman-with-dog-moving-day.jpg',
+        'alt': 'Smiling Staffordshire homeowner with her dog on moving day',
+        'href': 'blog/moving-home-with-pets-staffordshire-checklist.html',
+    },
+    'how-to-pack-fragile-items-properly': {
+        'title': 'How to pack fragile items properly',
+        'card_desc': "Glassware, electronics, ceramics, mirrors — the wrap-and-pad techniques our crews use, with materials you can pick up locally.",
+        'img': 'packing-glassware-bubble-wrap.jpg',
+        'alt': 'Hands wrapping glassware in bubble wrap before packing into a removal box',
+        'href': 'blog/how-to-pack-fragile-items-properly.html',
+    },
+    'self-storage-vs-full-service-storage': {
+        'title': 'Self-storage vs full-service storage',
+        'card_desc': "When DIY self-storage saves money, when full-service wins on hassle — a full cost + access comparison for Staffordshire customers.",
+        'img': 'cardboard-boxes-storage-warehouse.jpg',
+        'alt': 'Palletised cardboard storage units in a Stoke-on-Trent warehouse',
+        'href': 'blog/self-storage-vs-full-service-storage.html',
+    },
+    'how-to-declutter-before-a-house-move': {
+        'title': 'How to declutter before a house move',
+        'card_desc': "A room-by-room declutter plan starting 4 weeks out — what to keep, charity-shop, sell or skip, with realistic timing for working families.",
+        'img': 'woman-folding-clothes-suitcase-packing.jpg',
+        'alt': 'Person folding clothes into a suitcase while decluttering before a move',
+        'href': 'blog/how-to-declutter-before-a-house-move.html',
+    },
+    'diy-vs-professional-house-move-cost': {
+        'title': 'DIY vs professional house move — true cost compared',
+        'card_desc': "Hiring a van and eight friends sounds cheap until you add insurance, fuel, food and a day off work. Real numbers for both routes in 2026.",
+        'img': 'man-stacking-cardboard-removal-boxes.jpg',
+        'alt': 'Person stacking cardboard removal boxes on a Staffordshire moving day',
+        'href': 'blog/diy-vs-professional-house-move-cost.html',
+    },
+    'move-in-cleaning-checklist-staffordshire': {
+        'title': 'Move-in cleaning checklist for Staffordshire',
+        'card_desc': "What to deep-clean before your furniture arrives, what's worth a professional, and the 12 items you'll wish you'd brought to the new place.",
+        'img': 'unpacking-bedroom-boxes.jpg',
+        'alt': 'Bedroom partly unpacked after a Staffordshire move-in cleaning sweep',
+        'href': 'blog/move-in-cleaning-checklist-staffordshire.html',
+    },
+    'moving-with-elderly-parents-staffordshire': {
+        'title': 'Moving home with elderly parents — Staffordshire guide',
+        'card_desc': "Emotional and practical advice for downsizing older relatives — handling memories, mobility needs, care-arrangement transitions.",
+        'img': 'estate-agent-handing-house-keys.jpg',
+        'alt': 'Estate agent handing house keys to a Staffordshire family on completion day',
+        'href': 'blog/moving-with-elderly-parents-staffordshire.html',
+    },
+    'downsizing-storage-staffordshire': {
+        'title': 'Downsizing storage in Staffordshire',
+        'card_desc': "Moving from a 4-bed family home to a 2-bed retirement bungalow? How to phase storage and decide what makes the cut.",
+        'img': 'couple-packing-living-room.jpg',
+        'alt': 'Staffordshire couple packing living room belongings during a downsizing move',
+        'href': 'blog/downsizing-storage-staffordshire.html',
+    },
+    'office-relocation-planning-timeline': {
+        'title': 'Office relocation planning timeline',
+        'card_desc': "An 8-week countdown for a Staffordshire office move — IT, telephony, signage, staff comms — with the milestones that catch businesses out.",
+        'img': 'stacked-cardboard-boxes-empty-room.jpg',
+        'alt': 'Stacked cardboard boxes in an empty office ready for relocation',
+        'href': 'blog/office-relocation-planning-timeline.html',
+    },
+    'moving-insurance-explained': {
+        'title': 'Moving insurance explained',
+        'card_desc': "Goods in Transit vs Public Liability vs your own contents policy — what each covers, what they don't, and what to ask before you book.",
+        'img': 'sealing-cardboard-removal-box-floor.jpg',
+        'alt': 'Removal crew member sealing a cardboard box with packing tape during a Stoke house move',
+        'href': 'blog/moving-insurance-explained.html',
+    },
 }
 
+# Shorthand aliases for the universal blog slugs (used heavily below).
+_COST = 'cost-of-moving-house-stoke-on-trent-2026'
+_RELI = 'choosing-a-reliable-removal-company-stoke'
+_HIDD = 'hidden-costs-of-moving-house'
+_BTY  = 'best-time-of-year-to-move-house-staffordshire'
+_BTD  = 'best-time-of-day-to-move-house'
+_PETS = 'moving-home-with-pets-staffordshire-checklist'
+_FRAG = 'how-to-pack-fragile-items-properly'
+_STOR = 'self-storage-vs-full-service-storage'
+_DECL = 'how-to-declutter-before-a-house-move'
+_DIY  = 'diy-vs-professional-house-move-cost'
+_CLEA = 'move-in-cleaning-checklist-staffordshire'
+_ELDR = 'moving-with-elderly-parents-staffordshire'
+_DOWN = 'downsizing-storage-staffordshire'
+_OFFC = 'office-relocation-planning-timeline'
+_INSU = 'moving-insurance-explained'
+
+# Per-page mapping. Key is the auto-derived page key (see
+# _auto_related_key below). Pages absent from this dict render no
+# related section at all (legal pages, 404, careers, etc.).
 RELATED_FOR = {
-    'home': [
-        'cost-of-moving-house-stoke-on-trent-2026',
-        'choosing-a-reliable-removal-company-stoke',
-        'hidden-costs-of-moving-house',
-    ],
-    # Phase 2 — each page key maps to its 3 best-matched blogs.
+    # ── HOME ─────────────────────────────────────────────
+    'home':                              [_COST, _RELI, _HIDD],
+
+    # ── SERVICES ─────────────────────────────────────────
+    'services-index':                    [_COST, _RELI, _HIDD],
+    'services-domestic-removals':        [_COST, _DECL, _FRAG],
+    'services-commercial-removals':      [_OFFC, _HIDD, _RELI],
+    'services-packing-services':         [_FRAG, _DECL, _HIDD],
+    'services-storage-services':         [_STOR, _DOWN, _INSU],
+    'services-piano-removals':           [_FRAG, _INSU, _RELI],
+    'services-man-and-van':              [_DIY,  _COST, _HIDD],
+    'services-european-removals':        [_INSU, _RELI, _HIDD],
+    'services-international-removals':   [_INSU, _RELI, _HIDD],
+    'services-house-clearance':          [_DECL, _DOWN, _HIDD],
+    'services-student-removals':         [_COST, _DIY,  _BTY],
+    'services-antiques-moving':          [_FRAG, _INSU, _RELI],
+    'services-white-glove-service':      [_FRAG, _INSU, _RELI],
+    'services-packaging-shop':           [_FRAG, _DECL, _COST],
+
+    # ── AREAS (hub + 20 town pages) ──────────────────────
+    'areas-covered-index':               [_COST, _BTY,  _RELI],
+    # All 20 area pages share the same universal trio — the topical
+    # need is identical (cost, timing, trust). Per-town customisation
+    # can come later if user wants.
+    'areas-covered-removals-stoke-on-trent':     [_COST, _BTY,  _RELI],
+    'areas-covered-removals-hanley':             [_COST, _BTY,  _RELI],
+    'areas-covered-removals-burslem':            [_COST, _BTY,  _RELI],
+    'areas-covered-removals-tunstall':           [_COST, _BTY,  _RELI],
+    'areas-covered-removals-longton':            [_COST, _BTY,  _RELI],
+    'areas-covered-removals-fenton':             [_COST, _BTY,  _RELI],
+    'areas-covered-removals-newcastle-under-lyme': [_COST, _BTY,  _RELI],
+    'areas-covered-removals-kidsgrove':          [_COST, _HIDD, _INSU],
+    'areas-covered-removals-stafford':           [_COST, _BTY,  _RELI],
+    'areas-covered-removals-stone':              [_COST, _BTY,  _RELI],
+    'areas-covered-removals-leek':               [_COST, _HIDD, _INSU],
+    'areas-covered-removals-cheadle':            [_COST, _HIDD, _INSU],
+    'areas-covered-removals-biddulph':           [_COST, _BTY,  _RELI],
+    'areas-covered-removals-eccleshall':         [_COST, _HIDD, _INSU],
+    'areas-covered-removals-burton-on-trent':    [_COST, _BTY,  _RELI],
+    'areas-covered-removals-buxton':             [_COST, _BTY,  _RELI],
+    'areas-covered-removals-crewe':              [_COST, _BTY,  _RELI],
+    'areas-covered-removals-lichfield':          [_COST, _HIDD, _INSU],
+    'areas-covered-removals-cannock':            [_COST, _BTY,  _RELI],
+    'areas-covered-removals-tamworth':           [_COST, _BTY,  _RELI],
+
+    # ── RESOURCES ────────────────────────────────────────
+    'resources-storage-calculator':      [_COST, _STOR, _DOWN],
+
+    # ── ROOT UTILITY ─────────────────────────────────────
+    'about-us':                          [_RELI, _HIDD, _INSU],
+    'reviews':                           [_RELI, _COST, _HIDD],
+    'quote':                             [_COST, _BTY,  _HIDD],
+
+    # ── BLOG POSTS (per-post, never self-referential) ────
+    'blog-cost-of-moving-house-stoke-on-trent-2026':     [_HIDD, _DIY,  _BTY],
+    'blog-choosing-a-reliable-removal-company-stoke':    [_INSU, _HIDD, _COST],
+    'blog-hidden-costs-of-moving-house':                 [_COST, _RELI, _INSU],
+    'blog-best-time-of-year-to-move-house-staffordshire': [_BTD,  _COST, _RELI],
+    'blog-best-time-of-day-to-move-house':               [_BTY,  _COST, _HIDD],
+    'blog-moving-home-with-pets-staffordshire-checklist': [_CLEA, _DECL, _BTD],
+    'blog-how-to-pack-fragile-items-properly':           [_DECL, _INSU, _DIY],
+    'blog-self-storage-vs-full-service-storage':         [_DOWN, _INSU, _COST],
+    'blog-how-to-declutter-before-a-house-move':         [_FRAG, _DOWN, _CLEA],
+    'blog-diy-vs-professional-house-move-cost':          [_COST, _HIDD, _RELI],
+    'blog-move-in-cleaning-checklist-staffordshire':     [_DECL, _FRAG, _BTD],
+    'blog-moving-with-elderly-parents-staffordshire':    [_DOWN, _DECL, _RELI],
+    'blog-downsizing-storage-staffordshire':             [_STOR, _DECL, _ELDR],
+    'blog-office-relocation-planning-timeline':          [_RELI, _HIDD, _INSU],
+    'blog-moving-insurance-explained':                   [_RELI, _HIDD, _FRAG],
+
+    # ── INTENTIONALLY UNMAPPED (no related section) ──────
+    # 404.html, privacy-policy.html, terms.html, careers.html, blog/index.html
+    # — all skipped: legal pages don't need cross-links, blog hub already
+    # IS a blog listing, careers is internal-facing.
 }
+
+
+def _auto_related_key(slug):
+    """Derive a stable RELATED_FOR key from a page's slug.
+    index.html → 'home' (special alias)
+    services/piano-removals.html → 'services-piano-removals'
+    areas-covered/removals-leek.html → 'areas-covered-removals-leek'
+    blog/cost-of-moving-house-2026.html → 'blog-cost-of-moving-house-2026'
+    about-us.html → 'about-us'"""
+    if slug in ('index.html', './index.html', ''):
+        return 'home'
+    key = slug.replace('.html', '').replace('/', '-')
+    return key
 
 
 def related_blogs(page_key='home', depth=0, heading=None, lead=None):
     """Render the 3-card 'related reading' orange band that sits just
-    above the final .cta-strip. Identical visual treatment to the
-    services-section cards on the home page for design consistency."""
+    above the final .cta-strip. Returns '' if page_key isn't mapped
+    (legal pages, 404, careers, etc.) so callers can blindly include
+    the call without conditional logic."""
+    if page_key not in RELATED_FOR:
+        return ''
     p = '../' * depth
-    slugs = RELATED_FOR.get(page_key, RELATED_FOR['home'])
+    slugs = RELATED_FOR[page_key]
     h = heading or 'Plan your move with confidence'
     l = lead or 'Three guides our customers find most useful — read first, decide with full information.'
     cards = []
@@ -483,6 +668,7 @@ def render_page(*, slug, title, desc, h1, eyebrow, lead, sections_html,
         hero(eyebrow=eyebrow, h1=h1, lead=lead, depth=depth, hero_img=hero_img),
         sections_html,
         faq_section(faqs or []) if (faqs and inline_faq) else '',
+        related_blogs(_auto_related_key(slug), depth),
         cta_strip(depth),
         '  </main>',
         footer(depth),

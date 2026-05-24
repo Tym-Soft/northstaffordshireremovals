@@ -78,7 +78,7 @@ def plain_hero():
               <a class="btn btn-ghost" href="tel:+441782939124">Call 01782 939124</a>
             </div>
           </div>
-          <div class="split-img">
+          <div class="split-img split-img-hide-mobile">
             <img src="../images/loading-cardboard-removal-boxes.jpg" alt="North Staffordshire Removals crew loading a Stoke-on-Trent move" width="1066" height="1600" fetchpriority="high">
           </div>
         </div>

@@ -1063,6 +1063,13 @@ li { margin-bottom: .3rem; }
 .split-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
 .split-img:hover img { transform: scale(1.03); }
 
+/* Variant used on the calculator hero — image hides on mobile so
+   the calculator widget itself comes immediately below the H1 + CTAs
+   instead of being pushed down by a tall hero photo. */
+@media (max-width: 880px) {
+  .split-img-hide-mobile { display: none !important; }
+}
+
 /* ─── Storage showcase (image + bullets, balanced layout) ─── */
 .showcase {
   background: var(--navy); color: #fff;

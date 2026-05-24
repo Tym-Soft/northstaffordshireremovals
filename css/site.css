@@ -630,6 +630,25 @@ li { margin-bottom: .3rem; }
 
 /* Services section — orange band */
 .services-section { background: var(--orange); }
+/* All text inside a solid-orange .services-section is white for
+   readable contrast (orange #ef6c1d vs body navy #0a1726 fails WCAG
+   contrast). Mirrors the .areas-section / .on-orange treatment. */
+.services-section .eyebrow,
+.services-section .section-head h2,
+.services-section .section-head p,
+.services-section .prose-wide,
+.services-section .prose-wide p,
+.services-section .prose-wide strong,
+.services-section .prose-wide li,
+.services-section .prose-wide h3 {
+  color: #fff;
+}
+.services-section .eyebrow::before { background: #fff; }
+.services-section .prose-wide a {
+  color: #fff;
+  text-decoration: underline;
+}
+.services-section .prose-wide a:hover { color: var(--navy-dark); }
 .services-section .eyebrow { color: #fff; }
 .services-section .eyebrow::before { background: #fff; }
 .services-section .section-head h2 { color: #fff; }
@@ -801,6 +820,34 @@ li { margin-bottom: .3rem; }
 .areas-section .section-head p { color: #fff; }
 .areas-section .section-head a { color: #fff; text-decoration: underline; }
 .areas-section .section-head a:hover { color: var(--navy-dark); }
+/* Cover .prose-wide content if it appears inside an areas band too */
+.areas-section .prose-wide,
+.areas-section .prose-wide p,
+.areas-section .prose-wide strong,
+.areas-section .prose-wide li,
+.areas-section .prose-wide h3 { color: #fff; }
+.areas-section .prose-wide a { color: #fff; text-decoration: underline; }
+.areas-section .prose-wide a:hover { color: var(--navy-dark); }
+
+/* ── .on-orange utility ──────────────────────────────────────────
+   Drop on any future section that uses a solid orange background
+   and all standard body text inside flips to white automatically.
+   Use INSTEAD OF re-implementing the rules for each new section. */
+.on-orange { background: var(--orange); color: #fff; }
+.on-orange .eyebrow,
+.on-orange .eyebrow::before,
+.on-orange h1, .on-orange h2, .on-orange h3, .on-orange h4,
+.on-orange p, .on-orange li, .on-orange strong, .on-orange em,
+.on-orange .section-head,
+.on-orange .section-head *,
+.on-orange .prose-wide,
+.on-orange .prose-wide * { color: #fff; }
+.on-orange .eyebrow::before { background: #fff; }
+.on-orange a {
+  color: #fff;
+  text-decoration: underline;
+}
+.on-orange a:hover { color: var(--navy-dark); }
 
 /* ─── Areas (4-col cards) ────────────────────────────── */
 .areas-grid {

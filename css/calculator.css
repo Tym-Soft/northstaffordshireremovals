@@ -1723,8 +1723,8 @@ body[data-calc-mode="both"]     .qc-num[data-show-modes]:not([data-show-modes~="
 /* Number fields row */
 .qc-num-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 0.6rem;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
 }
 .qc-num {
   display: flex;

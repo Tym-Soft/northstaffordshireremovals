@@ -262,7 +262,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <!-- blog (28 URLs) -->
+  <!-- blog (33 URLs) -->
   <url>
     <loc>https://www.northstaffordshireremovals.co.uk/blog/antiques-moving-staffordshire-specialist-guide.html</loc>
     <lastmod>2026-05-24</lastmod>
@@ -288,6 +288,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.northstaffordshireremovals.co.uk/blog/complete-moving-checklist-staffordshire.html</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.northstaffordshireremovals.co.uk/blog/cost-of-moving-house-stoke-on-trent-2026.html</loc>
     <lastmod>2026-05-24</lastmod>
     <changefreq>monthly</changefreq>
@@ -307,6 +313,12 @@
   </url>
   <url>
     <loc>https://www.northstaffordshireremovals.co.uk/blog/european-removals-from-staffordshire-2026.html</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.northstaffordshireremovals.co.uk/blog/flat-removals-staffordshire.html</loc>
     <lastmod>2026-05-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -360,6 +372,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.northstaffordshireremovals.co.uk/blog/move-planning-guide-staffordshire.html</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.northstaffordshireremovals.co.uk/blog/moving-a-piano-staffordshire-guide-2026.html</loc>
     <lastmod>2026-05-24</lastmod>
     <changefreq>monthly</changefreq>
@@ -367,6 +385,12 @@
   </url>
   <url>
     <loc>https://www.northstaffordshireremovals.co.uk/blog/moving-home-with-pets-staffordshire-checklist.html</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.northstaffordshireremovals.co.uk/blog/moving-house-top-tips-uk.html</loc>
     <lastmod>2026-05-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -427,6 +451,12 @@
   </url>
   <url>
     <loc>https://www.northstaffordshireremovals.co.uk/blog/what-is-a-white-glove-moving-service.html</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.northstaffordshireremovals.co.uk/blog/winter-moving-tips-staffordshire.html</loc>
     <lastmod>2026-05-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

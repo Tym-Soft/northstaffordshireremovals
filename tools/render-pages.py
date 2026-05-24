@@ -297,6 +297,46 @@ BLOG_META = {
         'href': 'blog/storage-prohibited-items-uk.html',
         'cta': "See what's prohibited",
     },
+    'move-planning-guide-staffordshire': {
+        'title': 'Plan your move — Staffordshire planning guide 2026',
+        'card_desc': "The 12-week move planning countdown, what to do when, common planning mistakes, and how to plan around late completions in Staffordshire.",
+        'img': 'writing-moving-inventory-list.jpg',
+        'alt': 'Person writing a moving inventory list at a desk during move planning',
+        'href': 'blog/move-planning-guide-staffordshire.html',
+        'cta': 'Read planning guide',
+    },
+    'complete-moving-checklist-staffordshire': {
+        'title': 'Complete moving home checklist — Staffordshire 2026',
+        'card_desc': "Step-by-step 8-week countdown checklist: what to do when, day-of essentials, first-week priorities for a smooth Staffordshire move.",
+        'img': 'labelling-kitchen-box-marker.jpg',
+        'alt': 'Person labelling a kitchen removal box with marker pen during move packing',
+        'href': 'blog/complete-moving-checklist-staffordshire.html',
+        'cta': 'See the checklist',
+    },
+    'flat-removals-staffordshire': {
+        'title': 'Flat removals Staffordshire — apartment moving guide 2026',
+        'card_desc': "How flat removals differ from house moves: access challenges, lift booking, parking, furniture sizing, and honest 2026 cost ranges by flat type.",
+        'img': 'couple-with-removal-boxes-new-home.jpg',
+        'alt': 'Couple with removal boxes arriving at their new Staffordshire flat',
+        'href': 'blog/flat-removals-staffordshire.html',
+        'cta': 'See flat moves guide',
+    },
+    'winter-moving-tips-staffordshire': {
+        'title': 'Winter moving — 4 tips for Staffordshire moves 2026',
+        'card_desc': "Four practical winter moving tips: weather planning, fragile-item protection from temperature swings, floor protection, daylight and timing.",
+        'img': 'couple-new-home-cardboard-box.jpg',
+        'alt': 'Couple arriving at a new Staffordshire home with cardboard removal box during winter',
+        'href': 'blog/winter-moving-tips-staffordshire.html',
+        'cta': 'Get winter tips',
+    },
+    'moving-house-top-tips-uk': {
+        'title': 'Top tips for moving house — UK 2026 guide',
+        'card_desc': "Eight practical top tips for moving house in 2026 — planning, decluttering, packing labelling, first-night box, address change, move-day flexibility.",
+        'img': 'woman-checking-removal-boxes.jpg',
+        'alt': 'Person checking labelled removal boxes against an inventory list',
+        'href': 'blog/moving-house-top-tips-uk.html',
+        'cta': 'See top tips',
+    },
 }
 
 # Shorthand aliases for the universal blog slugs (used heavily below).
@@ -327,6 +367,11 @@ _PACK = 'professional-packing-services-staffordshire-2026'
 _SIZE = 'storage-size-guide-staffordshire'
 _SECU = 'self-storage-security-staffordshire'
 _PROH = 'storage-prohibited-items-uk'
+_PLAN = 'move-planning-guide-staffordshire'
+_CHKL = 'complete-moving-checklist-staffordshire'
+_FLAT = 'flat-removals-staffordshire'
+_WINT = 'winter-moving-tips-staffordshire'
+_TIPS = 'moving-house-top-tips-uk'
 
 # Per-page mapping. Key is the auto-derived page key (see
 # _auto_related_key below). Pages absent from this dict render no
@@ -433,6 +478,11 @@ RELATED_FOR = {
     'blog-storage-size-guide-staffordshire':             [_SECU, _PROH, _STOR],
     'blog-self-storage-security-staffordshire':          [_SIZE, _PROH, _INSU],
     'blog-storage-prohibited-items-uk':                  [_SIZE, _SECU, _DECL],
+    'blog-move-planning-guide-staffordshire':            [_CHKL, _TIPS, _COST],
+    'blog-complete-moving-checklist-staffordshire':      [_PLAN, _TIPS, _DECL],
+    'blog-flat-removals-staffordshire':                  [_MVAN, _STUD, _COST],
+    'blog-winter-moving-tips-staffordshire':             [_BTY,  _BTD,  _RELI],
+    'blog-moving-house-top-tips-uk':                     [_PLAN, _CHKL, _COST],
 
     # ── INTENTIONALLY UNMAPPED (no related section) ──────
     # 404.html, privacy-policy.html, terms.html, careers.html, blog/index.html

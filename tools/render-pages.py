@@ -10,7 +10,7 @@ import json, os, sys, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 BASE = 'https://www.northstaffordshireremovals.co.uk'
-CSS_V = '20260524u'
+CSS_V = '20260524v'
 
 # ─── Shared boilerplate ────────────────────────────────────────────────
 
@@ -64,16 +64,13 @@ def head(*, title, desc, canonical, og_image='family-celebrating-keys-new-home.j
 
 
 def topbar(depth=0):
-    return f'''  <div class="topbar">
-    <div class="topbar-inner">
-      <div class="topbar-contacts">
-        <a href="tel:+441782939124">📞 01782 939124</a>
-        <a href="mailto:enquiries@northstaffordshireremovals.co.uk">✉ enquiries@northstaffordshireremovals.co.uk</a>
-        <span aria-hidden="true">Mon–Fri 8am–6pm · Sat 9am–2pm</span>
-      </div>
-      <a href="{'../'*depth}quote.html" class="topbar-quote-link">Get a free quote</a>
-    </div>
-  </div>'''
+    """Disabled — the standalone topbar was removed because every item
+    it carried (phone, email, hours, quote CTA) already lives in
+    higher-affordance UI: the pulsing phone FAB, the email FAB, the
+    main-nav Free-Quote pill, the footer, and the LocalBusiness
+    schema's openingHours. Kept as a no-op so existing callers don't
+    break — delete the function only when no generator imports it."""
+    return ''
 
 
 SERVICES_DROPDOWN = [

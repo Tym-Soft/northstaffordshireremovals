@@ -74,23 +74,10 @@ a:hover { color: var(--navy); }
   }
 }
 
-/* ─── Top bar ─────────────────────────────────────────── */
-.topbar { background: var(--navy-dark); color: #e6e8ee; font-size: 13.5px; }
-.topbar-inner {
-  max-width: 1320px; margin: 0 auto; padding: 10px var(--pad-x);
-  display: flex; flex-wrap: wrap; gap: .25rem 1.5rem;
-  align-items: center; justify-content: space-between;
-}
-.topbar a { color: #e6e8ee; font-weight: 500; }
-.topbar a:hover { color: var(--orange-soft); }
-.topbar-contacts { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; align-items: center; }
-.topbar-quote-link {
-  background: var(--orange); color: #fff !important;
-  padding: .4rem 1rem; border-radius: 999px;
-  font-weight: 700; font-size: 12.5px;
-  text-transform: uppercase; letter-spacing: .04em;
-}
-.topbar-quote-link:hover { background: var(--orange-dark); color: #fff !important; }
+/* Top-bar was removed — its content (phone, email, hours, quote CTA)
+   lives in the pulsing phone FAB, the email FAB, the main-nav
+   Free-Quote pill, the footer, and the LocalBusiness schema's
+   openingHours. Re-add a .topbar rule block here if it ever returns. */
 
 /* ─── Nav ─────────────────────────────────────────────── */
 .nav {

@@ -257,6 +257,14 @@ BLOG_META = {
         'href': 'blog/house-clearance-after-bereavement-staffordshire.html',
         'cta': 'Read the clearance guide',
     },
+    'student-moves-keele-staffordshire-guide': {
+        'title': 'Student moves — Keele &amp; Staffordshire guide 2026',
+        'card_desc': "The Staffordshire student-move calendar, the summer-storage trap, the parent-help insurance gap, and honest 2026 costs for moves across the student year.",
+        'img': 'woman-unpacking-kitchenware.jpg',
+        'alt': 'Student unpacking kitchenware after moving into a new Staffordshire rental',
+        'href': 'blog/student-moves-keele-staffordshire-guide.html',
+        'cta': 'Read the student guide',
+    },
 }
 
 # Shorthand aliases for the universal blog slugs (used heavily below).
@@ -282,6 +290,7 @@ _EURO = 'european-removals-from-staffordshire-2026'
 _MVAN = 'man-and-van-vs-full-removal-staffordshire'
 _WGLV = 'what-is-a-white-glove-moving-service'
 _HCLR = 'house-clearance-after-bereavement-staffordshire'
+_STUD = 'student-moves-keele-staffordshire-guide'
 
 # Per-page mapping. Key is the auto-derived page key (see
 # _auto_related_key below). Pages absent from this dict render no
@@ -301,7 +310,7 @@ RELATED_FOR = {
     'services-european-removals':        [_EURO, _INTL, _INSU],
     'services-international-removals':   [_INTL, _INSU, _RELI],
     'services-house-clearance':          [_HCLR, _ELDR, _DOWN],
-    'services-student-removals':         [_COST, _DIY,  _BTY],
+    'services-student-removals':         [_STUD, _MVAN, _COST],
     'services-antiques-moving':          [_ANTI, _INSU, _FRAG],
     'services-white-glove-service':      [_WGLV, _ANTI, _INSU],
     'services-packaging-shop':           [_FRAG, _DECL, _COST],
@@ -363,6 +372,7 @@ RELATED_FOR = {
     'blog-man-and-van-vs-full-removal-staffordshire':    [_DIY,  _COST, _HIDD],
     'blog-what-is-a-white-glove-moving-service':         [_ANTI, _INSU, _PIAN],
     'blog-house-clearance-after-bereavement-staffordshire': [_ELDR, _DOWN, _DECL],
+    'blog-student-moves-keele-staffordshire-guide':      [_MVAN, _COST, _BTY],
 
     # ── INTENTIONALLY UNMAPPED (no related section) ──────
     # 404.html, privacy-policy.html, terms.html, careers.html, blog/index.html

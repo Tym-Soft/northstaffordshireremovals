@@ -1428,11 +1428,11 @@ SERVICES = [
     },
     {
         'slug': 'services/packaging-shop.html',
-        'title': 'Packing Materials &amp; Boxes | NSR Stoke-on-Trent',
-        'desc': "Buy moving boxes and packing materials in Stoke-on-Trent. Double-walled cartons, wardrobe boxes, bubble wrap, tape. Collect or delivered.",
-        'h1': 'Moving boxes &amp; packing materials &mdash; Stoke depot',
-        'eyebrow': 'Packing shop · Pick up or delivered',
-        'lead': "Need boxes, bubble wrap or wardrobe cartons but don't need a full packing service? Our Stoke-on-Trent depot stocks every packing material we use on our own removal jobs &mdash; sturdy double-walled cartons, wardrobe boxes, bubble wrap, kraft paper, tape and protective covers. Collect from the depot or have them delivered.",
+        'title': 'Packaging Shop — Packing Materials Stoke | NSR',
+        'desc': "NSR's packaging shop — moving boxes and packing materials in Stoke-on-Trent. Double-walled cartons, wardrobe boxes, bubble wrap, tape.",
+        'h1': 'Packaging shop &mdash; moving boxes &amp; packing materials',
+        'eyebrow': 'Packaging shop · Pick up or delivered',
+        'lead': "Need boxes, bubble wrap or wardrobe cartons but don't need a full packing service? Our Stoke-on-Trent packaging shop stocks every packing material we use on our own removal jobs &mdash; sturdy double-walled cartons, wardrobe boxes, bubble wrap, kraft paper, tape and protective covers. Collect from the depot or have packaging delivered to your door. Our packaging shop is open Monday to Saturday and serves customers across Staffordshire whether or not you've booked a removal with us.",
         'hero_img': 'packing-kitchenware-cardboard-box.jpg',
         'sections': [
             ('What we stock', "What we stock for self-packers",
@@ -1472,7 +1472,7 @@ SERVICES = [
 SERVICES_HUB = {
     'slug': 'services/index.html',
     'title': 'Removal &amp; Storage Services | NSR Stoke-on-Trent',
-    'desc': "Removals, packing, storage and piano moves across Stoke-on-Trent and Staffordshire. Family-run since 2010. Fixed price. Free quote.",
+    'desc': "Removal services across Stoke-on-Trent and Staffordshire — residential, commercial, packing, storage, piano. Family-run since 2010.",
     'h1': 'Removal &amp; storage services across Staffordshire',
     'eyebrow': 'Services · Staffordshire-wide',
     'lead': "From a single piano in Leek to a whole-office relocation in Stoke-on-Trent — and every house move in between. Choose your service below, or request a free fixed-price quote tailored to your move.",

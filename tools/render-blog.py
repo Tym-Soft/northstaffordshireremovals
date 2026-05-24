@@ -1182,7 +1182,7 @@ POSTS = [
     {
         'slug': 'blog/international-removals-from-the-uk-2026-guide.html',
         'title': 'International Removals from the UK — 2026 Guide | NSR',
-        'desc': "Moving abroad from the UK in 2026? Real costs, customs paperwork, timelines and what to expect for moves from Staffordshire to anywhere.",
+        'desc': "International removals from the UK in 2026 — real costs, customs paperwork, timelines and what to expect moving from Staffordshire.",
         'h1': 'International removals from the UK — a 2026 guide for Staffordshire customers',
         'date': '2026-05-24',
         'eyebrow': 'International removals · 2026 guide',

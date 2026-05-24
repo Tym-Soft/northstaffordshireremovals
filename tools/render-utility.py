@@ -184,7 +184,7 @@ def about_page():
     render_root_page(
         slug='about-us.html',
         title='About Us | North Staffordshire Removals &amp; Storage',
-        desc="Family-run Staffordshire removals since 2010. Our story, standards and crew. Based in Stoke-on-Trent, covering the whole of North Staffordshire.",
+        desc="About North Staffordshire Removals — family-run Staffordshire removals since 2010. Our story, our crew, our depot in Stoke-on-Trent.",
         h1='About North Staffordshire Removals &amp; Storage Ltd',
         eyebrow='About · Family-run since 2010',
         lead='The story behind Staffordshire&rsquo;s family-run home and business removals and storage company. Founded 2010, based in Stoke-on-Trent, run by people who live in the towns we move you into.',

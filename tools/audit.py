@@ -158,6 +158,66 @@ def sitemap_locs() -> set[str]:
     return set(re.findall(r'<loc>([^<]+)</loc>', xml))
 
 
+# ── SEO keyword placement (per [[seo-keyword-placement-rule]]) ───
+# Derives the primary keyword phrase from each page's slug
+# (slugs ARE keyword-engineered on this site, so the slug is the
+# authoritative source) and checks placement in title / meta desc /
+# image alt / body density. Skips legal/utility/404 pages.
+
+SEO_SKIP_PAGES = {
+    '404.html', 'privacy-policy.html', 'terms.html', 'careers.html',
+    'blog/index.html', 'sitemap.xml',
+}
+SEO_STOP_WORDS = {
+    # Standard English stops
+    'a', 'an', 'the', 'of', 'in', 'on', 'at', 'for', 'with', 'to',
+    'and', 'or', 'is', 'are', 'how', 'what', 'why', 'when', 'where',
+    'who', 'which', 'this', 'that', 'these', 'those', 'be', 'been',
+    'has', 'have', 'had', 'do', 'does', 'did', 'vs', 'versus', 'about',
+    'before', 'after', 'from',
+    # Site-wide boilerplate
+    'guide', 'staffordshire', 'uk',
+}
+SEO_BODY_DENSITY_MIN = 0.15     # hard floor — under = clearly under-targeted
+SEO_BODY_DENSITY_MAX = 4.0      # hard ceiling — over = stuffing risk
+SEO_BODY_DENSITY_IDEAL = (0.5, 1.5)  # informational sweet spot (memory rule)
+SEO_BODY_MIN_WORDS = 400        # too-short pages skip the body check
+
+
+def seo_primary_keyword(path: str) -> str | None:
+    """Derive the primary keyword phrase from a page slug.
+    Returns lowercased phrase, or None to skip this page."""
+    if path in SEO_SKIP_PAGES:
+        return None
+    if path == 'index.html':
+        return 'staffordshire removals'  # brand keyword for home page
+
+    base = os.path.basename(path).replace('.html', '')
+    # Hub pages (services/index.html, areas-covered/index.html) —
+    # derive from the parent directory name, not the basename 'index'
+    if base == 'index':
+        parent = os.path.basename(os.path.dirname(path))
+        if not parent:
+            return None
+        parent_words = [w for w in parent.replace('-', ' ').split()
+                        if w.lower() not in SEO_STOP_WORDS]
+        return ' '.join(parent_words[:2]).lower() if parent_words else None
+
+    # Strip year-suffixes (2024, 2025, 2026, etc.) and stop words
+    all_words = [w for w in base.replace('-', ' ').split()
+                 if not (len(w) == 4 and w.isdigit())]
+    words = [w for w in all_words if w.lower() not in SEO_STOP_WORDS]
+    # If stop-stripping leaves us with less than 2 meaningful words
+    # (e.g. about-us → just 'us'), fall back to the un-stripped slug
+    # so the keyword stays semantically useful.
+    if len(words) < 2:
+        words = all_words
+    if not words:
+        return None
+    # First 2 words = the primary keyword for the page
+    return ' '.join(words[:2]).lower()
+
+
 def blog_post_meta(path: str) -> dict | None:
     html = open(path, encoding='utf-8').read()
     for m in re.finditer(r'<script type="application/ld\+json">(.*?)</script>', html, re.S):
@@ -187,8 +247,13 @@ def audit():
         'redirects_file','url_parameters','duplicate_descriptions','h1_count','mixed_content',
         'robots_txt','eeat','org_jsonld','json_valid','faq_schema','one_meta_desc',
         'js_canonical','dir_trailing_slash','file_exists','html_trailing_slash',
-        'microdata','fully_insured_violation','page_min_words','min_faqs'
+        'microdata','fully_insured_violation','page_min_words','min_faqs',
+        'seo_keyword_placement'
     )}
+    # Soft-warning category — informational, doesn't fail the audit
+    # (image alt-text including the keyword is a recommendation, not
+    # a structural requirement like title/meta-desc/body density).
+    seo_alt_recommendations = []
 
     blog_posts = []
 
@@ -370,6 +435,52 @@ def audit():
         if re.search(r'\b(itemscope|itemtype|itemprop)\b', html):
             failures['microdata'].append(p)
 
+        # SEO keyword placement (per [[seo-keyword-placement-rule]])
+        # — primary keyword from slug. Each keyword WORD checked
+        # independently (not exact-phrase match) because real content
+        # uses natural word order: "Biddulph removals" and "removals
+        # in Biddulph" both correctly target the "removals biddulph"
+        # keyword. Combined word density 0.5-4.0% on the body.
+        seo_kw = seo_primary_keyword(p)
+        if seo_kw:
+            kw_words = seo_kw.split()
+            issues = []
+            # Title — at least one keyword word should appear
+            tm = re.search(r'<title>(.*?)</title>', html, re.S)
+            title_text = tm.group(1).lower() if tm else ''
+            if not any(w in title_text for w in kw_words):
+                issues.append('not-in-title')
+            # Meta description — at least one keyword word
+            md = re.search(r'name="description"\s+content="([^"]*)"', html)
+            desc_text = md.group(1).lower() if md else ''
+            if not any(w in desc_text for w in kw_words):
+                issues.append('not-in-meta-desc')
+            # Image alt text — at least one alt should contain at
+            # least one keyword word. SOFT check: recommendation,
+            # not a build failure (logged separately below).
+            alts = re.findall(r'<img[^>]+alt="([^"]*)"', html)
+            if alts and not any(any(w in a.lower() for w in kw_words) for a in alts):
+                seo_alt_recommendations.append((seo_kw, p))
+            # Body density — sum of individual keyword-word occurrences
+            # divided by total body word count, expressed as %
+            main_m = re.search(r'<main[^>]*>(.*?)</main>', html, re.S)
+            body_html = main_m.group(1) if main_m else html
+            body_text = re.sub(r'<[^>]+>', ' ', body_html).lower()
+            body_text = re.sub(r'\s+', ' ', body_text)
+            body_word_count = len(body_text.split())
+            if body_word_count >= SEO_BODY_MIN_WORDS:
+                kw_count = sum(
+                    len(re.findall(r'\b' + re.escape(w) + r'\b', body_text))
+                    for w in kw_words
+                )
+                density = (kw_count / body_word_count) * 100
+                if density < SEO_BODY_DENSITY_MIN:
+                    issues.append(f'under-targeted({density:.2f}%)')
+                elif density > SEO_BODY_DENSITY_MAX:
+                    issues.append(f'stuffing-risk({density:.2f}%)')
+            if issues:
+                failures['seo_keyword_placement'].append((seo_kw, ', '.join(issues), p))
+
         # NSR EEAT — ≥4 of 7 signals (no BAR)
         signals = sum([
             'North Staffordshire Removals' in html,
@@ -429,6 +540,15 @@ def audit():
             if len(fails) > 8: print(f'      … +{len(fails)-8} more')
     print('='*64)
     print(f'  {sum(1 for v in failures.values() if not v)} / {len(failures)} rules pass.')
+    # Soft recommendations — informational only, don't fail the build
+    if seo_alt_recommendations:
+        print()
+        print(f'  ℹ {len(seo_alt_recommendations)} page(s) could improve image alt-text SEO')
+        print(f'    (primary keyword absent from all <img alt> attributes — recommendation, not a failure):')
+        for kw, p in seo_alt_recommendations[:8]:
+            print(f'      kw="{kw}"  →  {p}')
+        if len(seo_alt_recommendations) > 8:
+            print(f'      … +{len(seo_alt_recommendations)-8} more')
     return 0 if not any_fail else 1
 
 

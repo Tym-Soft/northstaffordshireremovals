@@ -1074,7 +1074,7 @@ def render_areas_hub():
     rp.render_page(
         slug='areas-covered/index.html',
         title='Areas We Cover | NSR Removals &amp; Storage',
-        desc="Removals across Stoke-on-Trent, Newcastle-under-Lyme, Stafford, Stone, Leek, Eccleshall, Burton-on-Trent and Buxton. Family-run since 2010.",
+        desc="Areas we cover across Stoke-on-Trent, Newcastle-under-Lyme, Stafford, Stone, Leek, Eccleshall and Burton-on-Trent. Family-run since 2010.",
         h1='Areas we cover across Staffordshire',
         eyebrow='Areas covered · Staffordshire-wide',
         lead='Pick your town below for local pricing, postcodes, access notes and direct booking. Family-run from our Stoke-on-Trent depot since 2010, covering the whole of North Staffordshire and the Peak District fringe.',

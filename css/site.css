@@ -94,10 +94,17 @@ a:hover { color: var(--navy); }
 
 /* ─── Nav ─────────────────────────────────────────────── */
 .nav {
-  position: sticky; top: 0; z-index: 50;
+  position: -webkit-sticky; /* iOS Safari < 13 fallback */
+  position: sticky;
+  top: 0;
+  z-index: 50;
   background: var(--paper);
   border-bottom: 3px solid var(--orange);
   box-shadow: var(--shadow-xs);
+  /* will-change hints the browser to keep this in its own layer,
+     preventing some mobile-Chrome cases where sticky disappears
+     during the scroll-up animation when the URL bar reappears. */
+  will-change: transform;
 }
 .nav-inner {
   max-width: 1320px; margin: 0 auto;
@@ -209,8 +216,16 @@ a:hover { color: var(--navy); }
    positioning. Flex auto-margins were unreliable here because the
    collapsed <nav> drawer wrapper still consumed a slot — positioning
    the toggle outside the flex flow guarantees it sits at the right
-   padding edge regardless of any sibling weirdness. */
+   padding edge regardless of any sibling weirdness.
+   Also reinforce the sticky nav with !important — some hosts (and
+   service workers) cache an older CSS where the nav was static. */
 @media (max-width: 980px) {
+  .nav {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 50 !important;
+  }
   .nav-inner { position: relative; }
   .menu-toggle {
     position: absolute !important;

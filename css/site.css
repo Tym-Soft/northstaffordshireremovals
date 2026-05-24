@@ -205,14 +205,20 @@ a:hover { color: var(--navy); }
 }
 @media (max-width: 1080px) { .brand img { height: 46px; } }
 
-/* Mobile: push the Menu button flush to the right edge.
-   margin-left: auto on the toggle pushes it as far right as the
-   flex layout allows; zeroing the .nav-inner gap removes the
-   1.5rem dead space between the toggle and the collapsed-drawer
-   <nav> wrapper that sits zero-width at the right edge. */
+/* Mobile: pin the Menu button to the right edge with absolute
+   positioning. Flex auto-margins were unreliable here because the
+   collapsed <nav> drawer wrapper still consumed a slot — positioning
+   the toggle outside the flex flow guarantees it sits at the right
+   padding edge regardless of any sibling weirdness. */
 @media (max-width: 980px) {
-  .nav-inner { gap: 0 !important; }
-  .menu-toggle { margin-left: auto !important; margin-right: 0 !important; }
+  .nav-inner { position: relative; }
+  .menu-toggle {
+    position: absolute !important;
+    right: var(--pad-x) !important;
+    top: 50% !important;
+    transform: translateY(-50%);
+    margin: 0 !important;
+  }
 }
 
 /* ──────────────────────────────────────────────────────────

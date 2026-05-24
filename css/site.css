@@ -205,13 +205,14 @@ a:hover { color: var(--navy); }
 }
 @media (max-width: 1080px) { .brand img { height: 46px; } }
 
-/* Mobile: remove the <nav> wrapper from the flex layout so its
-   collapsed drawer doesn't act as a phantom flex item with a gap.
-   With <nav> as display: contents, the menu-toggle becomes the last
-   visible flex child and justify-content: space-between pushes it
-   flush to the right padding edge instead of leaving a 1.5rem gap. */
+/* Mobile: push the Menu button flush to the right edge.
+   margin-left: auto on the toggle pushes it as far right as the
+   flex layout allows; zeroing the .nav-inner gap removes the
+   1.5rem dead space between the toggle and the collapsed-drawer
+   <nav> wrapper that sits zero-width at the right edge. */
 @media (max-width: 980px) {
-  .nav-inner > nav[aria-label="Primary"] { display: contents; }
+  .nav-inner { gap: 0 !important; }
+  .menu-toggle { margin-left: auto !important; margin-right: 0 !important; }
 }
 
 /* ──────────────────────────────────────────────────────────

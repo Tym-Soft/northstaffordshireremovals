@@ -10,7 +10,7 @@ import json, os, sys, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 BASE = 'https://www.northstaffordshireremovals.co.uk'
-CSS_V = '20260524c'
+CSS_V = '20260524e'
 
 # ─── Shared boilerplate ────────────────────────────────────────────────
 
@@ -125,18 +125,23 @@ def _dropdown_items(items, depth, hub_href, hub_label):
 
 def nav(current, depth=0):
     p = '../' * depth
+    # Depth-aware home path so Home/logo work in every deployment context
+    # (file://, localhost HTTP, GitHub Pages subpath, custom domain).
+    # `./` at depth=0, `../` at depth=1, `../../` at depth=2 — all resolve
+    # to the project root in any of those contexts.
+    home = p if p else './'
     svc_dd = _dropdown_items(SERVICES_DROPDOWN, depth, 'services/', 'Services')
     areas_dd = _dropdown_items(AREAS_DROPDOWN, depth, 'areas-covered/', 'Areas')
 
     return f'''  <header class="nav">
     <div class="nav-inner">
-      <a class="brand" href="/" aria-label="North Staffordshire Removals &amp; Storage Ltd — home">
+      <a class="brand" href="{home}" aria-label="North Staffordshire Removals &amp; Storage Ltd — home">
         <img src="{p}images/logo-north-staffordshire-removals.png" alt="North Staffordshire Removals &amp; Storage Ltd logo" width="959" height="200">
       </a>
       <button class="menu-toggle" aria-expanded="false" aria-controls="primary-nav">☰ Menu</button>
       <nav aria-label="Primary">
         <ul id="primary-nav" class="nav-menu">
-          <li><a href="/"{' aria-current="page"' if current == 'home' else ''}>Home</a></li>
+          <li><a href="{home}"{' aria-current="page"' if current == 'home' else ''}>Home</a></li>
           <li><a href="{p}about-us.html"{' aria-current="page"' if current == 'about' else ''}>About</a></li>
           <li class="has-dropdown">
             <a href="{p}services/"{' aria-current="page"' if current == 'services' else ''} aria-haspopup="true">Services <span class="dd-caret" aria-hidden="true">▾</span></a>
@@ -176,8 +181,15 @@ def cta_strip(depth=0):
     </section>'''
 
 
+PHONE_FAB = '''  <a class="phone-fab" href="tel:+441782939124" aria-label="Call North Staffordshire Removals on 01782 939124">
+    <span class="phone-fab-icon" aria-hidden="true">📞</span>
+    <span class="phone-fab-text">Call 01782 939124</span>
+  </a>'''
+
+
 def footer(depth=0):
     p = '../' * depth
+    home = p if p else './'
     return f'''  <footer class="site-footer">
     <div class="container">
       <div>
@@ -189,7 +201,7 @@ def footer(depth=0):
       <div>
         <h4>Quick Menu</h4>
         <ul>
-          <li><a href="/">Home</a></li>
+          <li><a href="{home}">Home</a></li>
           <li><a href="{p}about-us.html">About us</a></li>
           <li><a href="{p}services/">Services</a></li>
           <li><a href="{p}areas-covered/">Areas Covered</a></li>
@@ -239,6 +251,7 @@ def footer(depth=0):
       </div>
     </div>
   </footer>
+{PHONE_FAB}
   <script defer src="{p}js/mobile-nav.js?v={CSS_V}"></script>
 </body>
 </html>'''

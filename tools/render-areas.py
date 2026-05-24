@@ -1026,13 +1026,21 @@ def render_area(a):
 def render_areas_hub():
     cards = []
     pin = '<span class="pin" aria-hidden="true">📍</span>'
-    for a in AREAS:
+    # Vary the arrow text per card so the same call-to-action phrase doesn't
+    # repeat 20 times (avoids keyword-stuffing of "Removals in ...").
+    ARROW_VARIANTS = [
+        'View {} details', 'Explore {}', 'See {} info', 'Local pricing for {}',
+        'About {}', 'Coverage in {}', 'Plan your {} move', 'Quote for {}',
+        '{} access notes', 'Move in {}', 'Settle in {}', 'Postcodes in {}',
+    ]
+    for i, a in enumerate(AREAS):
         slug = os.path.basename(a['slug'])
         towns_intro = a['paras'][1][1][0] if len(a['paras']) > 1 else ''
         # Strip HTML from short towns description
         import re as _re
         towns_text = _re.sub(r'<[^>]+>', '', towns_intro)[:120] + '…'
-        cards.append(f'<a class="area-card" href="{slug}">{pin}<h3>{a["town"]}</h3><p class="towns">{towns_text}</p><span class="arrow">Removals in {a["town"]}</span></a>')
+        arrow_text = ARROW_VARIANTS[i % len(ARROW_VARIANTS)].format(a['town'])
+        cards.append(f'<a class="area-card" href="{slug}">{pin}<h3>{a["town"]}</h3><p class="towns">{towns_text}</p><span class="arrow">{arrow_text}</span></a>')
     grid = '<div class="areas-grid">' + ''.join(cards) + '</div>'
     intro = rp.block_prose(
         eyebrow='Where we operate',

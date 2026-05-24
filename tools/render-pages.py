@@ -10,7 +10,7 @@ import json, os, sys, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 BASE = 'https://www.northstaffordshireremovals.co.uk'
-CSS_V = '20260525e'
+CSS_V = '20260525f'
 
 # ─── Shared boilerplate ────────────────────────────────────────────────
 
@@ -958,21 +958,23 @@ WHY_CARDS = [
     ('£',  'Fixed prices, in writing',     "Every quote is fixed for 60 days after a free home or video survey. No hourly billing, no surprise fuel surcharges, no 'we ran over' on the day."),
     ('✓',  'Fully covered every mile',     "Comprehensive Goods in Transit and £10 million Public Liability cover. Claims handled directly by our team — never a third-party broker."),
     ('↻',  'No charge for delays',         "Completion delays happen. Solicitors, chains, key waits — we don't charge a penny for any of them. We simply update the diary and turn up when you're ready."),
+    ('🏠', 'Family-run since 2010',        "Direct employees, not subcontractors. The team that quotes your move is the team that turns up on the day. Reputational skin in every job we book."),
     ('🚚', 'Modern fleet from our own depot', "Clean Luton and 7.5-tonne lorries maintained in our own Stoke-on-Trent workshop. No hire vans, no last-minute substitutes."),
     ('👥', 'Professionally trained crews', "Every crew trains in-house to the same wrap-and-protect standard, in branded uniform. Real movers, not casual day labour."),
     ('📞', 'End-to-end support',           "One number, one team, one promise — from the first survey through to the last carton unpacked. If anything isn't right, you call us and we fix it."),
+    ('★',  '187 verified reviews',         "Rated 4.9/5 across independently verified customer reviews. We don't filter the rare critical ones and we don't pay for any of them — see the full set on our reviews page."),
 ]
 
 
-def block_why_cards(eyebrow='Why choose us', h2='Six reasons Staffordshire chooses us first',
+def block_why_cards(eyebrow='Why choose us', h2='Eight reasons Staffordshire chooses us first',
                     intro=None, alt_bg=True):
-    """6-card 3+3 block matching the home page (white row + orange row).
-    Drop into any page after the lead content. ≥6 internal trust signals + 0 extra links."""
+    """8-card 4+4 block matching the home page (white row + orange row).
+    Drop into any page after the lead content. ≥8 internal trust signals + 0 extra links."""
     if intro is None:
         intro = "Moving home or office is one of the most stressful things you can do. For fifteen years our small Stoke-on-Trent team has spent every day making it less so &mdash; by keeping prices fixed, treating belongings like our own, and being honest about what a move really involves."
     import html as _h
-    row1 = ''.join(f'<div class="why-card"><div class="why-ic">{_h.escape(ic)}</div><h3>{_h.escape(t)}</h3><p>{_h.escape(b)}</p></div>' for ic,t,b in WHY_CARDS[:3])
-    row2 = ''.join(f'<div class="why-card"><div class="why-ic">{_h.escape(ic)}</div><h3>{_h.escape(t)}</h3><p>{_h.escape(b)}</p></div>' for ic,t,b in WHY_CARDS[3:])
+    row1 = ''.join(f'<div class="why-card"><div class="why-ic">{_h.escape(ic)}</div><h3>{_h.escape(t)}</h3><p>{_h.escape(b)}</p></div>' for ic,t,b in WHY_CARDS[:4])
+    row2 = ''.join(f'<div class="why-card"><div class="why-ic">{_h.escape(ic)}</div><h3>{_h.escape(t)}</h3><p>{_h.escape(b)}</p></div>' for ic,t,b in WHY_CARDS[4:])
     cls = 'alt-bg why-section' if alt_bg else 'why-section'
     return f'''    <section class="{cls}">
       <div class="container">

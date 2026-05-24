@@ -993,13 +993,13 @@ li { margin-bottom: .3rem; }
 }
 .blog-card:hover .blog-card-link::after { transform: translateX(4px); }
 
-/* ─── Why-choose grid (6 cards 3x2) ──────────────────── */
+/* ─── Why-choose grid (8 cards 4x2) ──────────────────── */
 .why-grid {
   display: grid; gap: var(--gap-md);
   grid-template-columns: 1fr;
 }
 @media (min-width: 580px) { .why-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 960px) { .why-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 960px) { .why-grid { grid-template-columns: repeat(4, 1fr); } }
 .why-card {
   background: var(--paper);
   border: 2px solid rgba(239, 108, 29, 0.75);

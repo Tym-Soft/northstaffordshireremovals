@@ -86,6 +86,7 @@ BLOG_META = {
         'img': 'family-moving-house-boxes-celebration.jpg',
         'alt': 'Staffordshire family celebrating moving day surrounded by removal boxes',
         'href': 'blog/cost-of-moving-house-stoke-on-trent-2026.html',
+        'cta': 'See 2026 pricing',
     },
     'choosing-a-reliable-removal-company-stoke': {
         'title': 'Choosing a reliable removal company in Stoke',
@@ -93,6 +94,7 @@ BLOG_META = {
         'img': 'professional-removal-team-lorry.jpg',
         'alt': 'Professional Stoke-on-Trent removal crew loading a branded Luton lorry',
         'href': 'blog/choosing-a-reliable-removal-company-stoke.html',
+        'cta': 'Check the questions',
     },
     'hidden-costs-of-moving-house': {
         'title': 'Hidden costs of moving house',
@@ -100,6 +102,7 @@ BLOG_META = {
         'img': 'moving-day-packing-checklist.jpg',
         'alt': 'Moving-day checklist on a clipboard surrounded by labelled removal boxes',
         'href': 'blog/hidden-costs-of-moving-house.html',
+        'cta': 'Avoid the surprises',
     },
     'best-time-of-year-to-move-house-staffordshire': {
         'title': 'Best time of year to move house in Staffordshire',
@@ -107,6 +110,7 @@ BLOG_META = {
         'img': 'family-celebrating-keys-new-home.jpg',
         'alt': 'Family celebrating moving into a new Staffordshire home with keys in hand',
         'href': 'blog/best-time-of-year-to-move-house-staffordshire.html',
+        'cta': 'See the calendar',
     },
     'best-time-of-day-to-move-house': {
         'title': 'Best time of day to move house',
@@ -114,6 +118,7 @@ BLOG_META = {
         'img': 'empty-room-moving-boxes-ready.jpg',
         'alt': 'Empty room ready for movers at the start of a Staffordshire moving day',
         'href': 'blog/best-time-of-day-to-move-house.html',
+        'cta': 'Pick the right slot',
     },
     'moving-home-with-pets-staffordshire-checklist': {
         'title': 'Moving home with pets — a Staffordshire checklist',
@@ -121,6 +126,7 @@ BLOG_META = {
         'img': 'smiling-woman-with-dog-moving-day.jpg',
         'alt': 'Smiling Staffordshire homeowner with her dog on moving day',
         'href': 'blog/moving-home-with-pets-staffordshire-checklist.html',
+        'cta': 'Get the pet checklist',
     },
     'how-to-pack-fragile-items-properly': {
         'title': 'How to pack fragile items properly',
@@ -128,6 +134,7 @@ BLOG_META = {
         'img': 'packing-glassware-bubble-wrap.jpg',
         'alt': 'Hands wrapping glassware in bubble wrap before packing into a removal box',
         'href': 'blog/how-to-pack-fragile-items-properly.html',
+        'cta': 'See the packing guide',
     },
     'self-storage-vs-full-service-storage': {
         'title': 'Self-storage vs full-service storage',
@@ -135,6 +142,7 @@ BLOG_META = {
         'img': 'cardboard-boxes-storage-warehouse.jpg',
         'alt': 'Palletised cardboard storage units in a Stoke-on-Trent warehouse',
         'href': 'blog/self-storage-vs-full-service-storage.html',
+        'cta': 'Compare your options',
     },
     'how-to-declutter-before-a-house-move': {
         'title': 'How to declutter before a house move',
@@ -142,6 +150,7 @@ BLOG_META = {
         'img': 'woman-folding-clothes-suitcase-packing.jpg',
         'alt': 'Person folding clothes into a suitcase while decluttering before a move',
         'href': 'blog/how-to-declutter-before-a-house-move.html',
+        'cta': 'Get the declutter plan',
     },
     'diy-vs-professional-house-move-cost': {
         'title': 'DIY vs professional house move — true cost compared',
@@ -149,6 +158,7 @@ BLOG_META = {
         'img': 'man-stacking-cardboard-removal-boxes.jpg',
         'alt': 'Person stacking cardboard removal boxes on a Staffordshire moving day',
         'href': 'blog/diy-vs-professional-house-move-cost.html',
+        'cta': 'Run the numbers',
     },
     'move-in-cleaning-checklist-staffordshire': {
         'title': 'Move-in cleaning checklist for Staffordshire',
@@ -156,6 +166,7 @@ BLOG_META = {
         'img': 'unpacking-bedroom-boxes.jpg',
         'alt': 'Bedroom partly unpacked after a Staffordshire move-in cleaning sweep',
         'href': 'blog/move-in-cleaning-checklist-staffordshire.html',
+        'cta': 'Get the cleaning list',
     },
     'moving-with-elderly-parents-staffordshire': {
         'title': 'Moving home with elderly parents — Staffordshire guide',
@@ -163,6 +174,7 @@ BLOG_META = {
         'img': 'estate-agent-handing-house-keys.jpg',
         'alt': 'Estate agent handing house keys to a Staffordshire family on completion day',
         'href': 'blog/moving-with-elderly-parents-staffordshire.html',
+        'cta': 'Read the family guide',
     },
     'downsizing-storage-staffordshire': {
         'title': 'Downsizing storage in Staffordshire',
@@ -170,6 +182,7 @@ BLOG_META = {
         'img': 'couple-packing-living-room.jpg',
         'alt': 'Staffordshire couple packing living room belongings during a downsizing move',
         'href': 'blog/downsizing-storage-staffordshire.html',
+        'cta': 'Plan the downsize',
     },
     'office-relocation-planning-timeline': {
         'title': 'Office relocation planning timeline',
@@ -177,6 +190,7 @@ BLOG_META = {
         'img': 'stacked-cardboard-boxes-empty-room.jpg',
         'alt': 'Stacked cardboard boxes in an empty office ready for relocation',
         'href': 'blog/office-relocation-planning-timeline.html',
+        'cta': 'See the timeline',
     },
     'moving-insurance-explained': {
         'title': 'Moving insurance explained',
@@ -184,6 +198,7 @@ BLOG_META = {
         'img': 'sealing-cardboard-removal-box-floor.jpg',
         'alt': 'Removal crew member sealing a cardboard box with packing tape during a Stoke house move',
         'href': 'blog/moving-insurance-explained.html',
+        'cta': 'Get cover explained',
     },
 }
 
@@ -314,6 +329,7 @@ def related_blogs(page_key='home', depth=0, heading=None, lead=None):
         meta = BLOG_META.get(slug)
         if not meta:
             continue
+        cta = meta.get('cta', 'Read article')
         cards.append(f'''          <a class="related-card" href="{p}{meta['href']}">
             <div class="related-img">
               <img src="{p}images/{meta['img']}" alt="{meta['alt']}" width="1600" height="1066" loading="lazy">
@@ -321,7 +337,7 @@ def related_blogs(page_key='home', depth=0, heading=None, lead=None):
             <div class="related-body">
               <h3>{meta['title']}</h3>
               <p>{meta['card_desc']}</p>
-              <span class="related-arrow">Read article</span>
+              <span class="related-arrow">{cta}</span>
             </div>
           </a>''')
     cards_html = '\n'.join(cards)
